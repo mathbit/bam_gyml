@@ -1,5 +1,5 @@
 # import the Flask class from the flask module
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, redirect
 import pandas as pd
 import os
 from update import LOCALPATHS
@@ -35,6 +35,9 @@ DATA = Data( DF )
 
 # use decorators to link the function to a url
 @app.route('/')
+def index():
+    return redirect(url_for('lul'))
+
 @app.route('/lul', methods=['POST', 'GET'])
 def lul():
     #just for testing
