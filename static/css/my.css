@@ -1,0 +1,126 @@
+body {
+  background-color: white;
+}
+
+h2 {
+  	color: blue;
+    text-align:center
+}
+
+img {
+	display: block;
+}
+
+/* display cards (images) in a flexible way */
+.flex-image-container {
+    display:flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.flex-image-item {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
+  margin: 2px;
+  font-family: Muli;
+  border-radius: 0px;
+  border: 1px solid lightgray;
+}
+
+/* .image-tag {
+  font-family: Muli;
+  color: #77b0b1;
+  font-size: small;
+  text-align: right;
+  overflow-x: scroll;
+  white-space: nowrap;
+} */
+
+
+/* layout of input forms */
+.flex-input-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.flex-input-item-kurzel {
+    width: 200px
+}
+
+.flex-input-item-basal {
+    width: 200px
+}
+
+.flex-input-item-topic {
+    width: 250px
+}
+
+.flex-input-item-diff {
+    width: 200px
+}
+
+.flex-input-item-imsize {
+    width: 200px;
+    height: 40px;
+    margin-left: 60px;
+    margin-top: 5px
+}
+
+/* changes picture without slide-in animation */
+.collapsing {
+  transition: none !important;
+}
+
+/* carousel controls */
+
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 100px;
+  width: 100px;
+  /* outline: black;  */
+  outline: none;
+  background-size: 100%, 100%;
+  border-radius: 50%;
+  /* border: 1px solid black; */
+  border: none
+  background-image: none;
+  /* align-self: flex-end; */
+}
+
+.carousel-control-next-icon:after
+{
+  content: '>';
+  font-size: 55px;
+  color: green;
+}
+
+.carousel-control-prev-icon:after {
+  content: '<';
+  font-size: 55px;
+  color: green;
+}
+
+/* .carousel-indicators li {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    margin: 10px;
+    text-indent: 0;
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    background-color: black;
+    box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+.carousel-indicators .active {
+    width: 48px;
+    height: 48px;
+    margin: 50px;
+    background-color: #ffff99;
+} */

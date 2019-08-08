@@ -1,0 +1,135 @@
+% load packages
+\usepackage[german]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[a6paper,landscape]{geometry}
+\usepackage{ifthen} % ifthenelse command
+\usepackage{xifthen} % provides \isempty
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx} % for including pictures
+\usepackage{xstring} %string operations
+\usepackage{pgffor} %for-loop
+\usepackage{amsmath} %for compoundfractions
+
+\usepackage{units} % for nice units and unit-fractions
+
+\usepackage{pifont} %define checkmark and xmark
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+\pagestyle{empty} % no page numbers
+\setlength\parindent{0pt} %no indent
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%
+%%% define search tags - edit to add more tags
+%%%
+% 4 Kategorien von Tags: 
+% Kürzel, basales Jahr, Topic, und Schwierigkeitsgrad
+%
+% Um eine Kategorie zu erweitern, einfach unten in der Liste
+% hinzufügen. Reihenfolge spielt keine Rolle.
+% BEACHTE!! Nach dem letzten Eintrag in der Liste muss 
+% ebenfalls ein Komma folgen.
+
+% Liste: basale Phase
+\newcommand{\basaltype}
+{
+basal1, %was sie beim Eintritt Gym1 wissen sollten
+basal2, %was sie Ende Gym1 wissen sollten
+}
+
+% Liste: different topics
+\newcommand{\topic}
+{
+LineareFunktionen, %balsal2
+Bruchgleichungen,%balsal2
+Pythagoras,%balsal1
+Einheiten,%balsal1
+Proportionalitäten,%balsal1
+Kreisberechnung,%balsal1{}
+Dreieck,%balsal1
+Viereck,%balsal1
+n-Ecke,%balsal1 (bis n=4)
+Termumformungen,%balsal1 und basal2
+Grundoperationen, %balsal1 und basal2
+Kongruenz,%balsal1
+Ähnlichkeit,%balsal2
+Mathematisieren,%balsal1 und basal2
+Funktionsauswertung,%balsal2
+Koordinatensystem,%basal1 und basal2
+Bruchrechnen,%balsal1
+Wurzel,%balsal1
+Begrifflichkeiten, %balsal1 und basal2 (Betrag)
+BinomischeFormeln, %balsal2
+Potenzen,%balsal2
+}
+
+% Liste: degree of diffculty
+\newcommand{\difficulty}
+{
+leicht, 
+mittel, 
+schwer,
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%
+%%% 'question' interface
+%%%
+\newcommand{\question}[1]{ 
+\\ #1
+}
+
+%%%
+%%% 'solution' interface
+%%%
+\newcommand{\solution}[1]{
+%\vfill\hfill $\rightarrow$ Lösung: #1
+\vfill\color{red} #1
+}
+
+%%%
+%%% 'extract' command
+%%%
+\newcommand{\extract}[2]{
+    \StrDel{#1}{,}[\mytempinput]% delete commas from string
+    \StrLen{#1}[\len]% if empty string, add dummy character
+    \ifthenelse{\equal{\len}{0}}{\let\mytempinput=a}{\ignorespaces}
+    \foreach \tag in #2 {% loop through the list of expressions
+        \IfSubStr{\mytempinput}{\tag}{%
+            \StrDel{\mytempinput}{\tag}[\mytempinput]%
+            \tag\ %if found in string, print expression
+        }{%
+            \ignorespaces % otherwise do nothing
+        }%
+        \global\let\mytempinput=\mytempinput% export outside
+    }%
+    %
+    \StrLen{\mytempinput}[\len]%
+    \ifthenelse{\equal{\len}{0}}{\ignorespaces}{\xmark}%
+}
+
+%%%
+%%% 'add' interface 
+%%%
+\newenvironment{Add}[4]
+{
+    \hspace*{\fill} 
+    {\it \tiny Tags found:
+    % extract Kürzel - make cross if empty 
+    \ifthenelse {\isempty{#1}} {\xmark}{#1} $|$%
+    % extract basal type - make cross if empty of strange string
+    \extract{#2}{\basaltype} $|$%
+    % extract topics - make cross if empty of strange string
+    \extract{#3}{\topic} $|$%
+    % extract degree of difficulty - make cross if empty of strange string
+    \extract{#4}{\difficulty}%
+    }
+    \\
+    \noindent\rule{\textwidth}{1pt}% horizontal line
+}
+    %add question and solution
+{
+    \newpage
+}
