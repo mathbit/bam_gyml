@@ -15,7 +15,7 @@ class Projconfig:
 
     # background color of cards (latex color)
     #cardbgcolor    = 'lightgray!30'
-    cardbgcolor    = 'yellow'
+    cardbgcolor    = 'black'
 
     # resolution of images
     imres          = 200
