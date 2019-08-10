@@ -1,8 +1,9 @@
 xifthen
-xifmtarg
+ifmtarg
 xcolor
 xstring
 pgf
 units
 symbol
 pagecolor
+
