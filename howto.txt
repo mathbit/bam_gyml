@@ -1,0 +1,137 @@
+compress folder:
+tar czvf file.tar.gy file/
+
+unfreeze:
+pip install -r requirements.txt
+
+find obsolete python packages:
+pylint app2.py
+
+Heroku account:
+email: tbinzegger ...
+!basal19!
+
+git account (see github.com)
+username: mathbit
+pw: fro2626es
+
+Git setup for the first time:
+git config --global user.name mathbit
+git config --global user.email tbinzegger@gmail.com
+
+create new repository in a directory so that you can see it on github
+echo "# bam_dash" >> README.md  %name of repository
+git init
+git add
+git commit -m "first commit"
+git remote add origin https://github.com/mathbit/bam_dash.git
+git push -u origin master
+
+clone latex project from overleaf-git-repository for the first time
+===================================================================
+see https://gist.github.com/jnaecker/da8c1846bc414594783978b66b6e8c83
+go to project root directory:
+   a) Find the link for your latex project on overleaf
+      (Under git, on the left)
+   b) Go to the latex directory and clone:
+		 git init
+		 git remote add overleaf https://git.overleaf.com/5ccf01163239d30f95bfd999
+		 git pull overleaf master
+	 You might have to add user username (email) and overleaf password (usual one)
+	 To avoid this, run
+	 > git config credential.helper store
+	 and then do a pull, enter credentials, and then it should not appear anymore.
+
+
+
+deploy scripts to heroku (see https://dash.plot.ly/deployment)
+========================
+install git in directory:
+git init
+
+install heroku cli:
+sudo snap install heroku --classic
+
+install wheel:
+pip install wheel
+
+install virtual environment for python3:
+python3 -m venv venv
+source venv/bin/activate
+
+install webserver:
+pip install gunicorn
+
+install various scripts and depending packages:
+app.py
+update.py
+latex/
+assets/
+Note: now run app.py and update.py and install the  minimal number of packages.
+
+create the files:
+.gitignore
+	venv
+	*.pyc
+	.DS_Store
+	.env
+Procfile
+	web: gunicorn app:server
+	Note: app relates to app.py, and app:server to the variable server in this file
+
+requirements.txt
+pip freeze > requirements.txt
+Note: there is a line 'pkg-resources==0.0.0' whoich seems to be a debian bug.
+Remove it by habd or use
+pip freeze | grep -v "pkg-resources" > requirements.txt
+
+initialise heroku, add files to git, and deploy:
+heroku login
+heroku create bam-lerbermatt #website is https://bam-lerbermatt.herokuapp.com
+git add .
+git commit -m 'Initial app boilerplate'
+git push heroku master #deploy code to heroku
+heroku ps:scale web=1  # run the app with a 1 heroku "dyno"
+
+update code and redeploy:
+
+git status
+git add .
+git commit -m 'update controls'
+git push heroku master
+
+
+Add latex to herokuapp
+======================
+Go to herokzu web site, dashboard, choose project, got to setting, add
+https://github.com/Thermondo/heroku-buildpack-tex.git
+The next time you push the app, it will be installed.
+
+To add packages, add in the root app the file texlive.packages with the packages
+xifthen
+ifmtarg
+xcolor
+xstring
+pgf
+units
+symbol
+pagecolor
+
+Or for testing use heroku bash (not persistent):
+pdflatex main.tex see errormessages, add
+tlmgr install xifthen
+tlmgr install ifmtarg
+tlmgr install xcolor
+tlmgr install xstring
+tlmgr install pgf
+tlmgr install units
+tlmgr install symbol
+tmlmgr install pagecolor
+
+Heroku bash:
+===========
+> heroku bash ru
+
+Heroku debugging:
+=================
+> heroku local
