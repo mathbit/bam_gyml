@@ -1,5 +1,6 @@
 Click==7.0
 Flask==1.1.1
+gitdb2==2.0.5
 gunicorn==19.9.0
 itsdangerous==1.1.0
 Jinja2==2.10.1
@@ -12,4 +13,5 @@ pypandoc==1.4
 python-dateutil==2.8.0
 pytz==2019.2
 six==1.12.0
+smmap2==2.0.5
 Werkzeug==0.15.5

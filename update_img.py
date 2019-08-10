@@ -1,28 +1,50 @@
+'''Creates the images from the pulled overleaf-latex file.
+
+Takes the pulled overleaf latex file, produces a new latex
+file with different formatting (in particular it produces a
+page for the answer and a page for the answer).
+
+This new latex file is then compiled to produce a
+pdf-file. Each page of this pdf file is then converted
+into a jpeg file. Theses images are used for the web-app.
+
+Flags:
+    -overleaf   The new latex file has same formatting
+                as the overleaf file.
+    -user       The new latex file is user-defined
+                (at the moment hardcoded).
+    -bb         Use automatically determined bounding box.
+                In conjunction with the flag -overleaf,
+                The bounding box is hardcoded.
+'''
+
+
 import pandas as pd
 import numpy as np
 import re, inspect, pypandoc, os.path, sys, subprocess
 from PIL import Image, ImageOps
 from pdf2image import convert_from_path
-
 from pdf2image.exceptions import (
     PDFInfoNotInstalledError,
     PDFPageCountError,
     PDFSyntaxError
 )
+from projconfig import Projconfig #load project variables and stuff
+PC = Projconfig() #initialse variables
 
-LOCALPATHS = {
-    'static'        : './static/',
-    'latexFile_orig': 'latex/main.tex',
-    'latexFile_new' : 'latex/main_new.tex',
-    'latexPdfFile'  : 'latex/main_new.pdf', #set later to main_new.pdf
-    'imageDir'      : 'latex/page_images/',
-    'DF_file'       : 'latex/df.pkl'
-}
+# LOCALPATHS = {
+#     'static'        : './static/',
+#     'latexFile_orig': 'latex/main.tex',
+#     'latexFile_new' : 'latex/main_new.tex',
+#     'latexPdfFile'  : 'latex/main_new.pdf',
+#     'imageDir'      : 'latex/page_images/',
+#     'DF_file'       : 'latex/df.pkl'
+# }
 
-
-def latex2df( fn, imageDir='' ):
+def overleaflatex2df( fn, imageDir='' ):
     """
-    Extract problems from latex-file and stores them in dataframe.
+    Extract problems from overlaf latex-file and stores them in dataframe.
+    Thus it has a special formatting.
     It is assumed, that the file names have the following format:
     page numbers 1,3,5,... are the questions,
     page numbers 2,4,6,... are the answers
@@ -46,9 +68,9 @@ def latex2df( fn, imageDir='' ):
             pageNum = int(s[-1])
             #sort into correct dictionary
             if (pageNum % 2 == 0): #even
-                adirDict.update({int(pageNum/2):LOCALPATHS['static']+LOCALPATHS['imageDir']+item})
+                adirDict.update({int(pageNum/2):PC.staticDir+PC.imageDir+item})
             else: #odd
-                qdirDict.update({int((pageNum+1)/2):LOCALPATHS['static']+LOCALPATHS['imageDir']+item})
+                qdirDict.update({int((pageNum+1)/2):PC.staticDir+PC.imageDir+item})
 
     #initiate dataframe
     df = pd.DataFrame(columns=['kurzel', 'basal', 'topic', 'diff', 'question', 'answer','qImage_path','aImage_path'])
@@ -86,9 +108,9 @@ def latex2df( fn, imageDir='' ):
 
 def df2latex_user( df, latexFile_new ):
     '''
-    Convert dataframe to Latex-text.
-    page 1,3,5,... are the answers
-    page 2,4,6,... are the answers
+    Convert dataframe to Latex-text:
+      page 1,3,5,... are the answers
+      page 2,4,6,... are the solutions
     '''
 
     #preamble
@@ -97,7 +119,7 @@ def df2latex_user( df, latexFile_new ):
         \usepackage[utf8]{inputenc}
         \usepackage[german]{babel}
         %\usepackage[a6paper,landscape]{geometry}
-        \usepackage[margin=1mm, paperwidth=100 mm, paperheight=70 mm]{geometry}
+        \usepackage[margin=1mm, paperwidth=100mm, paperheight=70mm]{geometry}
         \usepackage{amssymb,amsmath,units,graphicx,pagecolor}
         \pagestyle{empty}
         \setlength{\parindent}{0in}
@@ -114,8 +136,7 @@ def df2latex_user( df, latexFile_new ):
             }
 
         \begin{document}
-        \pagecolor{lightgray!30}
-        ''')
+        ''') + f'''\\pagecolor{{{PC.cardbgcolor}}}'''
 
     #add problems, use minipage to avoid page break, but will crop
     for i in range( len(df) ):
@@ -146,7 +167,10 @@ def df2latex_user( df, latexFile_new ):
 
 def df2latex_overleaf( df, latexFile_new ):
     '''
-    Convert dataframe to Latex-text.
+    Convert dataframe to Latex-text:
+      page 1,3,5,... are the answers
+      page 2,4,6,... are the solutions
+    Includes file 'preamble.tex' for later compiling.
     '''
 
     #preamble
@@ -155,8 +179,7 @@ def df2latex_overleaf( df, latexFile_new ):
         \input{preamble}
         \usepackage{pagecolor}
         \begin{document}
-        \pagecolor{lightgray!30}
-        ''')
+        ''') +  f'''\\pagecolor{{{PC.cardbgcolor}}}'''
 
     #add problems, use minipage to avoid page break, but will crop
     for i in range( len(df) ):
@@ -225,7 +248,7 @@ def createImagesFromPdf( imageDir, latexPdfFile):
         latexPdfFile,
         output_folder=imageDir,
         fmt='jpeg',
-        dpi=200,
+        dpi=PC.imres,
         )
 
     print('... converted ' + latexPdfFile + ' to images in ' + imageDir)
@@ -279,7 +302,11 @@ def cropImages( imageDir, overleaf=False ):
 
 
 if __name__ == '__main__':
-    DF = latex2df( LOCALPATHS['static']+LOCALPATHS['latexFile_orig'])
+
+    if PC.staticDir.strip('/') not in os.listdir('./'):
+        sys.exit(print('You are not in the root directory of the project.'))
+
+    DF = overleaflatex2df( PC.staticDir+PC.latexFile_orig)
     OVERLEAF = False
     BB = False
 
@@ -291,19 +318,19 @@ if __name__ == '__main__':
 
     if OVERLEAF:
         #new latex file is same as orig overleaf file
-        print('... produce overleaf latex')
-        df2latex_overleaf( DF, LOCALPATHS['static']+LOCALPATHS['latexFile_new'] )
+        print('... produce new similar overleaf latex for images')
+        df2latex_overleaf( DF, PC.staticDir+PC.latexFile_new )
     else:
         #take user defined
-        print('... produce user defined latex')
-        df2latex_user( DF, LOCALPATHS['static']+LOCALPATHS['latexFile_new'] )
+        print('... produce new user defined latex for images')
+        df2latex_user( DF, PC.staticDir+PC.latexFile_new )
 
-    latex2pdf( LOCALPATHS['static']+LOCALPATHS['latexFile_new'] )
-    deleteImages( LOCALPATHS['static']+LOCALPATHS['imageDir'] ) #first delete all existing images
-    createImagesFromPdf( LOCALPATHS['static']+LOCALPATHS['imageDir'], LOCALPATHS['static']+LOCALPATHS['latexPdfFile'] ) #each page in pdf file transaltes into an images
+    latex2pdf( PC.staticDir+PC.latexFile_new )
+    deleteImages( PC.staticDir+PC.imageDir ) #first delete all existing images
+    createImagesFromPdf( PC.staticDir+PC.imageDir, PC.staticDir+PC.latexPdfFile ) #each page in pdf file transaltes into an images
 
     if BB:
-        cropImages( LOCALPATHS['static']+LOCALPATHS['imageDir'], OVERLEAF ) #removes empty white space of images
+        cropImages( PC.staticDir+PC.imageDir, OVERLEAF ) #removes empty white space of images
 
-    DF = latex2df( LOCALPATHS['static']+LOCALPATHS['latexFile_orig'], LOCALPATHS['static']+LOCALPATHS['imageDir'] ) #update DF with links to imagesii
-    DF.to_pickle( LOCALPATHS['static']+LOCALPATHS['DF_file'] ) #save dataframe
+    DF = overleaflatex2df( PC.staticDir+PC.latexFile_orig, PC.staticDir+PC.imageDir ) #update DF with links to images
+    DF.to_pickle( PC.staticDir+PC.DF_file ) #save dataframe

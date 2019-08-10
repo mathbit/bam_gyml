@@ -1,4 +1,11 @@
+#ignore virtual environment stuff
 venv
 *.pyc
 .DS_Store
 .env
+
+#ignore overleaf .git stuff in overleafgit folder
+#this is only used for the local copy
+#The latex directory on Heroku will have its
+#own git-stuff for overleaf.
+overleafgit

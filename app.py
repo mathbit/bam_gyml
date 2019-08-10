@@ -2,16 +2,19 @@
 from flask import Flask, render_template, url_for, request, redirect
 import pandas as pd
 import os
-from update import LOCALPATHS
 from data import Data
+from projconfig import Projconfig #load project variables and stuff
 
-
-imageDir = LOCALPATHS['static']+LOCALPATHS['imageDir'] #where images sit
-DF_file = LOCALPATHS['static']+LOCALPATHS['DF_file'] #where df sits
+PC = Projconfig() #initialse variables
+imageDir = PC.staticDir+PC.imageDir #where images sit
+DF_file = PC.staticDir+PC.DF_file #where df sits
 DF = pd.read_pickle( DF_file ) #load dataframe
 
 # create the application object
 app = Flask(__name__)
+
+# create the data that is sent ot the html page
+DATA = Data( DF )
 
 def df_filterByCol( df, colStr, whatStrList ):
     '''
@@ -31,7 +34,7 @@ def df_sortByCol( df, colStr ):
 
 
 
-DATA = Data( DF )
+
 
 # use decorators to link the function to a url
 @app.route('/')
@@ -43,6 +46,7 @@ def lul():
     #just for testing
     r1=0
     r2=0
+    r3=0
     kur=0
     top=0
     bas=0
@@ -101,7 +105,7 @@ def lul():
             DATA.update_pics(df)
 
 
-    return render_template('lul.html', DATA=DATA, r=r2, s=kur, t=top, u=bas, v=dif )
+    return render_template('lul.html', DATA=DATA, r=r1, s=r2, t=r3, u=bas, v=dif )
 
 #clears cache in browser
 @app.after_request

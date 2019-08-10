@@ -3,7 +3,6 @@ from collections import Counter
 class Data:
     def __init__(self, df):
         if df.empty:
-
             self.SHOWFLAG = False
             self.FROMWHOM = ''
             self.totalNum = 0
@@ -156,8 +155,6 @@ class Data:
                     self.displayMode['isSel'] = self.find_isSel(lis, self.displayMode['label'])
                 elif colStr == 'sortMode':
                     self.sortMode['isSel'] = self.find_isSel(lis, self.sortMode['label'])
-
-
             else:
                 if colStr == 'kurzel':
                     self.kurzel['isSel'] = [False for item in self.kurzel['label']]
