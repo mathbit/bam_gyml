@@ -1,11 +1,8 @@
-ifthen.sty
-xifthen.sty
-amssymb
+xifthen
+xifmtarg
 xcolor
-graphicx
 xstring
-pgffor
-amsmath
+pgf
 units
-pifont
-
+symbol
+pagecolor
