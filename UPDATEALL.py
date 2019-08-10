@@ -65,12 +65,12 @@ if __name__ == '__main__':
         print('DONE!')
 
     os.chdir(owd) #jump back
-
     #update images
-    print('... update images')
     cmd = 'python update_img.py -overleaf -bb'
+    print('... update images: '+cmd)
     p = subprocess.run(cmd,shell=True,check=True,universal_newlines=True, stderr=subprocess.PIPE)
 
     #deploy to heroku
     cmd = './pushHeroku.sh'
+    print('... deploy to Heroku: '+cmd)
     p = subprocess.run(cmd,shell=True,check=True,universal_newlines=True, stderr=subprocess.PIPE)
