@@ -64,6 +64,7 @@ if __name__ == '__main__':
     else:
         print('DONE!')
 
+
     os.chdir(owd) #jump back
     #update images
     cmd = 'python update_img.py -overleaf -bb'
