@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.7.19)  10 AUG 2019 16:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.7.19)  10 AUG 2019 17:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2515,26 +2515,264 @@ Underfull \hbox (badness 10000) in paragraph at lines 1676--1680
  []
 
 [297 <./pics/LinFunktion2.png>]
-! Interruption.
-\@EveryShipout@Test ...else \@EveryShipout@Output 
-                                                  \fi 
-l.1681     \end{Add}
-                    
-? 
-! Emergency stop.
-\@EveryShipout@Test ...else \@EveryShipout@Output 
-                                                  \fi 
-l.1681     \end{Add}
-                    
-End of file on the terminal!
+File: pics/LinFunktion2.png Graphic file (type png)
+<use pics/LinFunktion2.png>
+Package pdftex.def Info: pics/LinFunktion2.png  used on input line 1685.
+(pdftex.def)             Requested size: 147.38463pt x 86.90791pt.
 
- 
+Underfull \hbox (badness 10000) in paragraph at lines 1682--1686
+
+ []
+
+[298]
+<pics/LinFunktion3.png, id=991, 416.9423pt x 245.85698pt>
+File: pics/LinFunktion3.png Graphic file (type png)
+<use pics/LinFunktion3.png>
+Package pdftex.def Info: pics/LinFunktion3.png  used on input line 1693.
+(pdftex.def)             Requested size: 147.38463pt x 86.90656pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1690--1694
+
+ []
+
+[299 <./pics/LinFunktion3.png>]
+File: pics/LinFunktion3.png Graphic file (type png)
+<use pics/LinFunktion3.png>
+Package pdftex.def Info: pics/LinFunktion3.png  used on input line 1699.
+(pdftex.def)             Requested size: 147.38463pt x 86.90656pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1696--1700
+
+ []
+
+[300]
+<pics/LinFunktion4.png, id=999, 416.9423pt x 245.85698pt>
+File: pics/LinFunktion4.png Graphic file (type png)
+<use pics/LinFunktion4.png>
+Package pdftex.def Info: pics/LinFunktion4.png  used on input line 1707.
+(pdftex.def)             Requested size: 147.38463pt x 86.90656pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1704--1708
+
+ []
+
+[301 <./pics/LinFunktion4.png>]
+File: pics/LinFunktion4.png Graphic file (type png)
+<use pics/LinFunktion4.png>
+Package pdftex.def Info: pics/LinFunktion4.png  used on input line 1713.
+(pdftex.def)             Requested size: 147.38463pt x 86.90656pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1710--1714
+
+ []
+
+[302]
+<pics/LinFunktion5.png, id=1008, 416.9423pt x 245.85698pt>
+File: pics/LinFunktion5.png Graphic file (type png)
+<use pics/LinFunktion5.png>
+Package pdftex.def Info: pics/LinFunktion5.png  used on input line 1721.
+(pdftex.def)             Requested size: 147.38463pt x 86.90656pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1718--1722
+
+ []
+
+[303 <./pics/LinFunktion5.png>]
+File: pics/LinFunktion5.png Graphic file (type png)
+<use pics/LinFunktion5.png>
+Package pdftex.def Info: pics/LinFunktion5.png  used on input line 1727.
+(pdftex.def)             Requested size: 147.38463pt x 86.90656pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1724--1728
+
+ []
+
+[304]
+Underfull \hbox (badness 10000) in paragraph at lines 1732--1735
+
+ []
+
+[305]
+Underfull \hbox (badness 10000) in paragraph at lines 1737--1740
+
+ []
+
+
+Overfull \hbox (6.38637pt too wide) in paragraph at lines 1740--1741
+[][]    
+ []
+
+[306]
+Underfull \hbox (badness 10000) in paragraph at lines 1744--1746
+
+ []
+
+[307]
+Underfull \hbox (badness 10000) in paragraph at lines 1748--1750
+
+ []
+
+[308]
+Underfull \hbox (badness 10000) in paragraph at lines 1753--1755
+
+ []
+
+[309]
+Underfull \hbox (badness 10000) in paragraph at lines 1757--1759
+
+ []
+
+[310]
+Underfull \hbox (badness 10000) in paragraph at lines 1762--1764
+
+ []
+
+[311]
+Underfull \hbox (badness 10000) in paragraph at lines 1766--1768
+
+ []
+
+[312]
+Underfull \hbox (badness 10000) in paragraph at lines 1771--1776
+
+ []
+
+
+Overfull \hbox (4.0693pt too wide) in paragraph at lines 1771--1776
+\OT1/cmr/m/n/12 Schreibe die fol-gen-den Zah-len in wis-sen-schaft-li-cher Schr
+eib-
+ []
+
+[313]
+Underfull \hbox (badness 10000) in paragraph at lines 1779--1784
+
+ []
+
+
+Overfull \hbox (4.0693pt too wide) in paragraph at lines 1779--1784
+\OT1/cmr/m/n/12 Schreibe die fol-gen-den Zah-len in wis-sen-schaft-li-cher Schr
+eib-
+ []
+
+[314]
+Underfull \hbox (badness 10000) in paragraph at lines 1789--1794
+
+ []
+
+
+Overfull \hbox (4.0693pt too wide) in paragraph at lines 1789--1794
+\OT1/cmr/m/n/12 Schreibe die fol-gen-den Zah-len in wis-sen-schaft-li-cher Schr
+eib-
+ []
+
+[315]
+Underfull \hbox (badness 10000) in paragraph at lines 1797--1802
+
+ []
+
+
+Overfull \hbox (4.0693pt too wide) in paragraph at lines 1797--1802
+\OT1/cmr/m/n/12 Schreibe die fol-gen-den Zah-len in wis-sen-schaft-li-cher Schr
+eib-
+ []
+
+[316]
+Underfull \hbox (badness 10000) in paragraph at lines 1807--1812
+
+ []
+
+
+Overfull \hbox (4.0693pt too wide) in paragraph at lines 1807--1812
+\OT1/cmr/m/n/12 Schreibe die fol-gen-den Zah-len in wis-sen-schaft-li-cher Schr
+eib-
+ []
+
+[317]
+Underfull \hbox (badness 10000) in paragraph at lines 1815--1820
+
+ []
+
+
+Overfull \hbox (4.0693pt too wide) in paragraph at lines 1815--1820
+\OT1/cmr/m/n/12 Schreibe die fol-gen-den Zah-len in wis-sen-schaft-li-cher Schr
+eib-
+ []
+
+[318]
+Underfull \hbox (badness 10000) in paragraph at lines 1825--1827
+
+ []
+
+[319]
+Underfull \hbox (badness 10000) in paragraph at lines 1829--1831
+
+ []
+
+[320]
+Underfull \hbox (badness 10000) in paragraph at lines 1834--1836
+
+ []
+
+[321]
+Underfull \hbox (badness 10000) in paragraph at lines 1838--1840
+
+ []
+
+[322]
+Underfull \hbox (badness 10000) in paragraph at lines 1843--1845
+
+ []
+
+[323]
+Underfull \hbox (badness 10000) in paragraph at lines 1847--1849
+
+ []
+
+[324]
+Underfull \hbox (badness 10000) in paragraph at lines 1852--1854
+
+ []
+
+[325]
+Underfull \hbox (badness 10000) in paragraph at lines 1856--1858
+
+ []
+
+[326]
+Underfull \hbox (badness 10000) in paragraph at lines 1861--1866
+
+ []
+
+[327]
+Underfull \hbox (badness 10000) in paragraph at lines 1869--1874
+
+ []
+
+[328] (./main_new.aux) ) 
 Here is how much of TeX's memory you used:
- 9583 strings out of 492615
- 166165 string characters out of 6131390
+ 9600 strings out of 492615
+ 166548 string characters out of 6131390
  223521 words of memory out of 5000000
- 13287 multiletter control sequences out of 15000+600000
+ 13299 multiletter control sequences out of 15000+600000
  10676 words of font info for 40 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  42i,7n,40p,401b,197s stack positions out of 5000i,500n,10000p,200000b,80000s
-!  ==> Fatal error occurred, no output PDF file produced!
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
+nts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmti7.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
+blic/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
+/zapfding/uzdr.pfb>
+Output written on main_new.pdf (328 pages, 2224134 bytes).
+PDF statistics:
+ 1143 PDF objects out of 1200 (max. 8388607)
+ 768 compressed objects within 8 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 61 words of extra memory for PDF output out of 10000 (max. 10000000)
+
