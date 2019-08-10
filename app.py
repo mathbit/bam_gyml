@@ -32,11 +32,6 @@ def df_sortByCol( df, colStr ):
     df = df.sort_values(by=colStr, ascending=True)
     return df
 
-
-cmd = 'python update_img.py -overleaf -bb'
-p = subprocess.run(cmd,shell=True,check=True,universal_newlines=True, stderr=subprocess.PIPE)
-
-
 # use decorators to link the function to a url
 @app.route('/')
 def index():

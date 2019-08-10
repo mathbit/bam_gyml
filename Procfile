@@ -1,1 +1,2 @@
-web: gunicorn --timeout 120 app:app
+release: update_img.py -overleaf -bb
+web: gunicorn app:app
