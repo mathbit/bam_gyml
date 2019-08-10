@@ -14,7 +14,8 @@ class Projconfig:
     overleafbb     = [165, 110, 1010, 700]
 
     # background color of cards (latex color)
-    cardbgcolor    = 'lightgray!30'
+    #cardbgcolor    = 'lightgray!30'
+    cardbgcolor    = 'green'
 
     # resolution of images
     imres          = 200

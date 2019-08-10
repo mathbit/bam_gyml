@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.7.19)  10 AUG 2019 03:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.7.19)  10 AUG 2019 12:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2750,10 +2750,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 1869--1874
 
 [328] (./main_new.aux) ) 
 Here is how much of TeX's memory you used:
- 9601 strings out of 492615
- 166567 string characters out of 6131390
- 223520 words of memory out of 5000000
- 13300 multiletter control sequences out of 15000+600000
+ 9600 strings out of 492615
+ 166548 string characters out of 6131390
+ 223521 words of memory out of 5000000
+ 13299 multiletter control sequences out of 15000+600000
  10676 words of font info for 40 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  42i,7n,40p,401b,197s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -2769,7 +2769,7 @@ fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/t
 ype1/public/amsfonts/cm/cmti7.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
 blic/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
 /zapfding/uzdr.pfb>
-Output written on main_new.pdf (328 pages, 2225586 bytes).
+Output written on main_new.pdf (328 pages, 2225503 bytes).
 PDF statistics:
  1143 PDF objects out of 1200 (max. 8388607)
  768 compressed objects within 8 object streams

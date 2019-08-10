@@ -1,7 +1,7 @@
 # import the Flask class from the flask module
 from flask import Flask, render_template, url_for, request, redirect
 import pandas as pd
-import os
+import os, subprocess
 from data import Data
 from projconfig import Projconfig #load project variables and stuff
 
@@ -33,7 +33,8 @@ def df_sortByCol( df, colStr ):
     return df
 
 
-
+cmd = 'python update_img.py -overleaf -bb'
+p = subprocess.run(cmd,shell=True,check=True,universal_newlines=True, stderr=subprocess.PIPE)
 
 
 # use decorators to link the function to a url
