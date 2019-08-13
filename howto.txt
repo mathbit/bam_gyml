@@ -27,6 +27,14 @@ git commit -m "first commit"
 git remote add origin https://github.com/mathbit/bam_dash.git
 git push -u origin master
 
+
+conda create new environment:
+============================
+conda create --name my_env python=3
+conda activate my_env
+
+
+
 clone latex project from overleaf-git-repository for the first time
 ===================================================================
 see https://gist.github.com/jnaecker/da8c1846bc414594783978b66b6e8c83
