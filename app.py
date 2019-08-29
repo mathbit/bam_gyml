@@ -15,6 +15,8 @@ app = Flask(__name__)
 
 # create the data that is sent ot the html page
 DATA = Data( DF )
+COUNT = 0
+
 
 def df_filterByCol( df, colStr, whatStrList ):
     '''
@@ -32,6 +34,7 @@ def df_sortByCol( df, colStr ):
     df = df.sort_values(by=colStr, ascending=True)
     return df
 
+
 # use decorators to link the function to a url
 @app.route('/')
 def index():
@@ -40,6 +43,8 @@ def index():
 @app.route('/lul', methods=['POST', 'GET'])
 def lul():
     #just for testing
+    global COUNT
+    COUNT = COUNT  +1
     r1=0
     r2=0
     r3=0
@@ -101,7 +106,7 @@ def lul():
             DATA.update_pics(df)
 
 
-    return render_template('lul.html', DATA=DATA, r=r1, s=r2, t=r3, u=bas, v=dif )
+    return render_template('lul.html', DATA=DATA, c=COUNT, r=r1, s=r2, t=r3, u=bas, v=dif )
 
 #clears cache in browser
 @app.after_request

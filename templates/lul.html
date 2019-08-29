@@ -19,22 +19,35 @@
 </head>
 
 
+
 <!-- {{ r }}
 {{ s }}
-{{ t }} -->
-<!-- {{ t }}
+{{ t }}
+{{ t }}
 {{ u }}
-{{ v }}
+{{ v }} -->
+DATA SENT:<br>
+=========<br>
+COUNT={{c}}
+SHOWFLAG: {{DATA.SHOWFLAG}}
+TOTALNUM: {{DATA.totalNum}}
+FROMWHOM: {{DATA.FROMWHOM}}
 <br>
-{{DATA.diff['isSel']}}<br>
-{{DATA.topic['isSel']}}<br>
-{{DATA.basal['isSel']}}<br>
-{{DATA.diff['isSel']}}<br>
+imSize: {{DATA.imSize['isSel']}}<br>
+sortMode: {{DATA.sortMode['isSel']}}<br>
+displayMode: {{DATA.displayMode['isSel']}}<br>
+kurzel: {{DATA.kurzel['isSel']}}<br>
+topic: {{DATA.topic['isSel']}}<br>
+basal: {{DATA.basal['isSel']}}<br>
+diff: {{DATA.diff['isSel']}}<br>
 <br>
-{{DATA.kurzel['filterList']}}<br>
-{{DATA.topic['filterList']}}<br>
-{{DATA.basal['filterList']}}<br>
-{{DATA.diff['filterList']}} -->
+filterList imSize: {{DATA.imSize['filterList']}}<br>
+filterList sortMode: {{DATA.sortMode['filterList']}}<br>
+filterList displayMode: {{DATA.displayMode['filterList']}}<br>
+filterList kurzel: {{DATA.kurzel['filterList']}}<br>
+filterList topic: {{DATA.topic['filterList']}}<br>
+filterList basal: {{DATA.basal['filterList']}}<br>
+filterList diff: {{DATA.diff['filterList']}}
 <!-- {{DATA.kurzel['num']}}<br>
 {{DATA.topic['num']}}<br>
 {{DATA.basal['num']}}<br>

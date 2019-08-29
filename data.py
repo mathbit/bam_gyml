@@ -4,8 +4,8 @@ class Data:
     def __init__(self, df):
         if df.empty:
             self.SHOWFLAG = False
-            self.FROMWHOM = ''
             self.totalNum = 0
+            self.FROMWHOM = ''
             self.sortMode = {}
             self.displayMode = {}
             self.imSize = {}
@@ -60,7 +60,6 @@ class Data:
                 'label': topiclist,
                 'isSel': [False for item in topiclist],
                 'num'  : -1,
-
                 'filterList' : []
                 }
 
@@ -191,7 +190,6 @@ class Data:
         self.displayMode['filterList'] = [ self.displayMode['label'][i] for i in range(0,len(R)) if R[i]==True ]
         R = self.sortMode['isSel']
         self.sortMode['filterList'] = [ self.sortMode['label'][i] for i in range(0,len(R)) if R[i]==True ]
-
 
     def update_num(self,df):
         '''
