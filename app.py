@@ -15,8 +15,6 @@ app = Flask(__name__)
 
 # create the data that is sent ot the html page
 DATA = Data( DF )
-COUNT = 0
-
 
 def df_filterByCol( df, colStr, whatStrList ):
     '''

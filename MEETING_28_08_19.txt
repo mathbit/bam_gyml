@@ -9,7 +9,7 @@ Basal 0: Stoff bis und mit 8. Schuljahr
 Basal 1.1: Stoff, der geprüft wird  
 Basal 1.2: Rest Gym1-Stoff
 
- 
+
 Thematische Kategorien:
 ===================
 weniger Kategorien, mehrfach taggen.
@@ -17,7 +17,6 @@ Aber wie feiner filtern?
 - massgeschneiderter Link mit Selektion an SuS verschicken
 - Auswahl speichern (bedingt username/passwort System)
 
-Arithmetik
 Algebra
 Bruchrechnen
 Geometrie
