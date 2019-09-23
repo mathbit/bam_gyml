@@ -1,5 +1,5 @@
 # import the Flask class from the flask module
-from flask import Flask, render_template, url_for, request, redirect, session
+from flask import Flask, render_template, url_for, request, redirect
 import pandas as pd
 import os, subprocess
 from data import Data
@@ -9,12 +9,13 @@ PC = Projconfig() #initialse variables
 imageDir = PC.staticDir+PC.imageDir #where images sit
 DF_file = PC.staticDir+PC.DF_file #where df sits
 DF = pd.read_pickle( DF_file ) #load dataframe
-DATA = Data( DF ) #intiialise userdata
 
 # create the application object
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "bigsecret!"
 
+# create the data that is sent ot the html page
+DATA = Data( DF )
+COUNT = 0
 
 def df_filterByCol( df, colStr, whatStrList ):
     '''
@@ -40,13 +41,16 @@ def index():
 
 @app.route('/lul', methods=['POST', 'GET'])
 def lul():
-
-    if "userdata" not in session:
-        session["userdata"]=DATA
-
-    userdata = session["userdata"]
-
     #just for testing
+    global COUNT
+    COUNT = COUNT  +1
+    r1=0
+    r2=0
+    r3=0
+    kur=0
+    top=0
+    bas=0
+    dif=0
     if request.method == 'POST':
         #I am only here because soemthing was triggered!
 
@@ -55,14 +59,14 @@ def lul():
         r2 = request.form.getlist('displayMode')
 
         if len(r1)>1:
-            userdata.update_isSel( r1 )
-            userdata.update_filterList()
-            userdata.SHOWFLAG = False
+            DATA.update_isSel( r1 )
+            DATA.update_filterList()
+            DATA.SHOWFLAG = False
 
         elif len(r2)>1:
-            userdata.update_isSel( r2 )
-            userdata.update_filterList()
-            userdata.SHOWFLAG = False
+            DATA.update_isSel( r2 )
+            DATA.update_filterList()
+            DATA.SHOWFLAG = False
 
         else:
             #I am here because one of the checkmarks in a group was triggered (kurzel, ...).
@@ -72,43 +76,42 @@ def lul():
 
             #update selections
             kur = request.form.getlist('kurzel')
-            userdata.update_isSel( kur )
+            DATA.update_isSel( kur )
             top = request.form.getlist('topic')
-            userdata.update_isSel( top )
+            DATA.update_isSel( top )
             bas = request.form.getlist('basal')
-            userdata.update_isSel( bas )
+            DATA.update_isSel( bas )
             dif = request.form.getlist('diff')
-            userdata.update_isSel( dif )
+            DATA.update_isSel( dif )
 
             #filter df
-            userdata.update_filterList()
-            df = df_filterByCol( DF, 'kurzel', userdata.kurzel['filterList'] )
-            df = df_filterByCol( df, 'topic', userdata.topic['filterList'] )
-            df = df_filterByCol( df, 'basal', userdata.basal['filterList'] )
-            df = df_filterByCol( df, 'diff', userdata.diff['filterList'] )
+            DATA.update_filterList()
+            df = df_filterByCol( DF, 'kurzel', DATA.kurzel['filterList'] )
+            df = df_filterByCol( df, 'topic', DATA.topic['filterList'] )
+            df = df_filterByCol( df, 'basal', DATA.basal['filterList'] )
+            df = df_filterByCol( df, 'diff', DATA.diff['filterList'] )
 
-            userdata.SHOWFLAG = True #make sure input menue stays down
+            DATA.SHOWFLAG = True #make sure input menue stays down
 
             #check if I need to shuffle
             r3 = request.form.getlist('sortMode')
             if len(r3)>1: #yep
-                userdata.update_isSel( r3 )
+                DATA.update_isSel( r3 )
                 df = df.sample(frac=1) #shuffle rows
-                userdata.SHOWFLAG = False
+                DATA.SHOWFLAG = False
 
             #update num and pics based on df
-            userdata.update_num(df)
-            userdata.update_pics(df)
+            DATA.update_num(df)
+            DATA.update_pics(df)
 
-        session["test"]="test2"
 
-    return render_template('lul.html', DATA=userdata)
+    return render_template('lul.html', DATA=DATA, c=COUNT, r=r1, s=r2, t=r3, u=bas, v=dif )
 
 #clears cache in browser
-# @app.after_request
-# def add_header(response):
-#     response.cache_control.max_age = 0
-#     return response
+@app.after_request
+def add_header(response):
+    response.cache_control.max_age = 0
+    return response
 
 # start the server with the 'run()' method
 if __name__ == '__main__':
