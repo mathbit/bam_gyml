@@ -1,0 +1,41 @@
+{% macro render_boutonfield(fieldname, DATA) %}
+<form name="form" id="{{fieldname}}" action="" method="post">
+<input type="hidden" name="{{ fieldname }}", value="{{fieldname}}">
+<div class="btn-group mr-2">
+  {% for i in range(0,DATA[fieldname]['label']|count) %}
+  <button
+    type="submit"
+    name="{{fieldname}}"
+    value="{{DATA[fieldname]['label'][i]}}"
+    class="btn btn-sm mt-3 {% if DATA[fieldname]['isSel'][i] %} btn-success {% else %} btn-secondary {% endif %}">
+    {{DATA[fieldname]['text'][i]}}
+  </button>
+  {% endfor %}
+</div>
+</form>
+{% endmacro %}
+
+{% macro render_radiofield(fieldname, DATA) %}
+<form name="form" id="{{fieldname}}-form" action="" method="post">
+{% for i in range(DATA[fieldname]['label']|count) %}
+<div class="form-check">
+  {% if i==0 %} <input type="hidden" name="{{fieldname}}", value="{{fieldname}}"> {% endif %}
+  <input class="form-check-input" type="checkbox" name="{{fieldname}}" id="{{fieldname}}-filter-{{i}}" value="{{DATA[fieldname]['label'][i]}}"
+  {% if DATA[fieldname]['isSel'][i] %} checked {% endif %}
+  onchange="$('#{{fieldname}}-form').submit();"
+  {% if DATA[fieldname]['num'][i]==0 and DATA.FROMWHOM != fieldname %} disabled {% endif %}
+  >
+  <label class="form-check-label" for="{{fieldname}}-filter-{{i}}">
+    {{DATA[fieldname]['label'][i]}}
+    {% if DATA[fieldname]['num'][i]>0 %}
+      <span class="badge badge-secondary badge-pill">{{DATA[fieldname]['num'][i]}}</span>
+    {% elif DATA[fieldname]['num'][i]==0 and DATA.FROMWHOM != fieldname %}
+      <span class="badge badge-dark badge-pill text-secondary">{{DATA[fieldname]['num'][i]}}</span>
+    {% elif DATA[fieldname]['num'][i]==0 and DATA.FROMWHOM == fieldname %}
+      <span class="badge badge-dark badge-pill">{{DATA[fieldname]['num'][i]}}</span>
+    {% endif %}
+  </label>
+</div>
+{% endfor %}
+</form>
+{% endmacro %}

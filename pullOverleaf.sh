@@ -2,7 +2,7 @@
 
 #needs to be run in overleafgit.
 #Is called from python-script UPDATEALL.py
-git pull overleaf master
+git pull origin master
 
 yes | cp -f main.tex ../static/latex/
 yes | cp -f preamble.tex ../static/latex/

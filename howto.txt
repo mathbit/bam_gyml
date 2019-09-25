@@ -1,6 +1,9 @@
 compress folder:
 tar czvf file.tar.gy file/
 
+freeze:
+
+
 unfreeze:
 pip install -r requirements.txt
 

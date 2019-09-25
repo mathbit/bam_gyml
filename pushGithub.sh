@@ -6,5 +6,4 @@ pip freeze | grep -v "pkg-resources" > requirements.txt
 git status
 git add .
 git commit -m 'update controls'
-git push github master
-
+git push origin master

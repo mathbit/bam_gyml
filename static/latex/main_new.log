@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.8.10)  6 SEP 2019 12:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.8.15)  23 SEP 2019 08:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -28,13 +28,25 @@ Package: babel 2018/11/13 3.27 The Babel package
 (/usr/share/texlive/texmf-dist/tex/generic/babel/switch.def
 File: switch.def 2018/11/13 3.27 Babel switching mechanism
 )
-(/usr/share/texlive/texmf-dist/tex/generic/babel-german/german.ldf
-Language: german 2018/12/08 v2.11 German support for babel (pre-1996 orthograph
-y)
 
-(/usr/share/texlive/texmf-dist/tex/generic/babel-german/germanb.ldf
-Language: germanb 2018/12/08 v2.11 German support for babel (pre-1996 orthograp
-hy)
+! Package babel Error: Unknown option `german'. Either you misspelled it
+(babel)                or the language definition file german.ldf was not found
+.
+
+See the babel package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.469 \ProcessOptions*
+                      
+Valid options are: shorthands=, KeepShorthandsActive,
+activeacute, activegrave, noconfigs, safe=, main=, math=
+headfoot=, strings=, config=, hyphenmap=, or a language name.
+
+Package babel Info: You haven't specified a language. I'll use 'nil'
+(babel)             as the main language. Reported on input line 499.
+(/usr/share/texlive/texmf-dist/tex/generic/babel/nil.ldf
+Language: nil 2018/11/13 3.27 Nil language
 
 (/usr/share/texlive/texmf-dist/tex/generic/babel/babel.def
 File: babel.def 2018/11/13 3.27 Babel common definitions
@@ -43,8 +55,6 @@ File: babel.def 2018/11/13 3.27 Babel common definitions
 
 (/usr/share/texlive/texmf-dist/tex/generic/babel/txtbabel.def)
 \bbl@dirlevel=\count89
-)
-Package babel Info: Making " an active character on input line 135.
 )))
 (/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
 Package: inputenc 2018/08/11 v1.3c Input encoding file
@@ -339,7 +349,14 @@ Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
 Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
 )))))
-(./main_new.aux)
+(./main_new.aux
+
+Package babel Warning: Unknown language `german'. Very likely you
+(babel)                requested it in a previous run. Expect some
+(babel)                wrong results in this run, which should vanish
+(babel)                in the next one. Reported on input line 3.
+
+)
 \openout1 = `main_new.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 4.
@@ -648,9 +665,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 186--192
 
  []
 
+
+Overfull \hbox (0.1138pt too wide) in paragraph at lines 192--192
+[]\OT1/cmr/m/n/12 Die Wurzel ist kleiner als die Zahl selbst, aber gr^^?osser
+ []
+
 [41]
 Underfull \hbox (badness 10000) in paragraph at lines 195--201
 
+ []
+
+
+Overfull \hbox (0.1138pt too wide) in paragraph at lines 201--201
+[]\OT1/cmr/m/n/12 Die Wurzel ist kleiner als die Zahl selbst, aber gr^^?osser
  []
 
 [42]
@@ -858,9 +885,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 386--388
 
  []
 
+
+Overfull \hbox (4.41792pt too wide) in paragraph at lines 386--388
+\OT1/cmr/m/n/12 Welcher Bruch hat einen anderen Wert als die drei anderen? 
+ []
+
 [83]
 Underfull \hbox (badness 10000) in paragraph at lines 391--393
 
+ []
+
+
+Overfull \hbox (4.41792pt too wide) in paragraph at lines 391--393
+\OT1/cmr/m/n/12 Welcher Bruch hat einen anderen Wert als die drei anderen? 
  []
 
 [84]
@@ -908,8 +945,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 434--440
 
 
 Overfull \hbox (1.811pt too wide) in paragraph at lines 440--440
-[]\OT1/cmr/m/n/12 Alle recht-wink-li-gen Drei-ecke sind zu-ein-an-der []ahnlich
-. 
+[]\OT1/cmr/m/n/12 Alle rechtwinkligen Dreiecke sind zueinander ^^?ahnlich. 
  []
 
 [89]
@@ -919,8 +955,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 443--449
 
 
 Overfull \hbox (1.811pt too wide) in paragraph at lines 449--449
-[]\OT1/cmr/m/n/12 Alle recht-wink-li-gen Drei-ecke sind zu-ein-an-der []ahnlich
-. 
+[]\OT1/cmr/m/n/12 Alle rechtwinkligen Dreiecke sind zueinander ^^?ahnlich. 
  []
 
 [90]
@@ -957,7 +992,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 482--484
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 482--484
+
+ []
+
 [95]
+Underfull \hbox (badness 10000) in paragraph at lines 486--488
+
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 486--488
 
  []
@@ -967,7 +1012,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 491--493
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 491--493
+
+ []
+
 [97]
+Underfull \hbox (badness 10000) in paragraph at lines 495--497
+
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 495--497
 
  []
@@ -1017,9 +1072,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 536--541
 
  []
 
+
+Overfull \hbox (40.45088pt too wide) in paragraph at lines 536--541
+\OT1/cmr/m/n/12 Welche der folgenden Funktionsgleichungen kann das Abschmelzen
+ []
+
 [107]
 Underfull \hbox (badness 10000) in paragraph at lines 544--549
 
+ []
+
+
+Overfull \hbox (40.45088pt too wide) in paragraph at lines 544--549
+\OT1/cmr/m/n/12 Welche der folgenden Funktionsgleichungen kann das Abschmelzen
  []
 
 [108]
@@ -1066,9 +1131,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 588--590
 
  []
 
+
+Overfull \hbox (12.67757pt too wide) in paragraph at lines 588--590
+\OT1/cmr/m/n/12 In einem gleichschenkligen Dreieck misst der eine Basiswinkel
+ []
+
 [115]
 Underfull \hbox (badness 10000) in paragraph at lines 592--594
 
+ []
+
+
+Overfull \hbox (12.67757pt too wide) in paragraph at lines 592--594
+\OT1/cmr/m/n/12 In einem gleichschenkligen Dreieck misst der eine Basiswinkel
  []
 
 [116]
@@ -1086,9 +1161,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 621--623
 
  []
 
+
+Overfull \hbox (1.15823pt too wide) in paragraph at lines 621--623
+\OT1/cmr/m/n/12 In welchem Dreieck entspricht eine Scwerelinie gerade einer
+ []
+
 [119]
 Underfull \hbox (badness 10000) in paragraph at lines 625--627
 
+ []
+
+
+Overfull \hbox (1.15823pt too wide) in paragraph at lines 625--627
+\OT1/cmr/m/n/12 In welchem Dreieck entspricht eine Scwerelinie gerade einer
  []
 
 [120]
@@ -1113,7 +1198,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 639--646
 
 
 Overfull \hbox (5.0944pt too wide) in paragraph at lines 646--646
-[]\OT1/cmr/m/n/12 Zwei ge-gen[]uberliegende Win-kel erg[]anzen sich zu $180[]$.
+[]\OT1/cmr/m/n/12 Zwei gegen^^?uberliegende Winkel erg^^?anzen sich zu $180[]$.
  
  []
 
@@ -1129,7 +1214,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 649--656
 
 
 Overfull \hbox (5.0944pt too wide) in paragraph at lines 656--656
-[]\OT1/cmr/m/n/12 Zwei ge-gen[]uberliegende Win-kel erg[]anzen sich zu $180[]$.
+[]\OT1/cmr/m/n/12 Zwei gegen^^?uberliegende Winkel erg^^?anzen sich zu $180[]$.
  
  []
 
@@ -1171,6 +1256,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 698--700
 [131]
 Underfull \hbox (badness 10000) in paragraph at lines 702--704
 
+ []
+
+
+Overfull \hbox (23.39981pt too wide) in paragraph at lines 704--705
+[]\OT1/cmr/m/n/12 Ja, denn sowohl die Seitenl^^?angen ($[]$) als auch die Diago
+nalen
  []
 
 [132]
@@ -1278,9 +1369,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 839--841
 
  []
 
+
+Overfull \hbox (18.8525pt too wide) in paragraph at lines 839--841
+\OT1/cmr/m/n/12 Berechne mit dem Taschenrechner und runde auf 4 signifikante
+ []
+
 [153]
 Underfull \hbox (badness 10000) in paragraph at lines 844--846
 
+ []
+
+
+Overfull \hbox (18.8525pt too wide) in paragraph at lines 844--846
+\OT1/cmr/m/n/12 Berechne mit dem Taschenrechner und runde auf 4 signifikante
  []
 
 [154]
@@ -1288,9 +1389,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 851--853
 
  []
 
+
+Overfull \hbox (18.8525pt too wide) in paragraph at lines 851--853
+\OT1/cmr/m/n/12 Berechne mit dem Taschenrechner und runde auf 4 signifikante
+ []
+
 [155]
 Underfull \hbox (badness 10000) in paragraph at lines 856--858
 
+ []
+
+
+Overfull \hbox (18.8525pt too wide) in paragraph at lines 856--858
+\OT1/cmr/m/n/12 Berechne mit dem Taschenrechner und runde auf 4 signifikante
  []
 
 [156]
@@ -1298,9 +1409,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 863--865
 
  []
 
+
+Overfull \hbox (18.8525pt too wide) in paragraph at lines 863--865
+\OT1/cmr/m/n/12 Berechne mit dem Taschenrechner und runde auf 4 signifikante
+ []
+
 [157]
 Underfull \hbox (badness 10000) in paragraph at lines 868--870
 
+ []
+
+
+Overfull \hbox (18.8525pt too wide) in paragraph at lines 868--870
+\OT1/cmr/m/n/12 Berechne mit dem Taschenrechner und runde auf 4 signifikante
  []
 
 [158]
@@ -1308,9 +1429,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 875--877
 
  []
 
+
+Overfull \hbox (18.8525pt too wide) in paragraph at lines 875--877
+\OT1/cmr/m/n/12 Berechne mit dem Taschenrechner und runde auf 4 signifikante
+ []
+
 [159]
 Underfull \hbox (badness 10000) in paragraph at lines 880--882
 
+ []
+
+
+Overfull \hbox (18.8525pt too wide) in paragraph at lines 880--882
+\OT1/cmr/m/n/12 Berechne mit dem Taschenrechner und runde auf 4 signifikante
  []
 
 [160]
@@ -1318,9 +1449,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 887--889
 
  []
 
+
+Overfull \hbox (18.8525pt too wide) in paragraph at lines 887--889
+\OT1/cmr/m/n/12 Berechne mit dem Taschenrechner und runde auf 4 signifikante
+ []
+
 [161]
 Underfull \hbox (badness 10000) in paragraph at lines 892--894
 
+ []
+
+
+Overfull \hbox (18.8525pt too wide) in paragraph at lines 892--894
+\OT1/cmr/m/n/12 Berechne mit dem Taschenrechner und runde auf 4 signifikante
  []
 
 [162]
@@ -1845,9 +1986,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 1208--1210
 
  []
 
+
+Overfull \hbox (6.64151pt too wide) in paragraph at lines 1208--1210
+\OT1/cmr/m/n/12 In einem rechtwinkligen, gleichschenkligen Dreieck betragen
+ []
+
 [225]
 Underfull \hbox (badness 10000) in paragraph at lines 1212--1214
 
+ []
+
+
+Overfull \hbox (6.64151pt too wide) in paragraph at lines 1212--1214
+\OT1/cmr/m/n/12 In einem rechtwinkligen, gleichschenkligen Dreieck betragen
  []
 
 [226]
@@ -1856,9 +2007,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 1217--1219
  []
 
 
-Overfull \hbox (0.829pt too wide) in paragraph at lines 1217--1219
-\OT1/cmr/m/n/12 In ei-nem gleich-schenk-li-gen, recht-wink-li-gen Drei-eck mit 
-Ka-
+Overfull \hbox (63.10204pt too wide) in paragraph at lines 1217--1219
+\OT1/cmr/m/n/12 In einem gleichschenkligen, rechtwinkligen Dreieck mit Katheten
+l^^?angen
  []
 
 [227]
@@ -1867,9 +2018,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 1221--1223
  []
 
 
-Overfull \hbox (0.829pt too wide) in paragraph at lines 1221--1223
-\OT1/cmr/m/n/12 In ei-nem gleich-schenk-li-gen, recht-wink-li-gen Drei-eck mit 
-Ka-
+Overfull \hbox (63.10204pt too wide) in paragraph at lines 1221--1223
+\OT1/cmr/m/n/12 In einem gleichschenkligen, rechtwinkligen Dreieck mit Katheten
+l^^?angen
  []
 
 [228]
@@ -2117,9 +2268,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 1427--1429
 
  []
 
+
+Overfull \hbox (1.8286pt too wide) in paragraph at lines 1427--1429
+\OT1/cmr/m/n/12 Dein Verm^^?ogen wird um 10% erh^^?oht. Anschliessend nimmt
+ []
+
 [271]
 Underfull \hbox (badness 10000) in paragraph at lines 1431--1433
 
+ []
+
+
+Overfull \hbox (1.8286pt too wide) in paragraph at lines 1431--1433
+\OT1/cmr/m/n/12 Dein Verm^^?ogen wird um 10% erh^^?oht. Anschliessend nimmt
  []
 
 [272]
@@ -2147,7 +2308,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 1459--1461
 
  []
 
+
+Overfull \hbox (65.96544pt too wide) in paragraph at lines 1459--1461
+\OT1/cmr/m/n/12 R^^?uckweg mit 60 km/h. Wie lautet deine Durchschnittsgeschwind
+igkeit?
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1459--1461
+
+ []
+
 [277]
+Underfull \hbox (badness 10000) in paragraph at lines 1463--1465
+
+ []
+
+
+Overfull \hbox (65.96544pt too wide) in paragraph at lines 1463--1465
+\OT1/cmr/m/n/12 R^^?uckweg mit 60 km/h. Wie lautet deine Durchschnittsgeschwind
+igkeit?
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 1463--1465
 
  []
@@ -2177,7 +2360,27 @@ Underfull \hbox (badness 10000) in paragraph at lines 1489--1491
 
  []
 
+
+Overfull \hbox (8.504pt too wide) in paragraph at lines 1489--1491
+\OT1/cmr/m/n/12 6% von 300 Franken sind gleich viel wie p% von 200 Franken.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1489--1491
+
+ []
+
 [283]
+Underfull \hbox (badness 10000) in paragraph at lines 1493--1495
+
+ []
+
+
+Overfull \hbox (8.504pt too wide) in paragraph at lines 1493--1495
+\OT1/cmr/m/n/12 6% von 300 Franken sind gleich viel wie p% von 200 Franken.
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 1493--1495
 
  []
@@ -2297,8 +2500,20 @@ Underfull \hbox (badness 10000) in paragraph at lines 1572--1574
 
  []
 
+
+Overfull \hbox (6.9679pt too wide) in paragraph at lines 1572--1574
+\OT1/cmr/m/n/12 lang w^^?ochentlich 10 Franken und z Wochen lang w^^?ochentlich
+
+ []
+
 [297]
 Underfull \hbox (badness 10000) in paragraph at lines 1577--1579
+
+ []
+
+
+Overfull \hbox (6.9679pt too wide) in paragraph at lines 1577--1579
+\OT1/cmr/m/n/12 lang w^^?ochentlich 10 Franken und z Wochen lang w^^?ochentlich
 
  []
 
@@ -2317,9 +2532,21 @@ Underfull \hbox (badness 10000) in paragraph at lines 1593--1595
 
  []
 
+
+Overfull \hbox (16.40668pt too wide) in paragraph at lines 1593--1595
+\OT1/cmr/m/n/12 welcher Zahl ist es gleichg^^?ultig, ob man sie mit 10 multipli
+ziert
+ []
+
 [301]
 Underfull \hbox (badness 10000) in paragraph at lines 1597--1599
 
+ []
+
+
+Overfull \hbox (16.40668pt too wide) in paragraph at lines 1597--1599
+\OT1/cmr/m/n/12 welcher Zahl ist es gleichg^^?ultig, ob man sie mit 10 multipli
+ziert
  []
 
 [302]
@@ -2554,6 +2781,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 1729--1733
  []
 
 
+Overfull \hbox (12.81229pt too wide) in paragraph at lines 1729--1733
+\OT1/cmr/m/n/12 Bestimme die Stellen (ungef^^?ahr) bei denen der Funktionswert
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 1729--1733
 
  []
@@ -2566,6 +2798,11 @@ Package pdftex.def Info: pics/graphen.png  used on input line 1738.
 
 Underfull \hbox (badness 10000) in paragraph at lines 1735--1739
 
+ []
+
+
+Overfull \hbox (12.81229pt too wide) in paragraph at lines 1735--1739
+\OT1/cmr/m/n/12 Bestimme die Stellen (ungef^^?ahr) bei denen der Funktionswert
  []
 
 
@@ -2987,19 +3224,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 2094--2096
 
  []
 
-
-Overfull \hbox (6.83725pt too wide) in paragraph at lines 2094--2096
-\OT1/cmr/m/n/12 In ei-nem La-den siehst Du ein T-Shirt. Der Preis von 49.50Fr
- []
-
 [379]
 Underfull \hbox (badness 10000) in paragraph at lines 2098--2100
 
- []
-
-
-Overfull \hbox (6.83725pt too wide) in paragraph at lines 2098--2100
-\OT1/cmr/m/n/12 In ei-nem La-den siehst Du ein T-Shirt. Der Preis von 49.50Fr
  []
 
 [380]
@@ -3008,9 +3235,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 2103--2108
  []
 
 
-Overfull \hbox (4.0693pt too wide) in paragraph at lines 2103--2108
-\OT1/cmr/m/n/12 Schreibe die fol-gen-den Zah-len in wis-sen-schaft-li-cher Schr
-eib-
+Overfull \hbox (29.59265pt too wide) in paragraph at lines 2103--2108
+\OT1/cmr/m/n/12 Schreibe die folgenden Zahlen in wissenschaftlicher Schreibweis
+e: 
  []
 
 [381]
@@ -3019,9 +3246,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 2111--2116
  []
 
 
-Overfull \hbox (4.0693pt too wide) in paragraph at lines 2111--2116
-\OT1/cmr/m/n/12 Schreibe die fol-gen-den Zah-len in wis-sen-schaft-li-cher Schr
-eib-
+Overfull \hbox (29.59265pt too wide) in paragraph at lines 2111--2116
+\OT1/cmr/m/n/12 Schreibe die folgenden Zahlen in wissenschaftlicher Schreibweis
+e: 
  []
 
 [382]
@@ -3030,9 +3257,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 2121--2126
  []
 
 
-Overfull \hbox (4.0693pt too wide) in paragraph at lines 2121--2126
-\OT1/cmr/m/n/12 Schreibe die fol-gen-den Zah-len in wis-sen-schaft-li-cher Schr
-eib-
+Overfull \hbox (29.59265pt too wide) in paragraph at lines 2121--2126
+\OT1/cmr/m/n/12 Schreibe die folgenden Zahlen in wissenschaftlicher Schreibweis
+e: 
  []
 
 [383]
@@ -3041,9 +3268,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 2129--2134
  []
 
 
-Overfull \hbox (4.0693pt too wide) in paragraph at lines 2129--2134
-\OT1/cmr/m/n/12 Schreibe die fol-gen-den Zah-len in wis-sen-schaft-li-cher Schr
-eib-
+Overfull \hbox (29.59265pt too wide) in paragraph at lines 2129--2134
+\OT1/cmr/m/n/12 Schreibe die folgenden Zahlen in wissenschaftlicher Schreibweis
+e: 
  []
 
 [384]
@@ -3052,9 +3279,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 2139--2144
  []
 
 
-Overfull \hbox (4.0693pt too wide) in paragraph at lines 2139--2144
-\OT1/cmr/m/n/12 Schreibe die fol-gen-den Zah-len in wis-sen-schaft-li-cher Schr
-eib-
+Overfull \hbox (26.3288pt too wide) in paragraph at lines 2139--2144
+\OT1/cmr/m/n/12 Schreibe die folgenden Zahlen in wissenschaftlicher Schreibweis
+e
  []
 
 [385]
@@ -3063,9 +3290,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 2147--2152
  []
 
 
-Overfull \hbox (4.0693pt too wide) in paragraph at lines 2147--2152
-\OT1/cmr/m/n/12 Schreibe die fol-gen-den Zah-len in wis-sen-schaft-li-cher Schr
-eib-
+Overfull \hbox (26.3288pt too wide) in paragraph at lines 2147--2152
+\OT1/cmr/m/n/12 Schreibe die folgenden Zahlen in wissenschaftlicher Schreibweis
+e
  []
 
 [386]
@@ -3244,9 +3471,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 2333--2335
  []
 
 
-Overfull \hbox (18.9867pt too wide) in paragraph at lines 2333--2335
-\OT1/cmr/m/n/12 misst 27,9 cm. Be-rech-ne sei-ne Brei-te und sei-nen Fl[]acheni
-nhalt.
+Overfull \hbox (21.1548pt too wide) in paragraph at lines 2333--2335
+\OT1/cmr/m/n/12 misst 27,9 cm. Berechne seine Breite und seinen Fl^^?acheninhal
+t.
  []
 
 
@@ -3260,9 +3487,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 2337--2339
  []
 
 
-Overfull \hbox (18.9867pt too wide) in paragraph at lines 2337--2339
-\OT1/cmr/m/n/12 misst 27,9 cm. Be-rech-ne sei-ne Brei-te und sei-nen Fl[]acheni
-nhalt.
+Overfull \hbox (21.1548pt too wide) in paragraph at lines 2337--2339
+\OT1/cmr/m/n/12 misst 27,9 cm. Berechne seine Breite und seinen Fl^^?acheninhal
+t.
  []
 
 
@@ -3455,7 +3682,27 @@ Underfull \hbox (badness 10000) in paragraph at lines 2527--2529
 
  []
 
+
+Overfull \hbox (4.43552pt too wide) in paragraph at lines 2527--2529
+\OT1/cmr/m/n/12 anderen Winkel. Wie gross sind die Winkel in dem Dreieck?
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2527--2529
+
+ []
+
 [459]
+Underfull \hbox (badness 10000) in paragraph at lines 2531--2533
+
+ []
+
+
+Overfull \hbox (4.43552pt too wide) in paragraph at lines 2531--2533
+\OT1/cmr/m/n/12 anderen Winkel. Wie gross sind die Winkel in dem Dreieck?
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 2531--2533
 
  []
@@ -3552,12 +3799,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 2612--2615
 
 [476] (./main_new.aux) ) 
 Here is how much of TeX's memory you used:
- 9601 strings out of 492615
- 166567 string characters out of 6131390
- 223521 words of memory out of 5000000
- 13300 multiletter control sequences out of 15000+600000
+ 9520 strings out of 494561
+ 165328 string characters out of 6177454
+ 216856 words of memory out of 5000000
+ 12971 multiletter control sequences out of 15000+600000
  10676 words of font info for 40 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
+ 14 hyphenation exceptions out of 8191
  42i,7n,40p,401b,197s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
 nts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
@@ -3571,7 +3818,7 @@ fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/t
 ype1/public/amsfonts/cm/cmti7.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
 blic/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
 /zapfding/uzdr.pfb>
-Output written on main_new.pdf (476 pages, 2310258 bytes).
+Output written on main_new.pdf (476 pages, 2308586 bytes).
 PDF statistics:
  1620 PDF objects out of 1728 (max. 8388607)
  1094 compressed objects within 11 object streams

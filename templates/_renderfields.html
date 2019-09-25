@@ -1,0 +1,40 @@
+{% macro render_boutonfield(field, DATA) %}
+<form name="form" id="{{field.name}}" action="" method="post">
+<div class="btn-group mr-2">
+  {% for i in range(0,field.num) %}
+  <button
+    type="submit"
+    name="{{field.name}}"
+    value="{{field.value[i]}}"
+    class="btn btn-sm mt-3 {% if DATA[field.name]['isSel'][i] %} btn-success {% else %} btn-secondary {% endif %}">
+    {{field.label[i]}}
+  </button>
+  {% endfor %}
+</div>
+</form>
+{% endmacro %}
+
+
+
+{% macro render_radiofield(field, DATA) %}
+<form name="form" id="{{field.name}}-form" action="" method="post">
+<div class="btn-group btn-group-vertical mr-2", role="group">
+{% for i in range(0, field.num) %}
+<button
+  type="submit"
+  name="{{field.name}}"
+  value="{{field.value[i]}}"
+  class="btn btn-sm m-0 p-0 text-left {% if DATA[field.name]['isSel'][i] %} btn-success {% else %} btn-dark {% endif %}">
+  {{field.label[i]}}
+  {% if DATA[field.name]['num'][i]>0 %}
+    <span class="badge badge-secondary badge-pill">{{DATA[field.name]['num'][i]}}</span>
+  {% elif DATA[field.name]['num'][i]==0 and DATA.FROMWHOM != field.name %}
+    <span class="badge badge-dark badge-pill text-secondary">{{DATA[field.name]['num'][i]}}</span>
+  {% elif DATA[field.name]['num'][i]==0 and DATA.FROMWHOM == field.name %}
+    <span class="badge badge-dark badge-pill">{{DATA[field.name]['num'][i]}}</span>
+  {% endif %}
+</button>
+{% endfor %}
+</div>
+</form>
+{% endmacro %}
