@@ -5,7 +5,6 @@ from wtforms import StringField, PasswordField, SubmitField, SelectMultipleField
 from wtforms.validators import InputRequired, Length, AnyOf
 import pandas as pd
 import os, subprocess
-from collections import Counter
 from data import Data
 from projconfig import Projconfig #load project variables and stuff
 
@@ -15,7 +14,7 @@ DF_file = PC.staticDir+PC.DF_file #where df sits
 
 DF = pd.read_pickle( DF_file ) #load dataframe
 DATA = Data( DF ) #initialise userdata
-DF_HEADERS = ['kurzel', 'topic', 'basal', 'diff']
+
 
 
 def _df_getUniqueColItems(df, colStr ):
@@ -32,35 +31,6 @@ def _df_getUniqueColItems(df, colStr ):
         lis = list(set(LIS)) #make items unique
 
     return sorted(lis) #return sorted list
-
-def _df_compareWithList(df, colStr, lis):
-    '''
-    Counts how often the unique elements in lis are in COLSTR of df.
-    A Comma-separated item in df is taken as several items.
-    Returns a list N with N[i] is number of occurences of lis[i] in df.
-    '''
-    if ~df.empty and len(lis)>0:
-        N = [0 for item in lis]
-        s = ','.join(df[colStr].tolist()) #create comma-sepeated string
-        LIS = s.split(',') #split at commas, list of all keywords
-        M = Counter(LIS)
-        for i in range(0,len(lis)):
-            N[i] = M[lis[i]]
-    else:
-        N = [0 for item in lis]
-
-    return N
-
-def _df_filterByCol(df, colStr, whatStrList ):
-    '''
-        Gets a new df with only rows containing the strings in WHATSTRLIST in COLSTR.
-        Empty whatStrList does nothing to df.
-        Empty df does nothing.
-    '''
-    if len(whatStrList)>0 and ~df.empty:
-        df = df[df[colStr].str.contains('|'.join(whatStrList))]
-
-    return df
 
 def _boutonfield(name='', label=[], list=[]):
     d = {
@@ -82,21 +52,17 @@ def _radiofield(df, name=''):
         }
     return d
 
-def guidatafix():
-    gd = {
-        'totalnum' : len(DF),
-        'sortMode' : _boutonfield(name='sortMode', label=['sorted','shuffle']),
-        'displayMode' : _boutonfield(name='displayMode', label=['Grid','Stapel']),
-        'imSize' : _boutonfield(name='imSize', label=['k','K','g', 'G'], list=['200px','400px','600px','800px'])
-    }
-
-    for name in DF_HEADERS:
-        gd[name] = _radiofield(DF, name=name)
-
+class Guidatafix:
+    totalnum = len(DF)
+    sortMode = _boutonfield(name='sortMode', label=['sorted','shuffle'])
+    displayMode = _boutonfield(name='displayMode', label=['Grid','Stapel'])
+    imSize = _boutonfield(name='imSize', label=['k','K','g', 'G'], list=['200px','400px','600px','800px'])
+    kurzel = _radiofield(DF, name='kurzel')
+    topic = _radiofield(DF, name='topic')
+    basal = _radiofield(DF, name='basal')
+    diff = _radiofield(DF, name='diff')
     qpics_fn = DF['qImage_path'].to_list()
     apics_fn = DF['aImage_path'].to_list()
-
-    return gd
 
 def guidatauser_init(gdfix):
     ud = {
@@ -110,27 +76,32 @@ def guidatauser_init(gdfix):
             },
         'imSize': {
             'isSel': [False, False, True, False]
+            },
+        'kurzel': {
+            'isSel': [0 for item in gdfix.kurzel['label']],
+            'numSel' : 0
+            },
+        'topic': {
+            'isSel': [0 for item in gdfix.topic['label']],
+            'numSel' : 0
+            },
+        'basal': {
+            'isSel': [0 for item in gdfix.basal['label']],
+            'numSel' : 0
+            },
+        'diff': {
+            'isSel': [0 for item in gdfix.diff['label']],
+            'numSel' : 0
             }
     }
-
-    for name in DF_HEADERS:
-        ud[name] = {
-            'isSel': [0 for item in gdfix[name]['label']],
-            'num' : [0 for item in gdfix[name]['label']],
-            }
-
     return ud
 
-def guidatauser_updateSelection(gduser, data):
+def guidatauser_update(gduser, data):
     '''
     Determines the logic of the gui.
     As all input elements are buttons, the data elements
     consist of a dict of the simple form {name, value}.
     '''
-
-    if len(data)==0:
-        return gduser #nothing to update
-
     for key, value in data.items():
         name = key #e.g. 'imSize'
         val = value #e.g. '0'
@@ -141,7 +112,7 @@ def guidatauser_updateSelection(gduser, data):
         gduser[name]['isSel'] = [False for i in gduser[name]['isSel']]
         gduser[name]['isSel'][int(val)] = True
 
-    elif name in DF_HEADERS:
+    elif name in ['kurzel', 'topic', 'basal', 'diff']:
         #update pressed button: 0=neutral, 1=include, 2=exclude
         gduser['dropdownmenu_down'] = True
         gduser[name]['isSel'][int(val)] = gduser[name]['isSel'][int(val)] + 1
@@ -152,74 +123,61 @@ def guidatauser_updateSelection(gduser, data):
 
     return gduser
 
+def _df_filterByCol(df, colStr, whatStrList ):
+    '''
+        Gets a new df with only rows containing the strings in WHATSTRLIST in COLSTR.
+        Empty whatStrList does nothing to df.
+        Empty df does nothing.
+    '''
+    if len(whatStrList)>0 and ~df.empty:
+        df = df[df[colStr].str.contains('|'.join(whatStrList))]
+
+    return df
+
 def filterDataframe(gdf, gdu):
     '''
     Create new dataframe from DF based on gdfix gdf and gduser gdu.
     '''
-    df = DF
-    for name in DF_HEADERS:
-        R = gdu[name]['isSel'] #could be 0 (ignore),1 (include), or 2 (exclude)
-        wsl_incl = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] == 1 ]
-        df = _df_filterByCol(df, name, wsl_incl )
-        wsl_exc  = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] != 2  ]
-        df = _df_filterByCol(df, name, wsl_incl )
 
-    return df
-
-def guidatauser_updateNum(df, gdf, gdu):
-    '''
-    Updates all num fields in the dict based on (a filtered) df.
-    If df is empty, the returned values are 0.
-    '''
-    for name in DF_HEADERS:
-        gdu[name]['num'] = _df_compareWithList( df, name, gdf[name]['label'] )
-
-    return gdu
-
-def df_getImagepaths(df):
-    '''
-    Gets the paths to the pictures based on (a filtered) df.
-    If df is empty, empty lists are returned.
-    '''
-    ip = {}
-    if len(df)>0:
-        ip['ques'] = df['qImage_path'].to_list()
-        ip['answ'] = df['aImage_path'].to_list()
-    else:
-        ip['ques'] = []
-        ip['answ'] = []
-
-    return ip
-
-def df_sortByCol( df, colStr ):
-    "sort df by column COLSTR"
-    df = df.sort_values(by=colStr, ascending=True)
-    return df
-
-def df_shuffle( df ):
-    return df.sample(frac=1)
+    R = gdu['kurzel']['isSel'] #could be 0 (ignore),1 (include), or 2 (exclude)
+    wsl_incl = [ gdf.kurzel['label'][i] for i in range(0,len(R)) if R[i] == 1 ]
+    wsl_exc  = [ gdf.kurzel['label'][i] for i in range(0,len(R)) if R[i] != 2  ]
 
 
 
-gdfix = guidatafix()
-gduser = guidatauser_init(gdfix)
-gduser = guidatauser_updateSelection(gduser, {'kurzel':'0'})
-df = filterDataframe(gdfix, gduser)
-gduser = guidatauser_updateNum(df, gdfix, gduser)
-ipaths = df_getImagepaths(df)
 
-print(df)
+
+gdfix = Guidatafix()
+# gduser = guidatauser_init(gdfix)
 # print(gduser['imSize']['isSel'])
 # gduser = guidatauser_update(gduser, {'imSize':'1'})
 # print(gduser['imSize']['isSel'])
-print(gduser)
-print(ipaths)
+
+
 
 
 # create the application object
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "bigsecret!"
 app.config["DEBUG"] = True
+
+
+
+
+
+
+
+
+
+
+
+
+
+def df_sortByCol( df, colStr ):
+    "sort df by column COLSTR"
+    df = df.sort_values(by=colStr, ascending=True)
+    return df
+
 
 
 class LoginForm(FlaskForm):
@@ -244,6 +202,9 @@ def login():
 
     return render_template('login.html', form=form)
 
+
+
+
 @app.route('/lul', methods=['POST', 'GET'])
 def lul():
 
@@ -251,28 +212,58 @@ def lul():
         session['gduser'] = guidatauser_init(gdfix)
 
     gduser = session['gduser']
-    imPaths = df_getImagepaths([])
-
-    #imPaths = df_getImagepaths([])
     userdata=DATA
-    answ=[]
+    #userdata = session["userdata"]
+
+    answ=''
 
 
     #just for testing
     if request.method == 'POST':
-        answ = request.form.to_dict() #get response (one of the buttons)
-        gduser = guidatauser_updateSelection(gduser, answ) #update response
-        df = filterDataframe(gdfix, gduser) #filter dataframe
-        gduser = guidatauser_updateNum(df, gdfix, gduser) #update number of problems
+        #I am only here because soemthing was triggered!
+
+        # #buttons, so if triggered, will be not empty
+        # r1 = request.form.getlist('imSize')
+        # r2 = request.form.getlist('displayMode')
+        #
+        answ = request.form.to_dict()
+        gduser = guidatauser_update(gduser, answ)
         session['gduser']=gduser
-
-        if gduser['sortMode']['isSel'][0]:
-            df = df_sortByCol(df, 'diff')
-        else:
-            df = df_shuffle(df)
-
-        imPaths = df_getImagepaths(df) #get the image paths
-
+        #
+        # if len(r1)>1:
+        #     userdata.update_isSel( r1 )
+        #     userdata.update_filterList()
+        #     userdata.SHOWFLAG = False
+        #
+        # elif len(r2)>1:
+        #     userdata.update_isSel( r2 )
+        #     userdata.update_filterList()
+        #     userdata.SHOWFLAG = False
+        #
+        # else:
+        #     #I am here because one of the checkmarks in a group was triggered (kurzel, ...).
+        #     #All groups that did not trigger the response return empty [].
+        #     #The group that triggered the response returns ['kurzel','WiD',...].
+        #     #In the case where the only mark in a group gets uncheck: ['kurzel']
+        #
+        #     #update selections
+        #     kur = request.form.getlist('kurzel')
+        #     userdata.update_isSel( kur )
+        #     top = request.form.getlist('topic')
+        #     userdata.update_isSel( top )
+        #     bas = request.form.getlist('basal')
+        #     userdata.update_isSel( bas )
+        #     dif = request.form.getlist('diff')
+        #     userdata.update_isSel( dif )
+        #
+        #     #filter df
+        #     userdata.update_filterList()
+        #     df = df_filterByCol( DF, 'kurzel', userdata.kurzel['filterList'] )
+        #     df = df_filterByCol( df, 'topic', userdata.topic['filterList'] )
+        #     df = df_filterByCol( df, 'basal', userdata.basal['filterList'] )
+        #     df = df_filterByCol( df, 'diff', userdata.diff['filterList'] )
+        #
+        #     userdata.SHOWFLAG = True #make sure input menue stays down
         #
         #     #check if I need to shuffle
         #     r3 = request.form.getlist('sortMode')
@@ -287,7 +278,7 @@ def lul():
 
         #session["test"]="test2"
 
-    return render_template('lul.html', DATA=userdata, GDFIX=gdfix, GDUSER=gduser, IMPATHS=imPaths, answ=answ)
+    return render_template('lul.html', DATA=userdata, GDFIX=gdfix, GDUSER=gduser,  answ=answ)
 
 #clears cache in browser
 # @app.after_request

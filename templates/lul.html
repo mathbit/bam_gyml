@@ -62,7 +62,7 @@ UNDER HEAVY CONSTRUCTION ... <br>
 <nav class="navbar navbar-dark bg-dark justify-content-between py-md-0 py-0" >
   <div class="container-fluid" >
       <!-- Title -->
-      <a class="navbar-brand" href="#">Basale Aufgaben Mathematik ({{DATA.qpics|count}}/{{GDFIX.totalnum}})</a>
+      <a class="navbar-brand" href="#">Basale Aufgaben Mathematik ({{IMPATHS.ques|count}}/{{GDFIX.totalnum}})</a>
       <!-- input für image size, mode, etc -->
       <div class="btn-toolbar" >
         {{ render_boutonfield( GDFIX.imSize, GDUSER.imSize)}}
@@ -84,22 +84,22 @@ UNDER HEAVY CONSTRUCTION ... <br>
 
           <div class="card border-dark text-white bg-dark">
             <div class="card-header border-dark text-success m-0 p-0">Kürzel</div>
-            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.kurzel, GDUSER.kurzel, DATA) }}</div>
+            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.kurzel, GDUSER.kurzel) }}</div>
           </div>
 
           <div class="card border-dark text-white bg-dark">
             <div class="card-header border-dark text-success m-0 p-0">Topic</div>
-            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.topic, GDUSER.topic, DATA) }}</div>
+            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.topic, GDUSER.topic) }}</div>
           </div>
 
           <div class="card border-dark text-white bg-dark">
             <div class="card-header border-dark text-success m-0 p-0">Basal</div>
-            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.basal, GDUSER.basal, DATA) }}</div>
+            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.basal, GDUSER.basal) }}</div>
           </div>
 
           <div class="card border-dark text-white bg-dark">
             <div class="card-header border-dark text-success m-0 p-0">Schwierigkeitsgrad</div>
-            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.diff, GDUSER.diff, DATA) }}</div>
+            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.diff, GDUSER.diff) }}</div>
           </div>
 
         </div>
