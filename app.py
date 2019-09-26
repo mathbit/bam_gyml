@@ -78,42 +78,59 @@ def guidatauser_init(gdfix):
             'isSel': [False, False, True, False]
             },
         'kurzel': {
-            'isSel': [False for item in gdfix.kurzel['label']],
+            'isSel': [0 for item in gdfix.kurzel['label']],
             'numSel' : 0
             },
         'topic': {
-            'isSel': [False for item in gdfix.kurzel['label']],
+            'isSel': [0 for item in gdfix.topic['label']],
             'numSel' : 0
             },
         'basal': {
-            'isSel': [False for item in gdfix.kurzel['label']],
+            'isSel': [0 for item in gdfix.basal['label']],
             'numSel' : 0
             },
         'diff': {
-            'isSel': [False for item in gdfix.kurzel['label']],
+            'isSel': [0 for item in gdfix.diff['label']],
             'numSel' : 0
             }
     }
     return ud
 
-def guidatauser_update(gdfix, data):
+def guidatauser_update(gduser, data):
     '''
+    Determines the logic of the gui.
     As all input elements are buttons, the data elements
-    consist of a imutabel tuple of the form [(source-btn,value)].
-    This input is set to True.
+    consist of a dict of the simple form {name, value}.
     '''
-    name = data[0][0] #e.g. 'imSize'
-    value = data[0][1] #e.g. '100px'
 
+    for key, value in data.items():
+        name = key #e.g. 'imSize'
+        val = value #e.g. '0'
 
+    if name in ['sortMode','displayMode','imSize']:
+        #only one button is allowed to be active
+        gduser['dropdownmenu_down'] = False
+        gduser[name]['isSel'] = [False for i in gduser[name]['isSel']]
+        gduser[name]['isSel'][int(val)] = True
 
+    elif name in ['kurzel', 'topic', 'basal', 'diff']:
+        #update pressed button: 0=neutral, 1=include, 2=exclude
+        gduser['dropdownmenu_down'] = True
+        gduser[name]['isSel'][int(val)] = gduser[name]['isSel'][int(val)] + 1
+        if gduser[name]['isSel'][int(val)] > 2:
+            gduser[name]['isSel'][int(val)] = 0
 
+    gduser['fromwhom'] = name
 
+    return gduser
 
 
 gdfix = Guidatafix()
-gduser = guidatauser_init(gdfix)
-print(gduser['sortMode']['isSel'])
+# gduser = guidatauser_init(gdfix)
+# print(gduser['imSize']['isSel'])
+# gduser = guidatauser_update(gduser, {'imSize':'1'})
+# print(gduser['imSize']['isSel'])
+
 
 
 
@@ -178,72 +195,77 @@ def login():
 @app.route('/lul', methods=['POST', 'GET'])
 def lul():
 
-    # if "userdata" not in session:
-    #     session["userdata"]=DATA
+    if 'gduser' not in session or request.method == 'GET':
+        session['gduser'] = guidatauser_init(gdfix)
 
-    #userdata = session["userdata"]
+    gduser = session['gduser']
     userdata=DATA
-    r7=''
+    #userdata = session["userdata"]
+
+    answ=''
+
 
     #just for testing
     if request.method == 'POST':
         #I am only here because soemthing was triggered!
 
-        #buttons, so if triggered, will be not empty
-        r1 = request.form.getlist('imSize')
-        r2 = request.form.getlist('displayMode')
+        # #buttons, so if triggered, will be not empty
+        # r1 = request.form.getlist('imSize')
+        # r2 = request.form.getlist('displayMode')
+        #
+        answ = request.form.to_dict()
+        gduser = guidatauser_update(gduser, answ)
+        session['gduser']=gduser
+        #
+        # if len(r1)>1:
+        #     userdata.update_isSel( r1 )
+        #     userdata.update_filterList()
+        #     userdata.SHOWFLAG = False
+        #
+        # elif len(r2)>1:
+        #     userdata.update_isSel( r2 )
+        #     userdata.update_filterList()
+        #     userdata.SHOWFLAG = False
+        #
+        # else:
+        #     #I am here because one of the checkmarks in a group was triggered (kurzel, ...).
+        #     #All groups that did not trigger the response return empty [].
+        #     #The group that triggered the response returns ['kurzel','WiD',...].
+        #     #In the case where the only mark in a group gets uncheck: ['kurzel']
+        #
+        #     #update selections
+        #     kur = request.form.getlist('kurzel')
+        #     userdata.update_isSel( kur )
+        #     top = request.form.getlist('topic')
+        #     userdata.update_isSel( top )
+        #     bas = request.form.getlist('basal')
+        #     userdata.update_isSel( bas )
+        #     dif = request.form.getlist('diff')
+        #     userdata.update_isSel( dif )
+        #
+        #     #filter df
+        #     userdata.update_filterList()
+        #     df = df_filterByCol( DF, 'kurzel', userdata.kurzel['filterList'] )
+        #     df = df_filterByCol( df, 'topic', userdata.topic['filterList'] )
+        #     df = df_filterByCol( df, 'basal', userdata.basal['filterList'] )
+        #     df = df_filterByCol( df, 'diff', userdata.diff['filterList'] )
+        #
+        #     userdata.SHOWFLAG = True #make sure input menue stays down
+        #
+        #     #check if I need to shuffle
+        #     r3 = request.form.getlist('sortMode')
+        #     if len(r3)>1: #yep
+        #         userdata.update_isSel( r3 )
+        #         df = df.sample(frac=1) #shuffle rows
+        #         userdata.SHOWFLAG = False
+        #
+        #     #update num and pics based on df
+        #     userdata.update_num(df)
+        #     userdata.update_pics(df)
 
-        r7 = request.form
+        #session["test"]="test2"
 
-        if len(r1)>1:
-            userdata.update_isSel( r1 )
-            userdata.update_filterList()
-            userdata.SHOWFLAG = False
-
-        elif len(r2)>1:
-            userdata.update_isSel( r2 )
-            userdata.update_filterList()
-            userdata.SHOWFLAG = False
-
-        else:
-            #I am here because one of the checkmarks in a group was triggered (kurzel, ...).
-            #All groups that did not trigger the response return empty [].
-            #The group that triggered the response returns ['kurzel','WiD',...].
-            #In the case where the only mark in a group gets uncheck: ['kurzel']
-
-            #update selections
-            kur = request.form.getlist('kurzel')
-            userdata.update_isSel( kur )
-            top = request.form.getlist('topic')
-            userdata.update_isSel( top )
-            bas = request.form.getlist('basal')
-            userdata.update_isSel( bas )
-            dif = request.form.getlist('diff')
-            userdata.update_isSel( dif )
-
-            #filter df
-            userdata.update_filterList()
-            df = df_filterByCol( DF, 'kurzel', userdata.kurzel['filterList'] )
-            df = df_filterByCol( df, 'topic', userdata.topic['filterList'] )
-            df = df_filterByCol( df, 'basal', userdata.basal['filterList'] )
-            df = df_filterByCol( df, 'diff', userdata.diff['filterList'] )
-
-            userdata.SHOWFLAG = True #make sure input menue stays down
-
-            #check if I need to shuffle
-            r3 = request.form.getlist('sortMode')
-            if len(r3)>1: #yep
-                userdata.update_isSel( r3 )
-                df = df.sample(frac=1) #shuffle rows
-                userdata.SHOWFLAG = False
-
-            #update num and pics based on df
-            userdata.update_num(df)
-            userdata.update_pics(df)
-
-        session["test"]="test2"
-
-    return render_template('lul.html', DATA=userdata, GDFIX=gdfix, GDUSER=gduser,  r7=r7)
+    return render_template('lul.html', DATA=userdata, GDFIX=gdfix, GDUSER=gduser,  answ=answ)
 
 #clears cache in browser
 # @app.after_request

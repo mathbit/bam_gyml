@@ -53,7 +53,9 @@ filterList diff: {{DATA.diff['filterList']}} -->
 
 <!-- {{ GDUSER.imSize.isSel }} -->
 
-{{ r7 }}
+UNDER HEAVY CONSTRUCTION ... <br>
+**{{ answ }}<br>
+
 
 
 <!-- layout of top part of page (see also css) -->
@@ -63,9 +65,9 @@ filterList diff: {{DATA.diff['filterList']}} -->
       <a class="navbar-brand" href="#">Basale Aufgaben Mathematik ({{DATA.qpics|count}}/{{GDFIX.totalnum}})</a>
       <!-- input für image size, mode, etc -->
       <div class="btn-toolbar" >
-        {{ render_boutonfield( GDFIX.imSize, DATA )}}
-        {{ render_boutonfield( GDFIX.displayMode, DATA )}}
-        {{ render_boutonfield( GDFIX.sortMode, DATA )}}
+        {{ render_boutonfield( GDFIX.imSize, GDUSER.imSize)}}
+        {{ render_boutonfield( GDFIX.displayMode, GDUSER.displayMode)}}
+        {{ render_boutonfield( GDFIX.sortMode, GDUSER.sortMode)}}
 
       </div>
       <!-- Toggler/collapsibe Button -->
@@ -75,29 +77,29 @@ filterList diff: {{DATA.diff['filterList']}} -->
   </div>
 
   <!-- collapseable stuff in navbar -->
-  <div class="collapse {% if DATA.SHOWFLAG %} show {% endif %} shownavbar-collapse" id="collapsibleNavbar">
+  <div class="collapse {% if GDUSER.dropdownmenu_down %} show {% endif %} shownavbar-collapse" id="collapsibleNavbar">
     <div class="navbar-nav">
       <div class="nav-item">
         <div class="card-columns">
 
           <div class="card border-dark text-white bg-dark">
             <div class="card-header border-dark text-success m-0 p-0">Kürzel</div>
-            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.kurzel, DATA) }}</div>
+            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.kurzel, GDUSER.kurzel, DATA) }}</div>
           </div>
 
           <div class="card border-dark text-white bg-dark">
             <div class="card-header border-dark text-success m-0 p-0">Topic</div>
-            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.topic, DATA) }}</div>
+            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.topic, GDUSER.topic, DATA) }}</div>
           </div>
 
           <div class="card border-dark text-white bg-dark">
             <div class="card-header border-dark text-success m-0 p-0">Basal</div>
-            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.basal, DATA) }}</div>
+            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.basal, GDUSER.basal, DATA) }}</div>
           </div>
 
           <div class="card border-dark text-white bg-dark">
             <div class="card-header border-dark text-success m-0 p-0">Schwierigkeitsgrad</div>
-            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.diff, DATA) }}</div>
+            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.diff, GDUSER.diff, DATA) }}</div>
           </div>
 
         </div>
