@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.8.15)  26 SEP 2019 14:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.8.15)  26 SEP 2019 14:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -315,14 +315,7 @@ Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
 Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
 )))))
-(./main_new.aux
-
-Package babel Warning: Unknown language `nil'. Very likely you
-(babel)                requested it in a previous run. Expect some
-(babel)                wrong results in this run, which should vanish
-(babel)                in the next one. Reported on input line 2.
-
-)
+(./main_new.aux)
 \openout1 = `main_new.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 4.
@@ -4327,10 +4320,10 @@ gleich
 
 [602] (./main_new.aux) ) 
 Here is how much of TeX's memory you used:
- 8992 strings out of 494561
- 158402 string characters out of 6177454
+ 8990 strings out of 494561
+ 158380 string characters out of 6177454
  201982 words of memory out of 5000000
- 12460 multiletter control sequences out of 15000+600000
+ 12458 multiletter control sequences out of 15000+600000
  10676 words of font info for 40 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  42i,7n,40p,401b,197s stack positions out of 5000i,500n,10000p,200000b,80000s
