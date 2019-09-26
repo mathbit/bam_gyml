@@ -98,7 +98,7 @@ pip freeze | grep -v "pkg-resources" > requirements.txt
 
 initialise heroku, add files to git, and deploy:
 heroku login
-heroku create bam-lerbermatt #website is https://bam-lerbermatt.herokuapp.com
+heroku create bam-gyml #website is https://bam-gyml.herokuapp.com
 git add .
 git commit -m 'Initial app boilerplate'
 git push heroku master #deploy code to heroku
@@ -110,6 +110,9 @@ git status
 git add .
 git commit -m 'update controls'
 git push heroku master
+
+add again the heroku git:
+git remote add heroku https://git.heroku.com/bam-gyml.git
 
 
 Add latex to herokuapp
