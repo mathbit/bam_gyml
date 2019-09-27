@@ -63,8 +63,6 @@ def _df_filterByCol(df, colStr, whatStrList ):
 
     if ~df.empty:
         df = df[df[colStr].str.contains('|'.join(whatStrList))]
-        I = list(df[colStr].str.contains('|'.join(whatStrList)))
-        print(I)
     return df
 
 def _df_findSelectedCol(df, colStr, whatStrList ):
@@ -78,8 +76,6 @@ def _df_findSelectedCol(df, colStr, whatStrList ):
 
     if ~df.empty:
         bool = df[colStr].str.contains('|'.join(whatStrList))
-
-    print(bool)
 
     return bool
 
@@ -183,7 +179,7 @@ def excFilter_update(ef, data):
 
     return ef
 
-def df_applyExcfilter(gdf, ef):
+def df_applyExcfilter1(gdf, ef):
     '''
     Create new dataframe from DF based on gdfix gdf and excercise filter ef.
     '''
@@ -200,25 +196,31 @@ def df_applyExcfilter(gdf, ef):
 
     return df
 
-def _complementBool(boollist):
-    return [not item for item in boollist]
 
-def df_applyExcfilter1(gdf, ef):
+def df_applyExcfilter(gdf, ef):
     '''
     Create new dataframe from DF based on gdfix gdf and excercise filter ef.
     '''
-    BOOL = [False for i in range(0,len(DF))]
+    BOOL_incl = [False for i in range(0,len(DF))]
+    BOOL_excl = [False for i in range(0,len(DF))]
     for name in DF_HEADERS:
         R = ef[name] #could be 0 (ignore),1 (include), or 2 (exclude)
         wsl_incl = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] == 1 ]
-        df = _df_filterByCol(df, name, wsl_incl )
-        wsl_excl  = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] != 2  ]
-        df = _df_filterByCol(df, name, wsl_excl )
+        wsl_excl = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] == 2  ]
+
+        if len(wsl_incl) > 0:
+            b = _df_findSelectedCol(DF, name, wsl_incl )
+            BOOL_incl = [BOOL_incl[i] or b[i] for i in range(0,len(DF))]
+
+        if len(wsl_excl) > 0:
+            b = _df_findSelectedCol(DF, name, wsl_excl )
+            BOOL_excl = [BOOL_excl[i] or b[i] for i in range(0,len(DF))]
+
+        BOOL = [not BOOL_excl[i] and BOOL_incl[i] for i in range(0,len(DF))]
 
     # if shuffle:
     #     df = df.sample(frac=1)
-
-    return df
+    return DF[BOOL]
 
 def df_getExcnum(df, gdf):
     '''
@@ -258,14 +260,16 @@ gduser = guidatauser_init(gdfix)
 excfilter = excFilter_init(gdfix)
 #
 # gduser = guidatauser_update(gduser, {'imSize':'3'})
-excfilter = excFilter_update(excfilter, {'kurzel':'0'})
+excfilter = excFilter_update(excfilter, {'kurzel':'6'})
 #
 df = df_applyExcfilter(gdfix, excfilter)
-#print(df)
+for p in df['qImage_path']:
+    print(p)
+
 # excnum = df_getExcnum(df, gdfix)
 # ipaths = df_getImagepaths(df)
 
-exit()
+
 
 # create the application object
 app = Flask(__name__)
