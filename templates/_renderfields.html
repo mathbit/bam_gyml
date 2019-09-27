@@ -6,7 +6,7 @@
     type="submit"
     name="{{field_fix.name}}"
     value="{{field_fix.value[i]}}"
-    class="btn btn-sm mt-3 {% if field_user.isSel[i] %} btn-success {% else %} btn-secondary {% endif %}">
+    class="btn btn-sm mt-3 {% if field_user == i %} btn-success {% else %} btn-secondary {% endif %}">
     {{field_fix.label[i]}}
   </button>
   {% endfor %}
@@ -14,7 +14,7 @@
 </form>
 {% endmacro %}
 
-{% macro render_radiofield(field_fix, field_user) %}
+{% macro render_radiofield(field_fix, field_filter, field_num) %}
 <form name="form" id="{{field_fix.name}}-form" action="" method="post">
 <div class="btn-group btn-group-vertical mr-2", role="group">
 {% for i in range(0, field_fix.num) %}
@@ -23,12 +23,12 @@
   name="{{field_fix.name}}"
   value="{{field_fix.value[i]}}"
   class="btn btn-sm m-0 p-0 text-left
-    {% if field_user.isSel[i] == 0 %} btn-secondary
-    {% elif field_user.isSel[i] == 1 %} btn-success
-    {% elif field_user.isSel[i] == 2 %} btn-danger
+    {% if field_filter[i] == 0 %} btn-secondary
+    {% elif field_filter[i] == 1 %} btn-success
+    {% elif field_filter[i] == 2 %} btn-danger
     {% endif %}">
     {{field_fix.label[i]}}
-    <span class="badge badge-dark badge-pill text-secondary">{{field_user.num[i]}}</span>
+    <span class="badge badge-dark badge-pill text-secondary">{{field_num[i]}}</span>
 </button>
 {% endfor %}
 </div>

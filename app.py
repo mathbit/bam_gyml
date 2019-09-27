@@ -6,7 +6,6 @@ from wtforms.validators import InputRequired, Length, AnyOf
 import pandas as pd
 import os, subprocess
 from collections import Counter
-from data import Data
 from projconfig import Projconfig #load project variables and stuff
 
 PC = Projconfig() #initialse local configuarion variables
@@ -14,7 +13,6 @@ imageDir = PC.staticDir+PC.imageDir #where images sit
 DF_file = PC.staticDir+PC.DF_file #where df sits
 
 DF = pd.read_pickle( DF_file ) #load dataframe
-DATA = Data( DF ) #initialise userdata
 DF_HEADERS = ['kurzel', 'topic', 'basal', 'diff']
 
 
@@ -39,7 +37,7 @@ def _df_compareWithList(df, colStr, lis):
     A Comma-separated item in df is taken as several items.
     Returns a list N with N[i] is number of occurences of lis[i] in df.
     '''
-    if ~df.empty and len(lis)>0:
+    if len(df)>0 and len(lis)>0:
         N = [0 for item in lis]
         s = ','.join(df[colStr].tolist()) #create comma-sepeated string
         LIS = s.split(',') #split at commas, list of all keywords
@@ -53,16 +51,39 @@ def _df_compareWithList(df, colStr, lis):
 
 def _df_filterByCol(df, colStr, whatStrList ):
     '''
-        Gets a new df with only rows containing the strings in WHATSTRLIST in COLSTR.
-        Empty whatStrList does nothing to df.
-        Empty df does nothing.
+    Gets a new df with only rows containing the strings in WHATSTRLIST in COLSTR.
+    Empty df does nothing.
+    Empty whatStrList produces empty df
     '''
-    if len(whatStrList)>0 and ~df.empty:
-        df = df[df[colStr].str.contains('|'.join(whatStrList))]
+    # if len(whatStrList)>0 and ~df.empty:
+    #     df = df[df[colStr].str.contains('|'.join(whatStrList))]
 
+    # if len(whatStrList) == 0:
+    #     whatStrList=['--qwerty--'] #make sure to return emtpy dataframe
+
+    if ~df.empty:
+        df = df[df[colStr].str.contains('|'.join(whatStrList))]
+        I = list(df[colStr].str.contains('|'.join(whatStrList)))
+        print(I)
     return df
 
-def _boutonfield(name='', label=[], list=[]):
+def _df_findSelectedCol(df, colStr, whatStrList ):
+    '''
+    Returns a list with truth-values, one for each column in df
+    Entry is True, if at least one of the comma-seperated tag in
+    the column colStr is in whatStrList.
+    '''
+    # if len(whatStrList)>0 and ~df.empty:
+    #     df = df[df[colStr].str.contains('|'.join(whatStrList))]
+
+    if ~df.empty:
+        bool = df[colStr].str.contains('|'.join(whatStrList))
+
+    print(bool)
+
+    return bool
+
+def _switchfield(name='', label=[], list=[]):
     d = {
         'name' : name,
         'label': label,
@@ -85,96 +106,130 @@ def _radiofield(df, name=''):
 def guidatafix():
     gd = {
         'totalnum' : len(DF),
-        'sortMode' : _boutonfield(name='sortMode', label=['sorted','shuffle']),
-        'displayMode' : _boutonfield(name='displayMode', label=['Grid','Stapel']),
-        'imSize' : _boutonfield(name='imSize', label=['k','K','g', 'G'], list=['200px','400px','600px','800px'])
+        'sortMode' : _switchfield(name='sortMode', label=['sorted','shuffle']),
+        'displayMode' : _switchfield(name='displayMode', label=['Grid','Stapel']),
+        'imSize' : _switchfield(name='imSize', label=['k','K','g', 'G'], list=['200px','400px','600px','800px'])
     }
 
     for name in DF_HEADERS:
         gd[name] = _radiofield(DF, name=name)
 
-    qpics_fn = DF['qImage_path'].to_list()
-    apics_fn = DF['aImage_path'].to_list()
-
     return gd
 
-def guidatauser_init(gdfix):
+def guidatauser_init(gdf):
+    '''
+    Sets the gui-buttons based on gdfix
+    '''
     ud = {
         'dropdownmenu_down': False,
-        'fromwhom': '',
-        'sortMode': {
-            'isSel': [True, False]
-            },
-        'displayMode': {
-            'isSel': [True, False]
-            },
-        'imSize': {
-            'isSel': [False, False, True, False]
-            }
+        'sortMode': 0,
+        'displayMode': 0,
+        'imSize': 2
     }
-
-    for name in DF_HEADERS:
-        ud[name] = {
-            'isSel': [0 for item in gdfix[name]['label']],
-            'num' : [0 for item in gdfix[name]['label']],
-            }
 
     return ud
 
-def guidatauser_updateSelection(gduser, data):
+def excFilter_init(gdf):
     '''
-    Determines the logic of the gui.
+    Sets the excercise filter using gdfix
+    '''
+    ef = {}
+    for name in DF_HEADERS:
+        ef[name] = [0 for item in gdf[name]['label']]
+
+    return ef
+
+def guidatauser_update(gdu, data):
+    '''
+    Updates gui user data gdu
     As all input elements are buttons, the data elements
     consist of a dict of the simple form {name, value}.
     '''
 
     if len(data)==0:
-        return gduser #nothing to update
+        return gdu #nothing to update
+
+    for key, value in data.items():
+        name = key #e.g. 'imSize'
+        val = int(value) #e.g. '0'
+
+    if name in ['sortMode','displayMode','imSize']:
+        #only one button is allowed to be active
+        #gdu['dropdownmenu_down'] = False
+        gdu[name] = val
+
+    return gdu
+
+def excFilter_update(ef, data):
+    '''
+    Updates the filter ef
+    As all input elements are buttons, the data elements
+    consist of a dict of the simple form {name, value}.
+    '''
+
+    if len(data)==0:
+        return ef #nothing to update
 
     for key, value in data.items():
         name = key #e.g. 'imSize'
         val = value #e.g. '0'
 
-    if name in ['sortMode','displayMode','imSize']:
-        #only one button is allowed to be active
-        gduser['dropdownmenu_down'] = False
-        gduser[name]['isSel'] = [False for i in gduser[name]['isSel']]
-        gduser[name]['isSel'][int(val)] = True
-
-    elif name in DF_HEADERS:
+    if name in DF_HEADERS:
         #update pressed button: 0=neutral, 1=include, 2=exclude
-        gduser['dropdownmenu_down'] = True
-        gduser[name]['isSel'][int(val)] = gduser[name]['isSel'][int(val)] + 1
-        if gduser[name]['isSel'][int(val)] > 2:
-            gduser[name]['isSel'][int(val)] = 0
+        #gduser['dropdownmenu_down'] = True
+        ef[name][int(val)] = ef[name][int(val)] + 1
+        if ef[name][int(val)] > 2:
+            ef[name][int(val)] = 0
 
-    gduser['fromwhom'] = name
+    return ef
 
-    return gduser
-
-def filterDataframe(gdf, gdu):
+def df_applyExcfilter(gdf, ef):
     '''
-    Create new dataframe from DF based on gdfix gdf and gduser gdu.
+    Create new dataframe from DF based on gdfix gdf and excercise filter ef.
     '''
     df = DF
     for name in DF_HEADERS:
-        R = gdu[name]['isSel'] #could be 0 (ignore),1 (include), or 2 (exclude)
+        R = ef[name] #could be 0 (ignore),1 (include), or 2 (exclude)
         wsl_incl = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] == 1 ]
         df = _df_filterByCol(df, name, wsl_incl )
-        wsl_exc  = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] != 2  ]
-        df = _df_filterByCol(df, name, wsl_incl )
+        wsl_excl  = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] != 2  ]
+        df = _df_filterByCol(df, name, wsl_excl )
+
+    # if shuffle:
+    #     df = df.sample(frac=1)
 
     return df
 
-def guidatauser_updateNum(df, gdf, gdu):
+def _complementBool(boollist):
+    return [not item for item in boollist]
+
+def df_applyExcfilter1(gdf, ef):
     '''
-    Updates all num fields in the dict based on (a filtered) df.
+    Create new dataframe from DF based on gdfix gdf and excercise filter ef.
+    '''
+    BOOL = [False for i in range(0,len(DF))]
+    for name in DF_HEADERS:
+        R = ef[name] #could be 0 (ignore),1 (include), or 2 (exclude)
+        wsl_incl = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] == 1 ]
+        df = _df_filterByCol(df, name, wsl_incl )
+        wsl_excl  = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] != 2  ]
+        df = _df_filterByCol(df, name, wsl_excl )
+
+    # if shuffle:
+    #     df = df.sample(frac=1)
+
+    return df
+
+def df_getExcnum(df, gdf):
+    '''
+    Gets number of exc in df for each keyword specified in gdf.
     If df is empty, the returned values are 0.
     '''
+    num = {}
     for name in DF_HEADERS:
-        gdu[name]['num'] = _df_compareWithList( df, name, gdf[name]['label'] )
+        num[name] = _df_compareWithList( df, name, gdf[name]['label'] )
 
-    return gdu
+    return num
 
 def df_getImagepaths(df):
     '''
@@ -196,25 +251,21 @@ def df_sortByCol( df, colStr ):
     df = df.sort_values(by=colStr, ascending=True)
     return df
 
-def df_shuffle( df ):
-    return df.sample(frac=1)
-
-
 
 gdfix = guidatafix()
+
 gduser = guidatauser_init(gdfix)
-gduser = guidatauser_updateSelection(gduser, {'kurzel':'0'})
-df = filterDataframe(gdfix, gduser)
-gduser = guidatauser_updateNum(df, gdfix, gduser)
-ipaths = df_getImagepaths(df)
+excfilter = excFilter_init(gdfix)
+#
+# gduser = guidatauser_update(gduser, {'imSize':'3'})
+excfilter = excFilter_update(excfilter, {'kurzel':'0'})
+#
+df = df_applyExcfilter(gdfix, excfilter)
+#print(df)
+# excnum = df_getExcnum(df, gdfix)
+# ipaths = df_getImagepaths(df)
 
-print(df)
-# print(gduser['imSize']['isSel'])
-# gduser = guidatauser_update(gduser, {'imSize':'1'})
-# print(gduser['imSize']['isSel'])
-print(gduser)
-print(ipaths)
-
+exit()
 
 # create the application object
 app = Flask(__name__)
@@ -247,47 +298,45 @@ def login():
 @app.route('/lul', methods=['POST', 'GET'])
 def lul():
 
-    if 'gduser' not in session or request.method == 'GET':
+    if 'gduser' not in session:
         session['gduser'] = guidatauser_init(gdfix)
 
-    gduser = session['gduser']
-    imPaths = df_getImagepaths([])
+    if 'excfilter' not in session:
+        session['excfilter'] = excFilter_init(gdfix)
 
-    #imPaths = df_getImagepaths([])
-    userdata=DATA
-    answ=[]
+    if request.method == 'GET':
+        answ = request.form.to_dict()
+        gduser = guidatauser_init(gdfix)
+        excfilter = excFilter_init(gdfix)
 
+        df = df_applyExcfilter(gdfix, excfilter)
+        excnum = df_getExcnum(df, gdfix)
+        impaths = df_getImagepaths(df)
 
-    #just for testing
-    if request.method == 'POST':
+        session['gduser'] = gduser
+        session['excfilter'] = excfilter
+
+    elif request.method == 'POST':
+        gduser = session['gduser']
+        excfilter = session['excfilter']
+
         answ = request.form.to_dict() #get response (one of the buttons)
-        gduser = guidatauser_updateSelection(gduser, answ) #update response
-        df = filterDataframe(gdfix, gduser) #filter dataframe
-        gduser = guidatauser_updateNum(df, gdfix, gduser) #update number of problems
-        session['gduser']=gduser
+        gduser = guidatauser_update(gduser, answ)
+        excfilter = excFilter_update(excfilter, answ)
 
-        if gduser['sortMode']['isSel'][0]:
-            df = df_sortByCol(df, 'diff')
+        df = df_applyExcfilter(gdfix, excfilter)
+        excnum = df_getExcnum(df, gdfix)
+        impaths = df_getImagepaths(df)
+
+        if 'kurzel' in answ or 'topic' in answ or 'basal' in answ or 'diff' in answ:
+            gduser['dropdownmenu_down'] = True
         else:
-            df = df_shuffle(df)
+            gduser['dropdownmenu_down'] = False
 
-        imPaths = df_getImagepaths(df) #get the image paths
+        session['gduser']=gduser
+        session['excfilter'] = excfilter
 
-        #
-        #     #check if I need to shuffle
-        #     r3 = request.form.getlist('sortMode')
-        #     if len(r3)>1: #yep
-        #         userdata.update_isSel( r3 )
-        #         df = df.sample(frac=1) #shuffle rows
-        #         userdata.SHOWFLAG = False
-        #
-        #     #update num and pics based on df
-        #     userdata.update_num(df)
-        #     userdata.update_pics(df)
-
-        #session["test"]="test2"
-
-    return render_template('lul.html', DATA=userdata, GDFIX=gdfix, GDUSER=gduser, IMPATHS=imPaths, answ=answ)
+    return render_template('lul.html', DF=df, GDFIX=gdfix, GDUSER=gduser, EXCFILTER=excfilter, EXCNUM=excnum, IMPATHS=impaths, answ=answ)
 
 #clears cache in browser
 # @app.after_request

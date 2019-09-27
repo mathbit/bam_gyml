@@ -14,49 +14,12 @@
 
 
 
-<!-- {{ r }}
-{{ s }}
-{{ t }}
-{{ t }}
-{{ u }}
-{{ v }} -->
-
-
-<!-- DATA SENT:<br>
-=========<br>
-COUNT={{c}}
-SHOWFLAG: {{DATA.SHOWFLAG}}
-TOTALNUM: {{DATA.totalNum}}
-FROMWHOM: {{DATA.FROMWHOM}}
-<br>
-imSize: {{DATA.imSize['isSel']}}<br>
-sortMode: {{DATA.sortMode['isSel']}}<br>
-displayMode: {{DATA.displayMode['isSel']}}<br>
-kurzel: {{DATA.kurzel['isSel']}}<br>
-topic: {{DATA.topic['isSel']}}<br>
-basal: {{DATA.basal['isSel']}}<br>
-diff: {{DATA.diff['isSel']}}<br>
-<br>
-filterList imSize: {{DATA.imSize['filterList']}}<br>
-filterList sortMode: {{DATA.sortMode['filterList']}}<br>
-filterList displayMode: {{DATA.displayMode['filterList']}}<br>
-filterList kurzel: {{DATA.kurzel['filterList']}}<br>
-filterList topic: {{DATA.topic['filterList']}}<br>
-filterList basal: {{DATA.basal['filterList']}}<br>
-filterList diff: {{DATA.diff['filterList']}} -->
-
-
-<!-- {{DATA.kurzel['num']}}<br>
-{{DATA.topic['num']}}<br>
-{{DATA.basal['num']}}<br>
-{{DATA.diff['num']}} -->
-
-<!-- {{ GDUSER.imSize.isSel }} -->
 
 UNDER HEAVY CONSTRUCTION ... <br>
 **{{ answ }}<br>
-
-
+{{ EXCFILTER }}<br>
+{{ EXCNUM }}<br>
+{{ DF }}
 
 <!-- layout of top part of page (see also css) -->
 <nav class="navbar navbar-dark bg-dark justify-content-between py-md-0 py-0" >
@@ -84,22 +47,22 @@ UNDER HEAVY CONSTRUCTION ... <br>
 
           <div class="card border-dark text-white bg-dark">
             <div class="card-header border-dark text-success m-0 p-0">Kürzel</div>
-            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.kurzel, GDUSER.kurzel) }}</div>
+            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.kurzel, EXCFILTER.kurzel, EXCNUM.kurzel) }}</div>
           </div>
 
           <div class="card border-dark text-white bg-dark">
             <div class="card-header border-dark text-success m-0 p-0">Topic</div>
-            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.topic, GDUSER.topic) }}</div>
+            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.topic, EXCFILTER.topic, EXCNUM.topic) }}</div>
           </div>
 
           <div class="card border-dark text-white bg-dark">
             <div class="card-header border-dark text-success m-0 p-0">Basal</div>
-            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.basal, GDUSER.basal) }}</div>
+            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.basal, EXCFILTER.basal, EXCNUM.basal) }}</div>
           </div>
 
           <div class="card border-dark text-white bg-dark">
             <div class="card-header border-dark text-success m-0 p-0">Schwierigkeitsgrad</div>
-            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.diff, GDUSER.diff) }}</div>
+            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.diff, EXCFILTER.diff, EXCNUM.diff) }}</div>
           </div>
 
         </div>
@@ -109,43 +72,36 @@ UNDER HEAVY CONSTRUCTION ... <br>
 </nav>
 
 
-{% if DATA.displayMode['filterList'][0]=='grid' %}
+{% if GDUSER.displayMode == 0 %}
 <!-- layout of images (cards) with bouton or image click-->
 <div class="flex-image-container">
-    {% for i in range(DATA.qpics|count) %}
+    {% for i in range(IMPATHS.ques|count) %}
     <div class="flex-image-item">
       <div class="image{{i}} collapse show">
           <a data-toggle="collapse" data-target=".image{{i}}">
-		      <img src="{{DATA.qpics[i]}}" alt="{{DATA.qpics[i]}}" height="auto" width="{{DATA.imSize['filterList'][0]}}">
+		      <img src="{{IMPATHS.ques[i]}}" alt="{{IMPATHS.ques[i]}}" height="auto" width="{{GDFIX.imSize.list[GDUSER.imSize]}}">
           </a>
       </div>
       <div class="image{{i}} collapse">
           <a data-toggle="collapse" data-target=".image{{i}}">
-		      <img src="{{DATA.apics[i]}}" alt="{{DATA.apics[i]}}" height="auto" width="{{DATA.imSize['filterList'][0]}}">
+		      <img src="{{IMPATHS.answ[i]}}" alt="{{IMPATHS.answ[i]}}" height="auto" width="{{GDFIX.imSize.list[GDUSER.imSize]}}">
           </a>
       </div>
-      <!-- <button type="button" class="btn btn-info" data-toggle="collapse" data-target=".image{{i}}"> </button> -->
     </div>
     {% endfor %}
 </div>
 
-{% elif DATA.displayMode['filterList'][0]=='stack' and DATA.qpics|count > 0 %}
+{% elif GDUSER.displayMode == 1 and IMPATHS.ques|count > 0 %}
 
 <!-- layout of images as carousel -->
 <div id="carouselExampleIndicators" class="carousel" >
-  <!-- <ol class="carousel-indicators">
-    {% for i in range(DATA.qpics|count) %}
-    <li data-target="#carouselExampleIndicators" data-slide-to="{{2*i}}" {% if i==0 %} class="active" {% endif %}></li>
-    {% endfor %}
-  </ol> -->
   <div class="carousel-inner" >
-    {% for i in range(DATA.qpics|count) %}
+    {% for i in range(IMPATHS.ques|count) %}
     <div class="carousel-item {% if i==0 %} active {% endif %}">
-      <!-- <img class="d-block align-items-center justify-content-center min-vh-100" src="{{DATA.qpics[i]}}" alt="{{DATA.qpics[i]}}" > -->
-      <img class="d-block mx-auto" src="{{DATA.qpics[i]}}" alt="{{DATA.qpics[i]}}" style="width:{{DATA.imSize['filterList'][0]}}">
+      <img class="d-block mx-auto" src="{{IMPATHS.ques[i]}}" alt="{{IMPATHS.ques[i]}}" style="width:{{GDFIX.imSize.list[GDUSER.imSize]}}">
     </div>
     <div class="carousel-item">
-      <img class="d-block mx-auto" src="{{DATA.apics[i]}}" alt="{{DATA.apics[i]}}" style="width:{{DATA.imSize['filterList'][0]}}">
+      <img class="d-block mx-auto" src="{{IMPATHS.answ[i]}}" alt="{{IMPATHS.answ[i]}}" style="width:{{GDFIX.imSize.list[GDUSER.imSize]}}">
     </div>
     {% endfor %}
   </div>
