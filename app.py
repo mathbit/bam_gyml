@@ -262,9 +262,10 @@ excfilter = excFilter_init(gdfix)
 # gduser = guidatauser_update(gduser, {'imSize':'3'})
 excfilter = excFilter_update(excfilter, {'kurzel':'6'})
 #
-df = df_applyExcfilter(gdfix, excfilter)
-for p in df['qImage_path']:
+#df = df_applyExcfilter(gdfix, excfilter)
+for p in DF['qImage_path']:
     print(p)
+
 
 # excnum = df_getExcnum(df, gdfix)
 # ipaths = df_getImagepaths(df)
