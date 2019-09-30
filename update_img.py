@@ -307,7 +307,7 @@ if __name__ == '__main__':
         sys.exit(print('You are not in the root directory of the project.'))
 
     DF = overleaflatex2df( PC.staticDir+PC.latexFile_orig)
-    exit()
+    
     OVERLEAF = False
     BB = False
 
