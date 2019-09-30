@@ -47,29 +47,24 @@ UNDER HEAVY CONSTRUCTION ... <br>
   <div class="collapse {% if GDUSER.dropdownmenu_down %} show {% endif %} shownavbar-collapse" id="collapsibleNavbar">
     <div class="navbar-nav">
       <div class="nav-item">
-        <div class="card-columns">
 
-          <div class="card border-dark text-white bg-dark">
-            <div class="card-header border-dark text-success m-0 p-0">Kürzel</div>
-            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.kurzel, EXCFILTER.kurzel, EXCNUM.kurzel) }}</div>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-auto">
+              {{ render_radiofield(GDFIX.kurzel, EXCFILTER.kurzel, EXCNUM.kurzel) }}
+            </div>
+            <div class="col-md-auto">
+              {{ render_radiofield(GDFIX.topic, EXCFILTER.topic, EXCNUM.topic) }}
+            </div>
+            <div class="col-md-auto">
+              {{ render_radiofield(GDFIX.basal, EXCFILTER.basal, EXCNUM.basal) }}
+            </div>
+            <div class="col-md-auto">
+              {{ render_radiofield(GDFIX.diff, EXCFILTER.diff, EXCNUM.diff) }}
+            </div>
           </div>
-
-          <div class="card border-dark text-white bg-dark">
-            <div class="card-header border-dark text-success m-0 p-0">Topic</div>
-            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.topic, EXCFILTER.topic, EXCNUM.topic) }}</div>
-          </div>
-
-          <div class="card border-dark text-white bg-dark">
-            <div class="card-header border-dark text-success m-0 p-0">Basal</div>
-            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.basal, EXCFILTER.basal, EXCNUM.basal) }}</div>
-          </div>
-
-          <div class="card border-dark text-white bg-dark">
-            <div class="card-header border-dark text-success m-0 p-0">Schwierigkeitsgrad</div>
-            <div class="card-body m-0 p-0">{{ render_radiofield(GDFIX.diff, EXCFILTER.diff, EXCNUM.diff) }}</div>
-          </div>
-
         </div>
+
       </div>
     </div>
   </div>

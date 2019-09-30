@@ -22,6 +22,7 @@ Flags:
 import pandas as pd
 import numpy as np
 import re, inspect, pypandoc, os.path, sys, subprocess
+from shutil import copyfile
 from PIL import Image, ImageOps
 from pdf2image import convert_from_path
 from pdf2image.exceptions import (
@@ -41,7 +42,7 @@ PC = Projconfig() #initialse variables
 #     'DF_file'       : 'latex/df.pkl'
 # }
 
-def overleaflatex2df( fn, imageDir='' ):
+def overleaflatex2df( fn, prefix='lul', imageDir='' ):
     """
     Extract problems from overlaf latex-file and stores them in dataframe.
     Thus it has a special formatting.
@@ -66,11 +67,12 @@ def overleaflatex2df( fn, imageDir='' ):
             s = item.split('.')
             s = s[0].split('-')
             pageNum = int(s[-1])
-            #sort into correct dictionary
-            if (pageNum % 2 == 0): #even
-                adirDict.update({int(pageNum/2):PC.staticDir+PC.imageDir+item})
-            else: #odd
-                qdirDict.update({int((pageNum+1)/2):PC.staticDir+PC.imageDir+item})
+            if s[0] == prefix:
+                #sort into correct dictionary
+                if (pageNum % 2 == 0): #even
+                    adirDict.update({int(pageNum/2):PC.staticDir+PC.imageDir+'/'+item})
+                else: #odd
+                    qdirDict.update({int((pageNum+1)/2):PC.staticDir+PC.imageDir+'/'+item})
 
     #initiate dataframe
     df = pd.DataFrame(columns=['kurzel', 'basal', 'topic', 'diff', 'question', 'answer','qImage_path','aImage_path'])
@@ -235,14 +237,29 @@ def deleteImages( imageDir ):
     counter = 0
     for item in dirs:
         fullpath = os.path.join(imageDir,item)
-        if os.path.isfile(fullpath):
-            os.remove(fullpath)
-            counter = counter + 1
+        os.remove(fullpath)
+        counter = counter + 1
 
     if counter > 0:
         print('... deleted ' + str(counter) + ' files in directory ' + imageDir)
 
-def createImagesFromPdf( imageDir, latexPdfFile):
+def copyImages( imageDir, prefix = 'q' ):
+    "copy images in image directory"
+    dirs = os.listdir(imageDir)
+    counter = 0
+    for item in dirs:
+        s = item.split('-')
+        fn = s[-1]
+        dst = prefix + '-' + fn
+        src = os.path.join(imageDir,item)
+        dst = os.path.join(imageDir,dst)
+        copyfile(src,dst)
+        counter = counter + 1
+
+    if counter > 0:
+        print('... copied ' + str(counter) + ' files')
+
+def createImagesFromPdf( imageDir, latexPdfFile, prefix = 'p'):
     "takes the pdf-file and converts each page into an image"
     images_from_path = convert_from_path(
         latexPdfFile,
@@ -253,6 +270,17 @@ def createImagesFromPdf( imageDir, latexPdfFile):
 
     print('... converted ' + latexPdfFile + ' to images in ' + imageDir)
 
+    #rename images
+    print('... rename images')
+    dirs = os.listdir(imageDir)
+    for item in dirs:
+        s = item.split('-')
+        fn = s[-1]
+        dst = prefix + '-' + fn
+        #print('{} --> {}'.format(item, dst))
+        item = os.path.join(imageDir,item)
+        dst = os.path.join(imageDir,dst)
+        os.rename(item, dst)
 
 def getBoundingBox( im ):
     "finds the bounding box of an image"
@@ -275,7 +303,7 @@ def getBoundingBox( im ):
 
     return bb
 
-def cropImages( imageDir, overleaf=False ):
+def cropImages( imageDir, prefix = 'lul', bb = []):
     '''Crop the files in the image directory.
     Format: bb=(xlow,ylow,xhigh,yhigh).
     If overleaf=True, use the boundingbox
@@ -285,17 +313,18 @@ def cropImages( imageDir, overleaf=False ):
     dirs = os.listdir(imageDir)
     counter = 0
     for item in dirs:
-        fullpath = os.path.join(imageDir,item)
-        if os.path.isfile(fullpath):
-            f, e = os.path.splitext(fullpath)
-            im = Image.open(fullpath).convert('RGB')
-            if overleaf:
-                bb = [165, 110, 1010, 700]
-            else:
-                bb = getBoundingBox(im)
-            im = im.crop( bb ) #corrected
-            im.save(f + '.jpg', "JPEG", quality=80)
-            counter = counter + 1
+        s = item.split('-')
+        if s[0] == prefix:
+            fullpath = os.path.join(imageDir,item)
+            if os.path.isfile(fullpath):
+                f, e = os.path.splitext(fullpath)
+                im = Image.open(fullpath).convert('RGB')
+                if len(bb) == 0:
+                    bb = getBoundingBox(im)
+
+                im = im.crop( bb ) #corrected
+                im.save(f + '.jpg', "JPEG", quality=80)
+                counter = counter + 1
 
     if counter > 0:
         print('... cropped ' + str(counter) + ' files in directory ' + imageDir)
@@ -307,7 +336,7 @@ if __name__ == '__main__':
         sys.exit(print('You are not in the root directory of the project.'))
 
     DF = overleaflatex2df( PC.staticDir+PC.latexFile_orig)
-    
+
     OVERLEAF = False
     BB = False
 
@@ -326,12 +355,19 @@ if __name__ == '__main__':
         print('... produce new user defined latex for images')
         df2latex_user( DF, PC.staticDir+PC.latexFile_new )
 
-    latex2pdf( PC.staticDir+PC.latexFile_new )
-    deleteImages( PC.staticDir+PC.imageDir ) #first delete all existing images
-    createImagesFromPdf( PC.staticDir+PC.imageDir, PC.staticDir+PC.latexPdfFile ) #each page in pdf file transaltes into an images
+    #create lul-images
+    latex2pdf( PC.staticDir+PC.latexFile_new ) #create new pdf file
+    deleteImages( PC.staticDir+PC.imageDir ) #delete all existing images
+    createImagesFromPdf( PC.staticDir+PC.imageDir, PC.staticDir+PC.latexPdfFile, prefix='lul' ) #each page in pdf file transaltes into an images
+
+    #create sus-images
+    copyImages(PC.staticDir+PC.imageDir, prefix = 'sus')
 
     if BB:
-        cropImages( PC.staticDir+PC.imageDir, OVERLEAF ) #removes empty white space of images
+        cropImages( PC.staticDir+PC.imageDir, prefix='lul', bb=PC.overleafbb_lul ) #removes empty white space of images
+        cropImages( PC.staticDir+PC.imageDir, prefix='sus', bb=PC.overleafbb_sus )
 
-    DF = overleaflatex2df( PC.staticDir+PC.latexFile_orig, PC.staticDir+PC.imageDir ) #update DF with links to images
-    DF.to_pickle( PC.staticDir+PC.DF_file ) #save dataframe
+    DF_lul = overleaflatex2df( PC.staticDir+PC.latexFile_orig, imageDir = PC.staticDir+PC.imageDir, prefix='lul') #update DF with links to images
+    DF_lul.to_pickle( PC.staticDir+PC.DF_file_lul ) #save dataframe
+    DF_sus = overleaflatex2df( PC.staticDir+PC.latexFile_orig, imageDir = PC.staticDir+PC.imageDir, prefix='sus') #update DF with links to images
+    DF_sus.to_pickle( PC.staticDir+PC.DF_file_sus ) #save dataframe

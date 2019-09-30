@@ -28,7 +28,7 @@
     {% elif field_filter[i] == 2 %} btn-danger
     {% endif %}">
     {{field_fix.label[i]}}
-    <span class="badge badge-dark badge-pill text-secondary">{{field_num[i]}}</span>
+    <span class="badge badge-dark badge-pill {% if field_num[i] == 0 %} text-secondary {% else %} text-light {% endif %}">{{field_num[i]}}</span>
 </button>
 {% endfor %}
 </div>

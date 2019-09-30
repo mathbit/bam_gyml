@@ -10,7 +10,7 @@ from projconfig import Projconfig #load project variables and stuff
 
 PC = Projconfig() #initialse local configuarion variables
 imageDir = PC.staticDir+PC.imageDir #where images sit
-DF_file = PC.staticDir+PC.DF_file #where df sits
+DF_file = PC.staticDir+PC.DF_file_sus #where df sits
 
 DF = pd.read_pickle( DF_file ) #load dataframe
 DF_HEADERS = ['kurzel', 'topic', 'basal', 'diff']
@@ -197,7 +197,7 @@ def df_applyExcfilter1(gdf, ef):
     return df
 
 
-def df_applyExcfilter(gdf, ef):
+def df_applyExcfilter(gdf, ef, shuffle = False):
     '''
     Create new dataframe from DF based on gdfix gdf and excercise filter ef.
     '''
@@ -217,10 +217,12 @@ def df_applyExcfilter(gdf, ef):
             BOOL_excl = [BOOL_excl[i] or b[i] for i in range(0,len(DF))]
 
         BOOL = [not BOOL_excl[i] and BOOL_incl[i] for i in range(0,len(DF))]
+        df = DF[BOOL]
 
-    # if shuffle:
-    #     df = df.sample(frac=1)
-    return DF[BOOL]
+    if shuffle:
+        df = df.sample(frac=1)
+
+    return df
 
 def df_getExcnum(df, gdf):
     '''
@@ -263,9 +265,8 @@ excfilter = excFilter_init(gdfix)
 excfilter = excFilter_update(excfilter, {'kurzel':'6'})
 #
 #df = df_applyExcfilter(gdfix, excfilter)
-for p in DF['qImage_path']:
-    print(p)
-
+# for p in DF['qImage_path']:
+#     print(p)
 
 # excnum = df_getExcnum(df, gdfix)
 # ipaths = df_getImagepaths(df)
@@ -329,7 +330,7 @@ def lul():
         gduser = guidatauser_update(gduser, answ)
         excfilter = excFilter_update(excfilter, answ)
 
-        df = df_applyExcfilter(gdfix, excfilter)
+        df = df_applyExcfilter(gdfix, excfilter, shuffle = gduser['sortMode']==1)
         excnum = df_getExcnum(df, gdfix)
         impaths = df_getImagepaths(df)
 
