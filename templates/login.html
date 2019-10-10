@@ -1,38 +1,25 @@
-<!DOCTYPE=html>
-<html>
-<head>
-  <title>BAM Login</title>
-  <meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
-  <link href="{{ url_for('static', filename='css/my.css') }}" rel="stylesheet" media="screen" type="text/css">
-  <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-</head>
+{% extends 'base.html' %}
 
+{% block title %} BAM - Login {% endblock %}
 
-<body>
-  <div>Please enter username and password</div>
-  <form method="POST">
-      {{ form.csrf_token }}
-      {{ form.username.label }}
-      {{ form.username }}
-      <ul class="errors">
-      {% for error in form.username.errors %}
-        <li style="color:red;">{{ error }}</li>
-      {% endfor %}
-      </ul>
-      {{ form.password.label }}
-      {{ form.password }}
-      <ul>
-      {% for error in form.password.errors %}
-        <li style="color:red;">{{ error }}</li>
-      {% endfor %}
-      </ul>
-      {{ form.language.label }}
-      {{ form.language }}
-      <input type="submit" value="Submit">
-  </form>
+{% block content %}
 
-</body>
-</html>
+{{ p1 }}
+{{ p2 }}
+
+<nav class="navbar navbar-dark bg-dark justify-content-between py-md-0 py-0" >
+  <div class="container-fluid" >
+      <!-- Title -->
+      <a class="navbar-brand" href="#">Basale Aufgaben Mathematik </a>
+      <!-- input für image size, mode, etc -->
+      <div class="btn-toolbar" >
+          <form class="form-inline my-2 my-lg-0" method="POST">
+            {{ form.csrf_token }}
+            {{ form.username(placeholder='Kürzel', class='form-control form-control-sm mr-sm-2') }}
+            {{ form.password(placeholder='password', class='form-control form-control-sm mr-sm-2') }}
+            <input class="form-control btn-outline-success btn-dark btn-sm mr-sm-2" type="submit" value="Submit">
+          </form>
+      </div>
+  </div>
+</nav>
+{% endblock %}

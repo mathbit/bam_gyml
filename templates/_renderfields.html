@@ -1,12 +1,12 @@
 {% macro render_boutonfield(field_fix, field_user) %}
-<form name="form" id="{{field_fix.name}}" action="" method="post">
+<form class="form-inline my-2 my-lg-0" name="form" id="{{field_fix.name}}" action="" method="post">
 <div class="btn-group mr-2">
   {% for i in range(0,field_fix.num) %}
   <button
     type="submit"
     name="{{field_fix.name}}"
     value="{{field_fix.value[i]}}"
-    class="btn btn-sm mt-3 {% if field_user == i %} btn-success {% else %} btn-secondary {% endif %}">
+    class="btn btn-sm {% if field_user == i %} btn-success {% else %} btn-secondary {% endif %}">
     {{field_fix.label[i]}}
   </button>
   {% endfor %}
@@ -29,6 +29,22 @@
     {% endif %}">
     {{field_fix.label[i]}}
     <span class="badge badge-dark badge-pill {% if field_num[i] == 0 %} text-secondary {% else %} text-light {% endif %}">{{field_num[i]}}</span>
+</button>
+{% endfor %}
+</div>
+</form>
+{% endmacro %}
+
+{% macro render_filterselfield(field) %}
+<form name="form" id="{{field.name}}-form" action="" method="post">
+<div class="btn-group btn-group-vertical mr-2", role="group">
+{% for i in range(0, field.num) %}
+<button
+  type="submit"
+  name="{{field.name}}"
+  value="{{field.filterid[i]}}"
+  class="btn btn-sm m-0 p-0 text-left">
+    {{field.filtername[i]}}
 </button>
 {% endfor %}
 </div>

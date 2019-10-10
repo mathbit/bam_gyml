@@ -1,8 +1,10 @@
 # import the Flask class from the flask module
 from flask import Flask, render_template, url_for, request, redirect, session
+from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectMultipleField
 from wtforms.validators import InputRequired, Length, AnyOf
+import sqlite3
 import pandas as pd
 import os, subprocess
 from collections import Counter
@@ -135,42 +137,24 @@ def excFilter_init(gdf):
 
     return ef
 
-def guidatauser_update(gdu, data):
+def guidatauser_update(gdu, name='', val=''):
     '''
     Updates gui user data gdu
-    As all input elements are buttons, the data elements
-    consist of a dict of the simple form {name, value}.
     '''
 
-    if len(data)==0:
-        return gdu #nothing to update
-
-    for key, value in data.items():
-        name = key #e.g. 'imSize'
-        val = int(value) #e.g. '0'
-
-    if name in ['sortMode','displayMode','imSize']:
+    if len(name)>0 and name in ['sortMode','displayMode','imSize']:
         #only one button is allowed to be active
         #gdu['dropdownmenu_down'] = False
-        gdu[name] = val
+        gdu[name] = int(val)
 
     return gdu
 
-def excFilter_update(ef, data):
+def excFilter_update(ef, name='', val=''):
     '''
     Updates the filter ef
-    As all input elements are buttons, the data elements
-    consist of a dict of the simple form {name, value}.
     '''
 
-    if len(data)==0:
-        return ef #nothing to update
-
-    for key, value in data.items():
-        name = key #e.g. 'imSize'
-        val = value #e.g. '0'
-
-    if name in DF_HEADERS:
+    if len(name)>0 and name in DF_HEADERS:
         #update pressed button: 0=neutral, 1=include, 2=exclude
         #gduser['dropdownmenu_down'] = True
         ef[name][int(val)] = ef[name][int(val)] + 1
@@ -190,9 +174,6 @@ def df_applyExcfilter1(gdf, ef):
         df = _df_filterByCol(df, name, wsl_incl )
         wsl_excl  = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] != 2  ]
         df = _df_filterByCol(df, name, wsl_excl )
-
-    # if shuffle:
-    #     df = df.sample(frac=1)
 
     return df
 
@@ -256,40 +237,121 @@ def df_sortByCol( df, colStr ):
     return df
 
 
-gdfix = guidatafix()
-
-gduser = guidatauser_init(gdfix)
-excfilter = excFilter_init(gdfix)
-#
-# gduser = guidatauser_update(gduser, {'imSize':'3'})
-excfilter = excFilter_update(excfilter, {'kurzel':'6'})
-#
-#df = df_applyExcfilter(gdfix, excfilter)
-# for p in DF['qImage_path']:
-#     print(p)
-
-# excnum = df_getExcnum(df, gdfix)
-# ipaths = df_getImagepaths(df)
 
 
 
 # create the application object
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///luldata.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SECRET_KEY"] = "bigsecret!"
 app.config["DEBUG"] = True
 
+db = SQLAlchemy(app)
+
+gdfix = guidatafix()
+
+# to create the table container for the first time, go to console
+# type python, and do the folloing on the python prompt:
+# >>> from app import db
+# >>> db.create_all()
+class Member(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(30), unique=True)
+    password = db.Column(db.String(30))
+
+    filters = db.relationship('Filter', backref = 'filter', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Member %r>' % self.username
+
+class Filter(db.Model):
+    '''
+    Strings decoding the seslections, e.g. '00110120'
+    '''
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    kurzel = db.Column(db.String(50))
+    topic = db.Column(db.String(50))
+    basal = db.Column(db.String(10))
+    diff = db.Column(db.String(10))
+    member_id = db.Column(db.Integer, db.ForeignKey('member.id'))
+
+def db_addMembers():
+    '''
+    Add the Kürzel to the database member.
+    Do this only by hand from the console as follows:
+    >>> from app import db
+    >>> from app import Member
+    >>> from app import addMembers
+    >>> db_addMembers()
+    '''
+    kurzellist = gdfix['kurzel']['label']
+    for k in kurzellist:
+        m = Member(username = k, password = 'empty')
+        db.session.add(m)
+        db.session.commit()
+
+def db_addfilter(username, filtername, filter):
+    '''
+    adds a filter to the specifiend username
+    '''
+    mem = Member.query.filter(Member.username == username).first()
+    fil = Filter(name=filtername,
+            kurzel = ''.join(map(str, filter['kurzel'])), #convert list [0,1,0,1] to string '0101'
+            topic = ''.join(map(str, filter['topic'])),
+            basal = ''.join(map(str, filter['basal'])),
+            diff = ''.join(map(str, filter['diff'])),
+            member_id = mem.id
+            )
+    db.session.add(fil)
+    db.session.commit()
+
+def db_getfilternames(username):
+    '''
+    Get all filters for username, also their database id's
+    '''
+    teac = {}
+
+    mem = Member.query.filter(Member.username == username).first()
+    fil = mem.filters.all()
+
+    teac['name'] = username
+    teac['filterid'] = [fil[i].id for i in range(0,len(fil))]
+    teac['filtername'] = [fil[i].name for i in range(0,len(fil))]
+    teac['num'] =  len(fil)
+
+    return teac
+
+
+
+# def connect_db():
+#     'connects to db'
+#     sql = sqlite3.connect('/home/tom/prgs/bam_gyml/data.db')
+#     sql.row_factory = sqlite3.Row
+#     return sql
+#
+# def get_db():
+#     if not hasattr(g, 'sqlite3'):
+#         g.sqlite_db = connect_db()
+#     return g.sqlite_db
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired(), Length(min=2, max=10, message='Must be between 2 and 10 characters')])
-    password = PasswordField('Password', validators=[InputRequired(), AnyOf(values=['bam', 'gym'])])
-    language = SelectMultipleField(u'Programming Language', choices=[('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text')])
+    username = StringField('Username', validators=[InputRequired(), AnyOf(gdfix['kurzel']['label'], message='Kürzel in Overleaf')] )
+    password = PasswordField('Password', validators=[InputRequired()])
+
+class FilterNameForm(FlaskForm):
+    filtername = StringField('Username', validators=[InputRequired()])
 
 
+# @app.teardown_appcontext
+# def close_db(error):
+#     if hasattr(g, 'sqlite_db'):
+#         g.sqlite_db.close()
 
-# use decorators to link the function to a url
+
 @app.route('/')
 def index():
-    # return redirect(url_for('lul'))
     return redirect(url_for('login'))
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -297,12 +359,29 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        return 'username: {}, password: {}, language: {}'.format(form.username.data, form.password.data, form.language.data)
+        user = form.username.data
+        passwd = form.password.data
+        res = Member.query.filter(Member.username == user).first()
+        passwd1 = res.password
+
+        if passwd1 == passwd:
+            session['teacher'] = user
+            return redirect(url_for('lul'))
 
     return render_template('login.html', form=form)
 
+@app.route('/view_db')
+def view_db():
+    db = get_db()
+
 @app.route('/lul', methods=['POST', 'GET'])
 def lul():
+
+    form = FilterNameForm()
+    teacher = {}
+
+    if 'teacher' not in session:
+        return redirect(url_for('login'))
 
     if 'gduser' not in session:
         session['gduser'] = guidatauser_init(gdfix)
@@ -319,30 +398,42 @@ def lul():
         excnum = df_getExcnum(df, gdfix)
         impaths = df_getImagepaths(df)
 
+        teacher = db_getfilternames(session['teacher'])
+
         session['gduser'] = gduser
         session['excfilter'] = excfilter
 
     elif request.method == 'POST':
         gduser = session['gduser']
         excfilter = session['excfilter']
+        teacher = db_getfilternames(session['teacher'])
 
         answ = request.form.to_dict() #get response (one of the buttons)
-        gduser = guidatauser_update(gduser, answ)
-        excfilter = excFilter_update(excfilter, answ)
+        for key, value in answ.items(): #take last one
+            name = key #e.g. 'imSize'
+            val = value #e.g. 0
+
+        gduser = guidatauser_update(gduser, name = name, val = val)
+        excfilter = excFilter_update(excfilter, name = name, val = val)
 
         df = df_applyExcfilter(gdfix, excfilter, shuffle = gduser['sortMode']==1)
         excnum = df_getExcnum(df, gdfix)
         impaths = df_getImagepaths(df)
 
-        if 'kurzel' in answ or 'topic' in answ or 'basal' in answ or 'diff' in answ:
+        if name in DF_HEADERS:
             gduser['dropdownmenu_down'] = True
         else:
             gduser['dropdownmenu_down'] = False
 
+        if form.validate_on_submit(): #a new filtername was added for the current selection
+            db_addfilter(teacher['name'], form.filtername.data, excfilter)
+            teacher = db_getfilternames(session['teacher'])
+            gduser['dropdownmenu_down'] = True
+
         session['gduser']=gduser
         session['excfilter'] = excfilter
 
-    return render_template('lul.html', DF=df, GDFIX=gdfix, GDUSER=gduser, EXCFILTER=excfilter, EXCNUM=excnum, IMPATHS=impaths, answ=answ)
+    return render_template('lul.html', TEACHER=teacher, form=form, GDFIX=gdfix, GDUSER=gduser, EXCFILTER=excfilter, EXCNUM=excnum, IMPATHS=impaths, answ=answ)
 
 #clears cache in browser
 # @app.after_request

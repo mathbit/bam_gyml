@@ -1,25 +1,14 @@
-{% from "_renderfields.html" import render_boutonfield, render_radiofield %}
+{% from "_renderfields.html" import render_boutonfield, render_radiofield, render_filterselfield %}
 
-<!DOCTYPE=html>
-<html>
-<head>
-  <title>BAM</title>
-  <meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
-  <link href="{{ url_for('static', filename='css/my.css') }}" rel="stylesheet" media="screen" type="text/css">
-  <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-</head>
+{% extends 'base.html' %}
 
-
-
+{% block content %}
 
 UNDER HEAVY CONSTRUCTION ... <br>
-**{{ answ }}<br>
+**{{ answ }}
 <!-- {{ EXCFILTER }}<br>
 {{ EXCNUM }}<br>
-{{ DF }} -->
+{{ DF }}
 
 <!-- {% for p in IMPATHS.ques %}
 {{ p }}<br>
@@ -29,13 +18,12 @@ UNDER HEAVY CONSTRUCTION ... <br>
 <nav class="navbar navbar-dark bg-dark justify-content-between py-md-0 py-0" >
   <div class="container-fluid" >
       <!-- Title -->
-      <a class="navbar-brand" href="#">Basale Aufgaben Mathematik ({{IMPATHS.ques|count}}/{{GDFIX.totalnum}})</a>
+      <a class="navbar-brand" href="#">Basale Aufgaben Mathematik ({{IMPATHS.ques|count}}/{{GDFIX.totalnum}}) -- {{ TEACHER.name }}</a>
       <!-- input für image size, mode, etc -->
       <div class="btn-toolbar" >
         {{ render_boutonfield( GDFIX.imSize, GDUSER.imSize)}}
         {{ render_boutonfield( GDFIX.displayMode, GDUSER.displayMode)}}
         {{ render_boutonfield( GDFIX.sortMode, GDUSER.sortMode)}}
-
       </div>
       <!-- Toggler/collapsibe Button -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -62,6 +50,19 @@ UNDER HEAVY CONSTRUCTION ... <br>
             <div class="col-md-auto">
               {{ render_radiofield(GDFIX.diff, EXCFILTER.diff, EXCNUM.diff) }}
             </div>
+
+            <!-- teacher filters -->
+            <div class="col-md-auto">
+              <font color="white">Filter für {{ TEACHER.name }}:</font>
+              {{ render_filterselfield(TEACHER) }}
+              <form class="form-inline my-2 my-lg-0" method="POST">
+                {{ form.csrf_token }}
+                {{ form.filtername(placeholder='Filtername', class='form-control form-control-sm mr-sm-2') }}
+                <input class="form-control btn-outline-success btn-dark btn-sm mr-sm-2" type="submit" value="Füge Selektion hinzu">
+              </form>
+            </div>
+
+
           </div>
         </div>
 
@@ -117,7 +118,4 @@ UNDER HEAVY CONSTRUCTION ... <br>
 {% endif %}
 
 
-
-
-</body>
-</html>
+{% endblock %}

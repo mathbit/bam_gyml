@@ -149,3 +149,11 @@ Heroku bash:
 Heroku debugging:
 =================
 > heroku local
+
+
+
+sqlite3
+=======
+is already installed in linux
+Setup a database:
+sqlite3 data.db
