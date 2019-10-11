@@ -7,6 +7,14 @@ h2 {
     text-align:center
 }
 
+hr {
+  height: 1px;
+  color: red;
+  background-color: red;
+  border: none;
+}
+
+
 img {
 	display: block;
 }

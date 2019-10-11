@@ -73,9 +73,6 @@ def _df_findSelectedCol(df, colStr, whatStrList ):
     Entry is True, if at least one of the comma-seperated tag in
     the column colStr is in whatStrList.
     '''
-    # if len(whatStrList)>0 and ~df.empty:
-    #     df = df[df[colStr].str.contains('|'.join(whatStrList))]
-
     if ~df.empty:
         bool = df[colStr].str.contains('|'.join(whatStrList))
 
@@ -305,6 +302,7 @@ def db_addBucket(username, buckname, ef):
             )
     db.session.add(fil)
     db.session.commit()
+    return fil.id
 
 def db_delBucket(id):
     '''
@@ -336,12 +334,15 @@ def guibucket_init():
 
 def guibucket_update(gdb, ef, name='', val=-1):
     if name == 'selbucket':
-        if gdb['selbucket']<0 or gdb['selbucket'] != int(val): #no current selection exists, or different one selected
-            gdb['selbucket'] = int(val)
+        id = int(val)
+        if gdb['selbucket']<0 or gdb['selbucket'] != id: #no current selection exists, or different one selected
+            gdb['selbucket'] = id
             #read from database
-            
-
-
+            b = Bucket.query.filter(Bucket.id == id).first()
+            ef['kurzel'] = [int(i) for i in b.kurzel]
+            ef['topic'] = [int(i) for i in b.topic]
+            ef['basal'] = [int(i) for i in b.basal]
+            ef['diff'] = [int(i) for i in b.diff]
         else: #click on already selected bucket
             gdb['selbucket'] = -1
             ef = excFilter_clear(ef)
@@ -349,31 +350,20 @@ def guibucket_update(gdb, ef, name='', val=-1):
     elif name in DF_HEADERS:
         gdb['selbucket'] = -1
 
-    if name == 'bucketname':
-        ef = excFilter_clear(ef)
-        gdb['selbucket'] = -1
+    # if name == 'bucketname':
+    #     gdb['selbucket'] = -1
 
     if name == 'delbucket':
         ef = excFilter_clear(ef)
+        id = int(val)
+        db_delBucket(id)
         gdb['selbucket'] = -1
-        gdb['delbucket'] = int(val)
+        gdb['delbucket'] = id
     else:
         gdb['delbucket'] = -1
 
     return gdb, ef
 
-
-
-# def connect_db():
-#     'connects to db'
-#     sql = sqlite3.connect('/home/tom/prgs/bam_gyml/data.db')
-#     sql.row_factory = sqlite3.Row
-#     return sql
-#
-# def get_db():
-#     if not hasattr(g, 'sqlite3'):
-#         g.sqlite_db = connect_db()
-#     return g.sqlite_db
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(), AnyOf(gdfix['kurzel']['label'], message='Kürzel in Overleaf')] )
@@ -451,7 +441,6 @@ def lul():
         gduser = session['gduser']
         gdbucket = session['gdbucket']
         excfilter = session['excfilter']
-        teacher = db_getBucketnames(session['teacher'])
 
         answ = request.form.to_dict() #get response (one of the buttons)
         for key, v in answ.items(): #take last one
@@ -467,13 +456,10 @@ def lul():
         impaths = df_getImagepaths(df)
 
         if form.validate_on_submit(): #a new filtername was added for the current selection
-            db_addBucket(teacher['name'], form.bucketname.data, excfilter)
-            teacher = db_getBucketnames(session['teacher'])
+            id = db_addBucket(session['teacher'], form.bucketname.data, excfilter)
+            gdbucket['selbucket']=id
 
-        if int(gdbucket['delbucket'])>0:
-            id = int(int(gdbucket['delbucket']))
-            db_delBucket(id)
-            teacher = db_getBucketnames(session['teacher'])
+        teacher = db_getBucketnames(session['teacher'])
 
         session['gduser'] = gduser
         session['gdbucket'] = gdbucket
