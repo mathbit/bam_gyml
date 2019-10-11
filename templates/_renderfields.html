@@ -23,7 +23,7 @@
   name="{{field_fix.name}}"
   value="{{field_fix.value[i]}}"
   class="btn btn-sm m-0 p-0 text-left
-    {% if field_filter[i] == 0 %} btn-secondary
+    {% if field_filter[i] == 0 %} btn-dark
     {% elif field_filter[i] == 1 %} btn-success
     {% elif field_filter[i] == 2 %} btn-danger
     {% endif %}">
@@ -35,17 +35,26 @@
 </form>
 {% endmacro %}
 
-{% macro render_filterselfield(field) %}
+{% macro render_filterselfield(field, selbucket) %}
 <form name="form" id="{{field.name}}-form" action="" method="post">
 <div class="btn-group btn-group-vertical mr-2", role="group">
 {% for i in range(0, field.num) %}
-<button
-  type="submit"
-  name="{{field.name}}"
-  value="{{field.filterid[i]}}"
-  class="btn btn-sm m-0 p-0 text-left">
-    {{field.filtername[i]}}
-</button>
+<div class="btn-group btn-group-horizontal mr-2", role="group">
+  <button
+    type="submit"
+    name="selbucket"
+    value="{{field.bucketid[i]}}"
+    class="btn btn-sm m-0 p-0 text-left {% if selbucket == field.bucketid[i] %} btn-info {% else %} btn-dark {% endif %}">
+      {{field.bucketname[i]}}: {{field.bucketid[i]}} {{selbucket}}
+  </button>
+  <button
+    type="submit"
+    name="delbucket"
+    value="{{field.bucketid[i]}}"
+    class="btn btn-sm m-0 p-0 text-right btn-dark">
+      <i class="fas fa-trash-alt fa-sm"></i>
+  </button>
+</div>
 {% endfor %}
 </div>
 </form>

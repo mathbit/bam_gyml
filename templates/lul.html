@@ -53,12 +53,12 @@ UNDER HEAVY CONSTRUCTION ... <br>
 
             <!-- teacher filters -->
             <div class="col-md-auto">
-              <font color="white">Filter für {{ TEACHER.name }}:</font>
-              {{ render_filterselfield(TEACHER) }}
+              <font color="white">Buckets für {{ TEACHER.name }}:</font>
+              {{ render_filterselfield(TEACHER, GDBUCKET.selbucket) }}
               <form class="form-inline my-2 my-lg-0" method="POST">
                 {{ form.csrf_token }}
-                {{ form.filtername(placeholder='Filtername', class='form-control form-control-sm mr-sm-2') }}
-                <input class="form-control btn-outline-success btn-dark btn-sm mr-sm-2" type="submit" value="Füge Selektion hinzu">
+                {{ form.bucketname(placeholder='Bucketname für Selektion', class='form-control form-control-sm mr-sm-2') }}
+                <input class="form-control btn-outline-success btn-dark btn-sm mr-sm-2" type="submit" value="+">
               </form>
             </div>
 

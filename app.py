@@ -114,15 +114,15 @@ def guidatafix():
 
     return gd
 
-def guidatauser_init(gdf):
+def guidatauser_init():
     '''
-    Sets the gui-buttons based on gdfix
+    Sets the gui-buttons
     '''
     ud = {
         'dropdownmenu_down': False,
         'sortMode': 0,
         'displayMode': 0,
-        'imSize': 2
+        'imSize': 2,
     }
 
     return ud
@@ -137,6 +137,15 @@ def excFilter_init(gdf):
 
     return ef
 
+def excFilter_clear(ef):
+    '''
+    Sets all values in excfilter to 0
+    '''
+    for name in DF_HEADERS:
+        ef[name] = [0 for item in ef[name]]
+
+    return ef
+
 def guidatauser_update(gdu, name='', val=''):
     '''
     Updates gui user data gdu
@@ -147,36 +156,26 @@ def guidatauser_update(gdu, name='', val=''):
         #gdu['dropdownmenu_down'] = False
         gdu[name] = int(val)
 
+    if name in DF_HEADERS or name in ['selbucket','delbucket', 'bucketname']:
+        gdu['dropdownmenu_down'] = True
+    else:
+        gdu['dropdownmenu_down'] = False
+
     return gdu
 
 def excFilter_update(ef, name='', val=''):
     '''
     Updates the filter ef
     '''
-
     if len(name)>0 and name in DF_HEADERS:
         #update pressed button: 0=neutral, 1=include, 2=exclude
         #gduser['dropdownmenu_down'] = True
-        ef[name][int(val)] = ef[name][int(val)] + 1
-        if ef[name][int(val)] > 2:
-            ef[name][int(val)] = 0
+        v = int(val)
+        ef[name][v] = ef[name][v] + 1
+        if ef[name][v] > 2:
+            ef[name][v] = 0
 
     return ef
-
-def df_applyExcfilter1(gdf, ef):
-    '''
-    Create new dataframe from DF based on gdfix gdf and excercise filter ef.
-    '''
-    df = DF
-    for name in DF_HEADERS:
-        R = ef[name] #could be 0 (ignore),1 (include), or 2 (exclude)
-        wsl_incl = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] == 1 ]
-        df = _df_filterByCol(df, name, wsl_incl )
-        wsl_excl  = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] != 2  ]
-        df = _df_filterByCol(df, name, wsl_excl )
-
-    return df
-
 
 def df_applyExcfilter(gdf, ef, shuffle = False):
     '''
@@ -260,12 +259,12 @@ class Member(db.Model):
     username = db.Column(db.String(30), unique=True)
     password = db.Column(db.String(30))
 
-    filters = db.relationship('Filter', backref = 'filter', lazy='dynamic')
+    buckets = db.relationship('Bucket', backref = 'bucket', lazy='dynamic')
 
     def __repr__(self):
         return '<Member %r>' % self.username
 
-class Filter(db.Model):
+class Bucket(db.Model):
     '''
     Strings decoding the seslections, e.g. '00110120'
     '''
@@ -292,36 +291,76 @@ def db_addMembers():
         db.session.add(m)
         db.session.commit()
 
-def db_addfilter(username, filtername, filter):
+def db_addBucket(username, buckname, ef):
     '''
     adds a filter to the specifiend username
     '''
     mem = Member.query.filter(Member.username == username).first()
-    fil = Filter(name=filtername,
-            kurzel = ''.join(map(str, filter['kurzel'])), #convert list [0,1,0,1] to string '0101'
-            topic = ''.join(map(str, filter['topic'])),
-            basal = ''.join(map(str, filter['basal'])),
-            diff = ''.join(map(str, filter['diff'])),
+    fil = Bucket(name=buckname,
+            kurzel = ''.join(map(str, ef['kurzel'])), #convert list [0,1,0,1] to string '0101'
+            topic = ''.join(map(str, ef['topic'])),
+            basal = ''.join(map(str, ef['basal'])),
+            diff = ''.join(map(str, ef['diff'])),
             member_id = mem.id
             )
     db.session.add(fil)
     db.session.commit()
 
-def db_getfilternames(username):
+def db_delBucket(id):
     '''
-    Get all filters for username, also their database id's
+    adds a filter to the specifiend username
+    '''
+    b = Bucket.query.filter(Bucket.id == id).first()
+    db.session.delete(b)
+    db.session.commit()
+
+def db_getBucketnames(username):
+    '''
+    Get all buckets for username, also their database id's
     '''
     teac = {}
 
     mem = Member.query.filter(Member.username == username).first()
-    fil = mem.filters.all()
+    fil = mem.buckets.all()
 
     teac['name'] = username
-    teac['filterid'] = [fil[i].id for i in range(0,len(fil))]
-    teac['filtername'] = [fil[i].name for i in range(0,len(fil))]
+    teac['bucketid'] = [fil[i].id for i in range(0,len(fil))]
+    teac['bucketname'] = [fil[i].name for i in range(0,len(fil))]
     teac['num'] =  len(fil)
 
     return teac
+
+def guibucket_init():
+    ud = {'selbucket': -1, 'delbucket': -1}
+    return ud
+
+def guibucket_update(gdb, ef, name='', val=-1):
+    if name == 'selbucket':
+        if gdb['selbucket']<0 or gdb['selbucket'] != int(val): #no current selection exists, or different one selected
+            gdb['selbucket'] = int(val)
+            #read from database
+            
+
+
+        else: #click on already selected bucket
+            gdb['selbucket'] = -1
+            ef = excFilter_clear(ef)
+
+    elif name in DF_HEADERS:
+        gdb['selbucket'] = -1
+
+    if name == 'bucketname':
+        ef = excFilter_clear(ef)
+        gdb['selbucket'] = -1
+
+    if name == 'delbucket':
+        ef = excFilter_clear(ef)
+        gdb['selbucket'] = -1
+        gdb['delbucket'] = int(val)
+    else:
+        gdb['delbucket'] = -1
+
+    return gdb, ef
 
 
 
@@ -340,8 +379,8 @@ class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(), AnyOf(gdfix['kurzel']['label'], message='Kürzel in Overleaf')] )
     password = PasswordField('Password', validators=[InputRequired()])
 
-class FilterNameForm(FlaskForm):
-    filtername = StringField('Username', validators=[InputRequired()])
+class BucketNameForm(FlaskForm):
+    bucketname = StringField('Username', validators=[InputRequired()])
 
 
 # @app.teardown_appcontext
@@ -377,7 +416,7 @@ def view_db():
 @app.route('/lul', methods=['POST', 'GET'])
 def lul():
 
-    form = FilterNameForm()
+    form = BucketNameForm()
     teacher = {}
 
     if 'teacher' not in session:
@@ -386,54 +425,61 @@ def lul():
     if 'gduser' not in session:
         session['gduser'] = guidatauser_init(gdfix)
 
+    if 'gdbucket' not in session:
+        session['gdbucket'] = guibucket_init()
+
     if 'excfilter' not in session:
         session['excfilter'] = excFilter_init(gdfix)
 
     if request.method == 'GET':
         answ = request.form.to_dict()
-        gduser = guidatauser_init(gdfix)
+        gduser = guidatauser_init()
+        gdbucket = guibucket_init()
         excfilter = excFilter_init(gdfix)
 
         df = df_applyExcfilter(gdfix, excfilter)
         excnum = df_getExcnum(df, gdfix)
         impaths = df_getImagepaths(df)
 
-        teacher = db_getfilternames(session['teacher'])
+        teacher = db_getBucketnames(session['teacher'])
 
         session['gduser'] = gduser
+        session['gdbucket'] = gdbucket
         session['excfilter'] = excfilter
 
     elif request.method == 'POST':
         gduser = session['gduser']
+        gdbucket = session['gdbucket']
         excfilter = session['excfilter']
-        teacher = db_getfilternames(session['teacher'])
+        teacher = db_getBucketnames(session['teacher'])
 
         answ = request.form.to_dict() #get response (one of the buttons)
-        for key, value in answ.items(): #take last one
+        for key, v in answ.items(): #take last one
             name = key #e.g. 'imSize'
-            val = value #e.g. 0
+            val = v #e.g. 0
 
         gduser = guidatauser_update(gduser, name = name, val = val)
         excfilter = excFilter_update(excfilter, name = name, val = val)
+        gdbucket, excfilter = guibucket_update(gdbucket, excfilter, name = name, val = val)
 
         df = df_applyExcfilter(gdfix, excfilter, shuffle = gduser['sortMode']==1)
         excnum = df_getExcnum(df, gdfix)
         impaths = df_getImagepaths(df)
 
-        if name in DF_HEADERS:
-            gduser['dropdownmenu_down'] = True
-        else:
-            gduser['dropdownmenu_down'] = False
-
         if form.validate_on_submit(): #a new filtername was added for the current selection
-            db_addfilter(teacher['name'], form.filtername.data, excfilter)
-            teacher = db_getfilternames(session['teacher'])
-            gduser['dropdownmenu_down'] = True
+            db_addBucket(teacher['name'], form.bucketname.data, excfilter)
+            teacher = db_getBucketnames(session['teacher'])
 
-        session['gduser']=gduser
+        if int(gdbucket['delbucket'])>0:
+            id = int(int(gdbucket['delbucket']))
+            db_delBucket(id)
+            teacher = db_getBucketnames(session['teacher'])
+
+        session['gduser'] = gduser
+        session['gdbucket'] = gdbucket
         session['excfilter'] = excfilter
 
-    return render_template('lul.html', TEACHER=teacher, form=form, GDFIX=gdfix, GDUSER=gduser, EXCFILTER=excfilter, EXCNUM=excnum, IMPATHS=impaths, answ=answ)
+    return render_template('lul.html', form=form, TEACHER=teacher, GDBUCKET=gdbucket, GDFIX=gdfix, GDUSER=gduser, EXCFILTER=excfilter, EXCNUM=excnum, IMPATHS=impaths, answ=answ)
 
 #clears cache in browser
 # @app.after_request
