@@ -177,28 +177,27 @@ def excFilter_update(ef, name='', val=''):
 
     return ef
 
-def df_applyExcfilter(DFx, gdf, ef, shuffle = False):
+def df_applyExcfilter(gdf, ef, shuffle = False):
     '''
     Create new dataframe from DF based on gdfix gdf and excercise filter ef.
     '''
-    n=len(DFx)
-    BOOL_incl = [False for i in range(0,n)]
-    BOOL_excl = [False for i in range(0,n)]
+    BOOL_incl = [False for i in range(0,len(DF))]
+    BOOL_excl = [False for i in range(0,len(DF))]
     for name in DF_HEADERS:
         R = ef[name] #could be 0 (ignore),1 (include), or 2 (exclude)
         wsl_incl = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] == 1 ]
         wsl_excl = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] == 2  ]
 
         if len(wsl_incl) > 0:
-            b = _df_findSelectedCol(DFx, name, wsl_incl )
-            BOOL_incl = [BOOL_incl[i] or b[i] for i in range(0,n)]
+            b = _df_findSelectedCol(DF, name, wsl_incl )
+            BOOL_incl = [BOOL_incl[i] or b[i] for i in range(0,len(DF))]
 
         if len(wsl_excl) > 0:
-            b = _df_findSelectedCol(DFx, name, wsl_excl )
-            BOOL_excl = [BOOL_excl[i] or b[i] for i in range(0,n)]
+            b = _df_findSelectedCol(DF, name, wsl_excl )
+            BOOL_excl = [BOOL_excl[i] or b[i] for i in range(0,len(DF))]
 
-        BOOL = [not BOOL_excl[i] and BOOL_incl[i] for i in range(0,n)]
-        df = DFx[BOOL]
+        BOOL = [not BOOL_excl[i] and BOOL_incl[i] for i in range(0,len(DF))]
+        df = DF[BOOL]
 
     if shuffle:
         df = df.sample(frac=1)
@@ -447,7 +446,7 @@ def sus(teacherkurzel):
         gdbucket = guibucket_init()
         excfilter = excFilter_init(gdfix)
 
-        df = df_applyExcfilter(DF_sus, gdfix, excfilter)
+        df = df_applyExcfilter(gdfix, excfilter)
         excnum = df_getExcnum(df, gdfix)
         impaths = df_getImagepaths(df)
 
@@ -472,7 +471,7 @@ def sus(teacherkurzel):
         excfilter = excFilter_update(excfilter, name = name, val = val)
         gdbucket, excfilter = guibucket_update_sus(gdbucket, excfilter, name = name, val = val)
 
-        df = df_applyExcfilter(DF_sus, gdfix, excfilter, shuffle = gduser['sortMode']==1)
+        df = df_applyExcfilter(gdfix, excfilter, shuffle = gduser['sortMode']==1)
         excnum = df_getExcnum(df, gdfix)
         impaths = df_getImagepaths(df)
 
@@ -510,7 +509,7 @@ def lul():
         gdbucket = guibucket_init()
         excfilter = excFilter_init(gdfix)
 
-        df = df_applyExcfilter(DF_lul, gdfix, excfilter)
+        df = df_applyExcfilter(gdfix, excfilter)
         excnum = df_getExcnum(df, gdfix)
         impaths = df_getImagepaths(df)
 
@@ -534,7 +533,7 @@ def lul():
         excfilter = excFilter_update(excfilter, name = name, val = val)
         gdbucket, excfilter = guibucket_update(gdbucket, excfilter, name = name, val = val)
 
-        df = df_applyExcfilter(DF_lul, gdfix, excfilter, shuffle = gduser['sortMode']==1)
+        df = df_applyExcfilter(gdfix, excfilter, shuffle = gduser['sortMode']==1)
         excnum = df_getExcnum(df, gdfix)
         impaths = df_getImagepaths(df)
 
