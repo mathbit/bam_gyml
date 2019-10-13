@@ -427,7 +427,7 @@ def sus(teacherkurzel):
         return 'teacher variable not found'
 
     if 'gduser' not in session:
-        session['gduser'] = guidatauser_init(gdfix)
+        session['gduser'] = guidatauser_init()
 
     if 'gdbucket' not in session:
         session['gdbucket'] = guibucket_init()
@@ -496,7 +496,7 @@ def lul():
         return redirect(url_for('login'))
 
     if 'gduser' not in session:
-        session['gduser'] = guidatauser_init(gdfix)
+        session['gduser'] = guidatauser_init()
 
     if 'gdbucket' not in session:
         session['gdbucket'] = guibucket_init()
@@ -510,7 +510,7 @@ def lul():
         gdbucket = guibucket_init()
         excfilter = excFilter_init(gdfix)
 
-        df = df_applyExcfilter(DF_lul, gdfix, excfilter)
+        df = df_applyExcfilter(DF, gdfix, excfilter)
         excnum = df_getExcnum(df, gdfix)
         impaths = df_getImagepaths(df)
 
@@ -534,7 +534,7 @@ def lul():
         excfilter = excFilter_update(excfilter, name = name, val = val)
         gdbucket, excfilter = guibucket_update(gdbucket, excfilter, name = name, val = val)
 
-        df = df_applyExcfilter(DF_lul, gdfix, excfilter, shuffle = gduser['sortMode']==1)
+        df = df_applyExcfilter(DF, gdfix, excfilter, shuffle = gduser['sortMode']==1)
         excnum = df_getExcnum(df, gdfix)
         impaths = df_getImagepaths(df)
 
