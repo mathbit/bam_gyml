@@ -280,7 +280,7 @@ class Bucket(db.Model):
 
 def db_addMembers():
     '''
-    Add the Kürzel to the database member.
+    Add the Kuerzel to the database member.
     Do this only by hand from the console as follows:
     >>> from app import db
     >>> from app import Member

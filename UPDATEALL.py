@@ -72,6 +72,6 @@ if __name__ == '__main__':
     p = subprocess.run(cmd,shell=True,check=True,universal_newlines=True, stderr=subprocess.PIPE)
 
     #deploy to heroku
-    cmd = './pushHeroku.sh'
-    print('... deploy to Heroku: '+cmd)
-    p = subprocess.run(cmd,shell=True,check=True,universal_newlines=True, stderr=subprocess.PIPE)
+    #cmd = './pushHeroku.sh'
+    #print('... deploy to Heroku: '+cmd)
+    #p = subprocess.run(cmd,shell=True,check=True,universal_newlines=True, stderr=subprocess.PIPE)
