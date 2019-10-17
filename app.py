@@ -1,4 +1,5 @@
-# import the Flask class from the flask module
+# coding=utf-8
+
 from flask import Flask, render_template, url_for, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
