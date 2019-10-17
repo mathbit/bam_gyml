@@ -218,6 +218,17 @@ def df_getExcnum(df, gdf):
 
     return num
 
+def df_getTotalExcnum(df, gdf):
+    '''
+    Gets totla number of exc in df for each keyword specified in gdf.
+    If df is empty, the returned values are 0.
+    '''
+    num = 0
+    for name in DF_HEADERS:
+        num=num+ sum(_df_compareWithList( df, name, gdf[name]['label'] ))
+
+    return num
+
 def df_getImagepaths(df):
     '''
     Gets the paths to the pictures based on (a filtered) df.
@@ -504,7 +515,6 @@ def viewer(teacherkurzel):
         gdbucket, excfilter = guibucket_update_sus(gdfix, gdbucket, excfilter, name = name, val = val)
 
         df = df_applyExcfilter(DF_sus, gdfix, excfilter, shuffle = gduser['sortMode']==1)
-        excnum = df_getExcnum(df, gdfix)
         impaths = df_getImagepaths(df)
 
         teacher = db_getBucketnames(session['teacher'])
@@ -513,7 +523,7 @@ def viewer(teacherkurzel):
         session['gdbucket'] = gdbucket
         session['excfilter'] = excfilter
 
-    return render_template('sus.html', TEACHER=teacher, GDBUCKET=gdbucket, GDFIX=gdfix, GDUSER=gduser, EXCFILTER=excfilter, EXCNUM=excnum, IMPATHS=impaths, answ=answ)
+    return render_template('sus.html', TEACHER=teacher, GDBUCKET=gdbucket, GDFIX=gdfix, GDUSER=gduser, EXCFILTER=excfilter, IMPATHS=impaths, answ=answ)
 
 
 

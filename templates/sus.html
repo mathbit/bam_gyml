@@ -11,9 +11,9 @@
 <div class="container" >
     <!-- Dropdown menue for bucketlist -->
     <div class="row justify-content-center">
-      <form class="form-inline my-2 my-lg-0" name="form" id="dropdownthemes" action="" method="post">
+      <form class="form-inline my-lg-0" name="form" id="dropdownthemes" action="" method="post">
       <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle btn-sm mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-secondary dropdown-toggle btn-sm " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {% if GDBUCKET.selbucket == -1 %}
             Themen
           {% else %}
@@ -38,12 +38,17 @@
       </div>
       </form>
 
+      <div class="mr-2">
+        <span class="badge badge-info">{{IMPATHS.ques|count}}</span>
+      </div>
+
       <!-- input für image size, mode, etc -->
       <div class="btn-toolbar" >
         {{ render_boutonfield( GDFIX.imSize, GDUSER.imSize)}}
         {{ render_boutonfield( GDFIX.displayMode, GDUSER.displayMode)}}
         {{ render_boutonfield( GDFIX.sortMode, GDUSER.sortMode)}}
       </div>
+
     </div>
 </div>
 
