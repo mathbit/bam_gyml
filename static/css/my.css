@@ -79,9 +79,9 @@ img {
 }
 
 /* changes picture without slide-in animation */
-/* .collapsing {
+.collapsing {
   transition: none !important;
-} */
+}
 
 /* carousel controls */
 
