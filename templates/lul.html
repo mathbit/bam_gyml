@@ -96,7 +96,7 @@
 {% elif GDUSER.displayMode == 1 and IMPATHS.ques|count > 0 %}
 
 <!-- layout of images as carousel -->
-<div id="carouselExampleIndicators" class="carousel" >
+<div id="carouselExampleIndicators" class="carousel">
   <div class="carousel-inner" >
     {% for i in range(IMPATHS.ques|count) %}
     <div class="carousel-item {% if i==0 %} active {% endif %}">
