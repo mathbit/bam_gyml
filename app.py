@@ -417,7 +417,7 @@ def guibucket_update_sus(gdf, gdb, ef, name='', val=-1):
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired(), AnyOf(gdfix['kurzel']['label'], message='Kürzel in Overleaf')] )
+    username = StringField('Username', validators=[InputRequired(), AnyOf(gdfix['kurzel']['label'], message='Kuerzel in Overleaf')] )
     password = PasswordField('Password', validators=[InputRequired()])
 
 class BucketNameForm(FlaskForm):
