@@ -7,6 +7,7 @@ from wtforms.validators import InputRequired, Length, AnyOf
 import sqlite3
 import pandas as pd
 import os, subprocess
+import re
 from collections import Counter
 from projconfig import Projconfig #load project variables and stuff
 
@@ -267,14 +268,14 @@ class Member(db.Model):
 
 class Bucket(db.Model):
     '''
-    Strings decoding the seslections, e.g. '00110120'
+    Strings decoding the selections, e.g. '00110120'
     '''
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    kurzel = db.Column(db.String(50))
-    topic = db.Column(db.String(50))
-    basal = db.Column(db.String(10))
-    diff = db.Column(db.String(10))
+    name = db.Column(db.String(200))
+    kurzel = db.Column(db.String(100))
+    topic = db.Column(db.String(500))
+    basal = db.Column(db.String(200))
+    diff = db.Column(db.String(200))
     member_id = db.Column(db.Integer, db.ForeignKey('member.id'))
 
 def db_addMembers():
@@ -283,25 +284,32 @@ def db_addMembers():
     Do this only by hand from the console as follows:
     >>> from app import db
     >>> from app import Member
-    >>> from app import addMembers
+    >>> from app import db_addMembers
     >>> db_addMembers()
     '''
     kurzellist = gdfix['kurzel']['label']
     for k in kurzellist:
-        m = Member(username = k, password = 'empty')
+        m = Member(username = k, password = '!'+k+'!')
         db.session.add(m)
         db.session.commit()
 
-def db_addBucket(username, buckname, ef):
+def db_addBucket(username, buckname, ef, gdf):
     '''
     adds a filter to the specifiend username
     '''
+
+    #add names to buckets rather than just [01201...]
+    lab={}
+    for item in DF_HEADERS:
+        lab[item] = ['['+str(ef[item][i])+']'+'['+gdf[item]['label'][i]+']' for i in range(0,gdf[item]['num']) if ef[item][i]>0]
+
     mem = Member.query.filter(Member.username == username).first()
     fil = Bucket(name=buckname,
-            kurzel = ''.join(map(str, ef['kurzel'])), #convert list [0,1,0,1] to string '0101'
-            topic = ''.join(map(str, ef['topic'])),
-            basal = ''.join(map(str, ef['basal'])),
-            diff = ''.join(map(str, ef['diff'])),
+            #kurzel = ''.join(map(str, ef['kurzel'])), #convert list [0,1,0,1] to string '0101'
+            kurzel = ''.join(map(str, lab['kurzel'])),
+            topic = ''.join(map(str, lab['topic'])),
+            basal = ''.join(map(str, lab['basal'])),
+            diff = ''.join(map(str, lab['diff'])),
             member_id = mem.id
             )
     db.session.add(fil)
@@ -328,7 +336,7 @@ def db_getBucketnames(username):
     teac['name'] = username
     teac['bucketid'] = [fil[i].id for i in range(0,len(fil))]
     teac['bucketname'] = [fil[i].name for i in range(0,len(fil))]
-    teac['num'] =  len(fil)
+    teac['num'] = len(fil)
 
     return teac
 
@@ -336,17 +344,38 @@ def guibucket_init():
     ud = {'selbucket': -1, 'delbucket': -1}
     return ud
 
-def guibucket_update(gdb, ef, name='', val=-1):
+def _bucketstr2eflist(gdf,bstr,catname):
+    '''
+    Converst bucket cateogrie string (e.g. [1][BiT][2][Haek]')
+    to ef list (e.g. [1,0,0,0,2,0,0,0])
+    '''
+    searchStr=r'\[(.*?)\]\[(.*?)\]'
+    ef_list = [0 for i in range(0,gdf[catname]['num'])]
+    if len(bstr)>0: #string not empty, there is something to update
+        blist = re.findall(searchStr,bstr) #list of labels, eg. [('1','BiT'), ('2','HaeK')]
+        for l in blist:
+            ef_id = [i for i in range(0, gdf[catname]['num']) if gdf[catname]['label'][i]==l[1]]
+            if len(ef_id)>0:
+                ef_list[ef_id[0]]=int(l[0])
+
+    return ef_list
+
+def guibucket_update(gdf, gdb, ef, name='', val=-1):
     if name == 'selbucket':
         id = int(val)
         if gdb['selbucket']<0 or gdb['selbucket'] != id: #no current selection exists, or different one selected
             gdb['selbucket'] = id
-            #read from database
+            #read from database the stored labels and set ef corresponingly
+            ef = excFilter_clear(ef)
             b = Bucket.query.filter(Bucket.id == id).first()
-            ef['kurzel'] = [int(i) for i in b.kurzel]
-            ef['topic'] = [int(i) for i in b.topic]
-            ef['basal'] = [int(i) for i in b.basal]
-            ef['diff'] = [int(i) for i in b.diff]
+            ef['kurzel'] = _bucketstr2eflist(gdf,b.kurzel,'kurzel')
+            ef['topic'] = _bucketstr2eflist(gdf,b.topic,'topic')
+            ef['basal'] = _bucketstr2eflist(gdf,b.basal,'basal')
+            ef['diff'] = _bucketstr2eflist(gdf,b.diff,'diff')
+            #ef['kurzel'] = [int(i) for i in b.kurzel]
+            # ef['topic'] = [int(i) for i in b.topic]
+            # ef['basal'] = [int(i) for i in b.basal]
+            # ef['diff'] = [int(i) for i in b.diff]
         else: #click on already selected bucket
             gdb['selbucket'] = -1
             ef = excFilter_clear(ef)
@@ -368,17 +397,18 @@ def guibucket_update(gdb, ef, name='', val=-1):
 
     return gdb, ef
 
-def guibucket_update_sus(gdb, ef, name='', val=-1):
+def guibucket_update_sus(gdf, gdb, ef, name='', val=-1):
     if name == 'selbucket':
         id = int(val)
         if gdb['selbucket']<0 or gdb['selbucket'] != id: #no current selection exists, or different one selected
             gdb['selbucket'] = id
-            #read from database
+            #read from database the stored labels and set ef corresponingly
+            ef = excFilter_clear(ef)
             b = Bucket.query.filter(Bucket.id == id).first()
-            ef['kurzel'] = [int(i) for i in b.kurzel]
-            ef['topic'] = [int(i) for i in b.topic]
-            ef['basal'] = [int(i) for i in b.basal]
-            ef['diff'] = [int(i) for i in b.diff]
+            ef['kurzel'] = _bucketstr2eflist(gdf,b.kurzel,'kurzel')
+            ef['topic'] = _bucketstr2eflist(gdf,b.topic,'topic')
+            ef['basal'] = _bucketstr2eflist(gdf,b.basal,'basal')
+            ef['diff'] = _bucketstr2eflist(gdf,b.diff,'diff')
         # else: #click on already selected bucket
         #     gdb['selbucket'] = -1
         #     ef = excFilter_clear(ef)
@@ -421,7 +451,7 @@ def login():
     return render_template('login.html', form=form)
 
 @app.route('/<teacherkurzel>', methods=['POST', 'GET'])
-def sus(teacherkurzel):
+def viewer(teacherkurzel):
 
     if 'teacher' not in session:
         return 'teacher variable not found'
@@ -470,7 +500,7 @@ def sus(teacherkurzel):
 
         gduser = guidatauser_update(gduser, name = name, val = val)
         excfilter = excFilter_update(excfilter, name = name, val = val)
-        gdbucket, excfilter = guibucket_update_sus(gdbucket, excfilter, name = name, val = val)
+        gdbucket, excfilter = guibucket_update_sus(gdfix, gdbucket, excfilter, name = name, val = val)
 
         df = df_applyExcfilter(DF_sus, gdfix, excfilter, shuffle = gduser['sortMode']==1)
         excnum = df_getExcnum(df, gdfix)
@@ -532,14 +562,14 @@ def lul():
 
         gduser = guidatauser_update(gduser, name = name, val = val)
         excfilter = excFilter_update(excfilter, name = name, val = val)
-        gdbucket, excfilter = guibucket_update(gdbucket, excfilter, name = name, val = val)
+        gdbucket, excfilter = guibucket_update(gdfix, gdbucket, excfilter, name = name, val = val)
 
         df = df_applyExcfilter(DF, gdfix, excfilter, shuffle = gduser['sortMode']==1)
         excnum = df_getExcnum(df, gdfix)
         impaths = df_getImagepaths(df)
 
         if form.validate_on_submit(): #a new filtername was added for the current selection
-            id = db_addBucket(session['teacher'], form.bucketname.data, excfilter)
+            id = db_addBucket(session['teacher'], form.bucketname.data, excfilter, gdfix)
             gdbucket['selbucket']=id
 
         teacher = db_getBucketnames(session['teacher'])
