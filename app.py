@@ -454,8 +454,8 @@ def login():
 @app.route('/<teacherkurzel>', methods=['POST', 'GET'])
 def viewer(teacherkurzel):
 
-    if 'teacher' not in session:
-        return 'teacher variable not found'
+    # if 'teacher' not in session:
+    #     return 'teacher variable not found'
 
     if 'gduser' not in session:
         session['gduser'] = guidatauser_init()
