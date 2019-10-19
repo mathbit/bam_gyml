@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.8.15)  17 OCT 2019 16:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.8.15)  19 OCT 2019 22:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1381,7 +1381,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 917--921
 
  []
 
-<pics/triangle.png, id=586, 204.765pt x 140.4447pt>
+<pics/triangle.png, id=585, 204.765pt x 140.4447pt>
 File: pics/triangle.png Graphic file (type png)
 <use pics/triangle.png>
 Package pdftex.def Info: pics/triangle.png  used on input line 921.
@@ -2024,7 +2024,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1520--1525
 
  []
 
-<pics/wajpythagoras.png, id=908, 193.4427pt x 178.0251pt>
+<pics/wajpythagoras.png, id=907, 193.4427pt x 178.0251pt>
 File: pics/wajpythagoras.png Graphic file (type png)
 <use pics/wajpythagoras.png>
 Package pdftex.def Info: pics/wajpythagoras.png  used on input line 1525.
@@ -3361,7 +3361,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 2407--2408
  []
 
 [446]
-<pics/graphen.png, id=1446, 314.21739pt x 193.97687pt>
+<pics/graphen.png, id=1445, 314.21739pt x 193.97687pt>
 File: pics/graphen.png Graphic file (type png)
 <use pics/graphen.png>
 Package pdftex.def Info: pics/graphen.png  used on input line 2415.
@@ -3632,7 +3632,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 2645--2647
  []
 
 [484]
-<pics/LinFunktion1.png, id=1569, 379.03847pt x 223.50635pt>
+<pics/LinFunktion1.png, id=1568, 379.03847pt x 223.50635pt>
 File: pics/LinFunktion1.png Graphic file (type png)
 <use pics/LinFunktion1.png>
 Package pdftex.def Info: pics/LinFunktion1.png  used on input line 2655.
@@ -3653,7 +3653,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 2658--2662
  []
 
 [486]
-<pics/LinFunktion2.png, id=1577, 379.03847pt x 223.50635pt>
+<pics/LinFunktion2.png, id=1576, 379.03847pt x 223.50635pt>
 File: pics/LinFunktion2.png Graphic file (type png)
 <use pics/LinFunktion2.png>
 Package pdftex.def Info: pics/LinFunktion2.png  used on input line 2669.
@@ -3674,7 +3674,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 2672--2676
  []
 
 [488]
-<pics/LinFunktion3.png, id=1586, 416.9423pt x 245.85698pt>
+<pics/LinFunktion3.png, id=1585, 416.9423pt x 245.85698pt>
 File: pics/LinFunktion3.png Graphic file (type png)
 <use pics/LinFunktion3.png>
 Package pdftex.def Info: pics/LinFunktion3.png  used on input line 2683.
@@ -3695,7 +3695,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 2686--2690
  []
 
 [490]
-<pics/LinFunktion4.png, id=1594, 416.9423pt x 245.85698pt>
+<pics/LinFunktion4.png, id=1593, 416.9423pt x 245.85698pt>
 File: pics/LinFunktion4.png Graphic file (type png)
 <use pics/LinFunktion4.png>
 Package pdftex.def Info: pics/LinFunktion4.png  used on input line 2697.
@@ -3716,7 +3716,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 2700--2704
  []
 
 [492]
-<pics/LinFunktion5.png, id=1602, 416.9423pt x 245.85698pt>
+<pics/LinFunktion5.png, id=1601, 416.9423pt x 245.85698pt>
 File: pics/LinFunktion5.png Graphic file (type png)
 <use pics/LinFunktion5.png>
 Package pdftex.def Info: pics/LinFunktion5.png  used on input line 2711.
@@ -3786,7 +3786,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 2761--2765
 
  []
 
-<pics/Lohse2.pdf, id=1637, 685.56223pt x 720.14442pt>
+<pics/Lohse2.pdf, id=1636, 685.56223pt x 720.14442pt>
 File: pics/Lohse2.pdf Graphic file (type pdf)
 <use pics/Lohse2.pdf>
 Package pdftex.def Info: pics/Lohse2.pdf  used on input line 2765.
@@ -4398,13 +4398,34 @@ Overfull \hbox (15.52336pt too wide) in paragraph at lines 3344--3346
 gleich
  []
 
-[610] (./main_new.aux) ) 
+[610]
+Underfull \hbox (badness 10000) in paragraph at lines 3349--3351
+
+ []
+
+[611]
+Underfull \hbox (badness 10000) in paragraph at lines 3353--3355
+
+ []
+
+
+Overfull \hbox (11.67201pt too wide) in paragraph at lines 3355--3356
+[]\OT1/cmr/m/n/12 Laura hat 28 Zwanzi-grap-penst^^?ucke und 7 Zweifrankenst^^?u
+cke.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3355--3356
+
+ []
+
+[612] (./main_new.aux) ) 
 Here is how much of TeX's memory you used:
- 8990 strings out of 494561
- 158380 string characters out of 6177454
- 201982 words of memory out of 5000000
- 12458 multiletter control sequences out of 15000+600000
- 10676 words of font info for 40 fonts, out of 8000000 for 9000
+ 8989 strings out of 494561
+ 158369 string characters out of 6177454
+ 201984 words of memory out of 5000000
+ 12457 multiletter control sequences out of 15000+600000
+ 10316 words of font info for 39 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  42i,7n,40p,401b,197s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
@@ -4417,12 +4438,11 @@ e/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/t
 ype1/public/amsfonts/cm/cmti7.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
-blic/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
-/zapfding/uzdr.pfb>
-Output written on main_new.pdf (610 pages, 2386813 bytes).
+blic/amsfonts/symbols/msbm10.pfb>
+Output written on main_new.pdf (612 pages, 2389567 bytes).
 PDF statistics:
- 2050 PDF objects out of 2073 (max. 8388607)
- 1387 compressed objects within 14 object streams
+ 2052 PDF objects out of 2073 (max. 8388607)
+ 1388 compressed objects within 14 object streams
  0 named destinations out of 1000 (max. 500000)
  61 words of extra memory for PDF output out of 10000 (max. 10000000)
 
