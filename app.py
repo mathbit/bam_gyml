@@ -266,7 +266,8 @@ app = Flask(__name__)
 #   from dotenv import load_dotenv
 #   project_folder = os.path.expanduser('~/bam_gyml')
 #   load_dotenv(os.path.join(project_folder, '.env'))
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///luldata.db'
+#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///luldata.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///luldata.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SECRET_KEY"] = "bigsecret!"
 app.config["DEBUG"] = True
