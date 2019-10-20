@@ -255,7 +255,18 @@ def df_sortByCol( df, colStr ):
 
 # create the application object
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///luldata.db'
+#database on pythoneverwhere: tomb$bamdb, pw=!bamsql!
+#set link to databse depending on content (local vs deployed)
+#You need a package: pip install python-dotenv
+#you have to set up the .env file (on pythonanywhere in project folder):
+#
+#Go then to pythonanywhere, click on Web, and click on the link to your WSGI file.
+#Here add:
+#   import os
+#   from dotenv import load_dotenv
+#   project_folder = os.path.expanduser('~/bam_gyml')
+#   load_dotenv(os.path.join(project_folder, '.env'))
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///luldata.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SECRET_KEY"] = "bigsecret!"
 app.config["DEBUG"] = True

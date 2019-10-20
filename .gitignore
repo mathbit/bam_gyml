@@ -9,3 +9,5 @@ venv
 #The latex directory on Heroku will have its
 #own git-stuff for overleaf.
 overleafgit
+
+luldata.db
