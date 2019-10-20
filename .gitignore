@@ -2,7 +2,7 @@
 venv
 *.pyc
 .DS_Store
-.env
+#.env
 
 #ignore overleaf .git stuff in overleafgit folder
 #this is only used for the local copy
@@ -10,4 +10,5 @@ venv
 #own git-stuff for overleaf.
 overleafgit
 
+#ignore database, otherwise it will be overridden!
 luldata.db
