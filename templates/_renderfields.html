@@ -7,7 +7,7 @@
     name="{{field_fix.name}}"
     value="{{field_fix.value[i]}}"
     class="btn btn-sm {% if field_user == i %} btn-success {% else %} btn-secondary {% endif %}">
-    {{field_fix.label[i]}}
+    {{field_fix.label[i] | safe}}
   </button>
   {% endfor %}
 </div>

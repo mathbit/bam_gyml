@@ -106,9 +106,11 @@ def _radiofield(df, name=''):
 def guidatafix():
     gd = {
         'totalnum' : len(DF),
-        'sortMode' : _switchfield(name='sortMode', label=['sorted','shuffle']),
-        'displayMode' : _switchfield(name='displayMode', label=['Grid','Stapel']),
-        'imSize' : _switchfield(name='imSize', label=['k','K','g', 'G'], list=['200px','400px','600px','800px'])
+        'sortMode' : _switchfield(name='sortMode', label=['<i class="fas fa-sort-alpha-down"></i>','<i class="fas fa-random"></i>']),
+        'displayMode' : _switchfield(name='displayMode', label=['<i class="fas fa-th"></i>','<i class="fas fa-layer-group"></i>']),
+        #'imSize' : _switchfield(name='imSize', label=['k','K','g', 'G'], list=['200px','400px','600px','800px'])
+        'imSize' : _switchfield(name='imSize', label=['<i class="fas fa-stop fa-xs"></i>','<i class="fas fa-stop fa-sm"></i>','<i class="fas fa-stop fa-lg"></i>', '<i class="fas fa-arrows-alt-h"></i>'], list=['200px','400px','600px','fullhor'])
+
     }
 
     for name in DF_HEADERS:

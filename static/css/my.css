@@ -20,7 +20,7 @@ img {
 }
 
 /* display cards (images) in a flexible way */
-.flex-image-container {
+/* .flex-image-container {
     display:flex;
     justify-content: flex-start;
     flex-wrap: wrap;
@@ -35,7 +35,7 @@ img {
   font-family: Muli;
   border-radius: 0px;
   border: 1px solid lightgray;
-}
+} */
 
 /* .image-tag {
   font-family: Muli;
