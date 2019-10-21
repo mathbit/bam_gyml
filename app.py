@@ -126,7 +126,7 @@ def guidatauser_init():
         'dropdownmenu_down': False,
         'sortMode': 0,
         'displayMode': 0,
-        'imSize': 3,
+        'imSize': 1,
     }
 
     return ud
