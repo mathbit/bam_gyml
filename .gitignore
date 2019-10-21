@@ -11,4 +11,4 @@ venv
 overleafgit
 
 #ignore database, otherwise it will be overridden!
-luldata.db
+*.db
