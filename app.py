@@ -109,7 +109,7 @@ def guidatafix():
         'sortMode' : _switchfield(name='sortMode', label=['<i class="fas fa-sort-alpha-down"></i>','<i class="fas fa-random"></i>']),
         'displayMode' : _switchfield(name='displayMode', label=['<i class="fas fa-th"></i>','<i class="fas fa-layer-group"></i>']),
         #'imSize' : _switchfield(name='imSize', label=['k','K','g', 'G'], list=['200px','400px','600px','800px'])
-        'imSize' : _switchfield(name='imSize', label=['<i class="fas fa-stop fa-xs"></i>','<i class="fas fa-stop fa-sm"></i>','<i class="fas fa-stop fa-lg"></i>', '<i class="fas fa-arrows-alt-h"></i>'], list=['200px','400px','600px','fullhor'])
+        'imSize' : _switchfield(name='imSize', label=['<div style="font-size: 0.5rem;"><i class="fas fa-stop fa-sm"></i></div>','<i class="fas fa-stop fa-sm"></i>','<i class="fas fa-stop fa-lg"></i>', '<i class="fas fa-arrows-alt-h"></i>'], list=['200px','400px','600px','fullhor'])
 
     }
 
