@@ -14,20 +14,12 @@ hr {
   border: none;
 }
 
-.btn-group-xs > .btn, .btn-xs {
-  padding: .25rem .4rem;
-  font-size: .875rem;
-  line-height: .5;
-  border-radius: .2rem;
-}
-
-
 img {
 	display: block;
 }
 
 /* display cards (images) in a flexible way */
-/* .flex-image-container {
+.flex-image-container {
     display:flex;
     justify-content: flex-start;
     flex-wrap: wrap;
@@ -44,14 +36,14 @@ img {
   border: 1px solid lightgray;
 } */
 
-/* .image-tag {
+.image-tag {
   font-family: Muli;
   color: #77b0b1;
   font-size: small;
   text-align: right;
   overflow-x: scroll;
   white-space: nowrap;
-} */
+}
 
 
 /* layout of input forms */
