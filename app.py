@@ -186,24 +186,33 @@ def df_applyExcfilter(DFx, gdf, ef, shuffle = False):
     Create new dataframe from DF based on gdfix gdf and excercise filter ef.
     '''
     n=len(DFx)
-    BOOL_incl = [True for i in range(0,n)]
-    BOOL_excl = [False for i in range(0,n)]
+
+    #check if something was selected
+    s = 0
     for name in DF_HEADERS:
-        R = ef[name] #list of  0 (ignore),1 (include), or 2 (exclude)
-        wsl_incl = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] == 1 ]
-        wsl_excl = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] == 2  ]
+        s = s+sum(ef[name])
 
-        if len(wsl_incl) > 0:
-            b = _df_findSelectedCol(DFx, name, wsl_incl )
-            BOOL_incl = [BOOL_incl[i] and b[i] for i in range(0,n)]
+    if s>0:
+        BOOL_incl = [True for i in range(0,n)]
+        BOOL_excl = [False for i in range(0,n)]
+        for name in DF_HEADERS:
+            R = ef[name] #list of  0 (ignore),1 (include), or 2 (exclude)
+            wsl_incl = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] == 1 ]
+            wsl_excl = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] == 2  ]
 
-        if len(wsl_excl) > 0:
-            b = _df_findSelectedCol(DFx, name, wsl_excl )
-            BOOL_excl = [BOOL_excl[i] or b[i] for i in range(0,n)]
+            if len(wsl_incl) > 0:
+                b = _df_findSelectedCol(DFx, name, wsl_incl )
+                BOOL_incl = [BOOL_incl[i] and b[i] for i in range(0,n)]
 
-        BOOL = [not BOOL_excl[i] and BOOL_incl[i] for i in range(0,n)]
+            if len(wsl_excl) > 0:
+                b = _df_findSelectedCol(DFx, name, wsl_excl )
+                BOOL_excl = [BOOL_excl[i] or b[i] for i in range(0,n)]
 
-        df = DFx[BOOL]
+            BOOL = [not BOOL_excl[i] and BOOL_incl[i] for i in range(0,n)]
+    else:
+        BOOL = [False for i in range(0,n)]
+
+    df = DFx[BOOL]
 
     if shuffle:
         df = df.sample(frac=1)
