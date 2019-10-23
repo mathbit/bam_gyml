@@ -19,7 +19,7 @@
 <nav class="navbar navbar-dark bg-dark justify-content-between py-md-0 py-0" >
   <div class="container-fluid m-0" >
       <!-- Title -->
-      <a class="navbar-brand" href="#">Basale Aufgaben Mathematik ({{IMPATHS.ques|count}}/{{GDFIX.totalnum}}) -- {{ TEACHER.name }}</a>
+      <a class="navbar-brand" href="#">Math Basal ({{IMPATHS.ques|count}}/{{GDFIX.totalnum}}) -- {{ TEACHER.name }}</a>
       <!-- input für image size, mode, etc -->
       <div class="btn-toolbar" >
         {{ render_boutonfield( GDFIX.imSize, GDUSER.imSize)}}
@@ -55,7 +55,7 @@
 
             <!-- teacher filters -->
             <div class="col-md-auto">
-              <font color="white">Baskets für {{ TEACHER.name }}:</font>
+              <font color="red">Baskets für {{ TEACHER.name }}</font>
               {{ render_filterselfield(TEACHER, GDBUCKET.selbucket) }}
               <form class="form-inline my-2 my-lg-0" method="POST">
                 {{ form.csrf_token }}

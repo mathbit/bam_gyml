@@ -11,9 +11,9 @@
 <div class="container" >
     <!-- Dropdown menue for bucketlist -->
     <div class="row justify-content-center">
-      <form class="form-inline my-lg-0" name="form" id="dropdownthemes" action="" method="post">
+      <form class="form-inline" name="form" id="dropdownthemes" action="" method="post">
       <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-secondary dropdown-toggle btn-sm p-0 pl-1 pr-1 mt-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {% if GDBUCKET.selbucket == -1 %}
             Themen
           {% else %}
@@ -38,7 +38,7 @@
       </div>
       </form>
 
-      <div class="mr-2">
+      <div class="mr-2 mt-3">
         <span class="badge badge-info">{{IMPATHS.ques|count}}</span>
       </div>
 
@@ -93,7 +93,7 @@
 {% if GDFIX.imSize.list[GDUSER.imSize] != 'fullhor' %}
 <!-- layout of images as carousel -->
 <div id="carouselExampleIndicators" class="carousel" data-interval="false">
-  <div class="carousel-inner" >
+  <div class="carousel-inner">
     {% for i in range(IMPATHS.ques|count) %}
     <div class="carousel-item {% if i==0 %} active {% endif %}">
       <img class="d-block mx-auto" src="{{IMPATHS.ques[i]}}" alt="{{IMPATHS.ques[i]}}" style="width:{{GDFIX.imSize.list[GDUSER.imSize]}}">

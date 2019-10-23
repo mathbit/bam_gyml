@@ -83,12 +83,13 @@ def _df_findSelectedCol(df, colStr, whatStrList ):
 
     return bool
 
-def _switchfield(name='', label=[], list=[]):
+def _switchfield(name='', label=[], list=[], tooltip=[]):
     d = {
         'name' : name,
         'label': label,
         'value': range(0,len(label)),
         'list': list,
+        'tooltip': tooltip,
         'num' : len(label)
         }
     return d
@@ -106,11 +107,10 @@ def _radiofield(df, name=''):
 def guidatafix():
     gd = {
         'totalnum' : len(DF),
-        'sortMode' : _switchfield(name='sortMode', label=['<i class="fas fa-sort-alpha-down"></i>','<i class="fas fa-random"></i>']),
-        'displayMode' : _switchfield(name='displayMode', label=['<i class="fas fa-th"></i>','<i class="fas fa-layer-group"></i>']),
+        'sortMode' : _switchfield(name='sortMode', label=['<i class="fas fa-sort-alpha-down"></i>','<i class="fas fa-random"></i>'], tooltip=['sortiert','shuffled']),
+        'displayMode' : _switchfield(name='displayMode', label=['<i class="fas fa-th"></i>','<i class="fas fa-layer-group"></i>'], tooltip=['Grid','Stapel']),
         #'imSize' : _switchfield(name='imSize', label=['k','K','g', 'G'], list=['200px','400px','600px','800px'])
-        'imSize' : _switchfield(name='imSize', label=['<div style="font-size: 0.5rem;"><i class="fas fa-stop fa-sm"></i></div>','<i class="fas fa-stop fa-sm"></i>','<i class="fas fa-stop fa-lg"></i>', '<i class="fas fa-arrows-alt-h"></i>'], list=['200px','400px','600px','fullhor'])
-
+        'imSize' : _switchfield(name='imSize', label=['<div style="font-size: 0.5rem;"><i class="fas fa-stop fa-sm"></i></div>','<i class="fas fa-stop fa-sm"></i>','<i class="fas fa-stop fa-lg"></i>', '<i class="fas fa-arrows-alt-h"></i>'], list=['200px','400px','600px','fullhor'], tooltip=['klein','mittel','gross','ganze Breite'])
     }
 
     for name in DF_HEADERS:
@@ -123,7 +123,7 @@ def guidatauser_init():
     Sets the gui-buttons
     '''
     ud = {
-        'dropdownmenu_down': False,
+        'dropdownmenu_down': True,
         'sortMode': 0,
         'displayMode': 0,
         'imSize': 1,
@@ -186,22 +186,23 @@ def df_applyExcfilter(DFx, gdf, ef, shuffle = False):
     Create new dataframe from DF based on gdfix gdf and excercise filter ef.
     '''
     n=len(DFx)
-    BOOL_incl = [False for i in range(0,n)]
+    BOOL_incl = [True for i in range(0,n)]
     BOOL_excl = [False for i in range(0,n)]
     for name in DF_HEADERS:
-        R = ef[name] #could be 0 (ignore),1 (include), or 2 (exclude)
+        R = ef[name] #list of  0 (ignore),1 (include), or 2 (exclude)
         wsl_incl = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] == 1 ]
         wsl_excl = [ gdf[name]['label'][i] for i in range(0,len(R)) if R[i] == 2  ]
 
         if len(wsl_incl) > 0:
             b = _df_findSelectedCol(DFx, name, wsl_incl )
-            BOOL_incl = [BOOL_incl[i] or b[i] for i in range(0,n)]
+            BOOL_incl = [BOOL_incl[i] and b[i] for i in range(0,n)]
 
         if len(wsl_excl) > 0:
             b = _df_findSelectedCol(DFx, name, wsl_excl )
             BOOL_excl = [BOOL_excl[i] or b[i] for i in range(0,n)]
 
         BOOL = [not BOOL_excl[i] and BOOL_incl[i] for i in range(0,n)]
+
         df = DFx[BOOL]
 
     if shuffle:

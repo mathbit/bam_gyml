@@ -3,6 +3,7 @@
 <div class="btn-group mr-2">
   {% for i in range(0,field_fix.num) %}
   <button
+    data-toggle="tooltip" data-placement="top" title="{{field_fix.tooltip[i]}}"
     type="submit"
     name="{{field_fix.name}}"
     value="{{field_fix.value[i]}}"
