@@ -10,10 +10,15 @@ pip install -r requirements.txt
 find obsolete python packages:
 pylint app2.py
 
-Heroku account:
-email: tbinzegger ...
-!basal19!
 
+make python3 default
+======
+sudo update-alternatives --remove python /usr/bin/python2
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+
+
+github
+======
 git account (see github.com)
 username: mathbit
 pw: fro2626es
@@ -23,12 +28,67 @@ git config --global user.name mathbit
 git config --global user.email tbinzegger@gmail.com
 
 create new repository in a directory so that you can see it on github
-echo "# bam_dash" >> README.md  %name of repository
+echo "# bam_gyml" >> README.md  %name of repository
 git init
 git add
 git commit -m "first commit"
-git remote add origin https://github.com/mathbit/bam_dash.git
+git remote add origin https://github.com/mathbit/bam_gyml.git
 git push -u origin master
+
+Virtual environment
+===================
+#install virtual environment for python3:
+#python3 -m venv venv
+#source venv/bin/activate
+sudo pip3 install virtualenvwrapper
+#modify .baschrc to include
+  export WORKON_HOME=$HOME/.virtualenvs
+  export PROJECT_HOME=$HOME/prgs
+  source /usr/local/bin/virtualenvwrapper.sh
+
+mkvirtualenv bam_gyml
+
+
+Set enviroment variables
+============
+pip install python-dotenv
+#Create in PROJECT_FOLDER/.env the file "postactivate" with
+  #!/bin/bash
+  export FLASK_APP=app.py
+  export DATABASE_URL=""
+  export #DATABASE_URL=tomb.mysql.pythonanywhere-services.com
+#then make a simlink from $VIRTUAL_ENV/bin/ to this file
+rm $VIRTUAL_ENV/bin/postactivate
+ln -s /home/tom/prgs/bam_gyml/.env/postactivate $VIRTUAL_ENV/bin/postactivate
+
+Migration
+
+
+
+sqlite3
+=======
+is already installed in linux
+Setup a database:
+sqlite3 data.db
+
+
+mysql install and Setup
+=====
+#see https://support.rackspace.com/how-to/installing-mysql-server-on-ubuntu/
+sudo apt-get update
+sudo apt-get install mysql-server
+
+#some security ... I set my usual passwd
+sudo mysql_secure_installation utility
+
+#start the server, ...
+sudo systemctl start mysql
+
+#and also after reboot
+sudo systemctl enable mysql
+
+#The configuration file is on /etc/mysql/mysql.conf.d/mysqld.cnf
+#Database is presently listening to localhost, you can change this with bind-address
 
 
 conda create new environment:
@@ -55,8 +115,19 @@ go to project root directory:
 
 
 
+
+
+
+
+
+
+
 deploy scripts to heroku (see https://dash.plot.ly/deployment)
 ========================
+Heroku account:
+email: tbinzegger ...
+!basal19!
+
 install git in directory:
 git init
 
@@ -65,10 +136,6 @@ sudo snap install heroku --classic
 
 install wheel:
 pip install wheel
-
-install virtual environment for python3:
-python3 -m venv venv
-source venv/bin/activate
 
 install webserver:
 pip install gunicorn
@@ -149,11 +216,3 @@ Heroku bash:
 Heroku debugging:
 =================
 > heroku local
-
-
-
-sqlite3
-=======
-is already installed in linux
-Setup a database:
-sqlite3 data.db
